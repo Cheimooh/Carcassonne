@@ -23,6 +23,7 @@ public class Joueur {
 
     private Carte pioche() {
         //soucis pour l'accès a la pioche
+        return null;
     }
 
     public void setNom(String nom) {
