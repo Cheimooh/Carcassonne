@@ -29,13 +29,19 @@ public class Carcassonne {
         }
         //mise en place du plateau et de la première carte
         numJoueur = (int) Math.random()*nbJoueur;
+        int i;
+        boolean tourFait;
         while (p.getTaille() > 0){
-            for (int i=0 ; i < nbJoueur ; i++){
+            i=0;
+            tourFait = false;
+            while(!tourFait ){
                 if (tabJoueur[i].getIdJoueur() == numJoueur){
                     tabJoueur[i].joue();
                     numJoueur++;
                     numJoueur = numJoueur %nbJoueur;
+                    tourFait = true;
                 }
+                i++;
             }
         }
     }

@@ -9,7 +9,7 @@ import java.util.Queue;
 
 public class Pioche {
     private Queue<Carte> lCarte = new ArrayDeque<>();
-    private int taille = 71; // Quand trop grand, java.lang.NullPointerException.
+    private int taille = 15; // Quand trop grand, java.lang.NullPointerException.
 
     public Pioche(){
        for (int i = 0; i < taille ; i++) {
