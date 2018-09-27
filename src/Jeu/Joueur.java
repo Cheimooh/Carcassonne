@@ -9,21 +9,15 @@ public class Joueur {
     private int pointsVille;
     private int pointsAbbaye;
     private Carte carteEnMain;
+    public static Pioche p;
+    //couleur
 
 
     public Joueur(){}
 
-    public Joueur (int newId){
+    public Joueur (int newId, Pioche newP){
         this.idJoueur = newId;
-    }
-
-    public void joue (){
-        carteEnMain = pioche();
-    }
-
-    private Carte pioche() {
-        //soucis pour l'accès a la pioche
-        return null;
+        this.p = newP;
     }
 
     public void setNom(String nom) {

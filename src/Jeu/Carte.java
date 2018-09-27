@@ -4,7 +4,7 @@ import javafx.scene.control.Tab;
 
 public class Carte {
     private int identifiant;
-    private int nord, sud, est, ouest;
+    private int nord, sud, est, ouest, x, y;
     private boolean isAbbaye;
 
     public Carte(int valId, int valNord, int valEst, int valSud, int valOuest){
