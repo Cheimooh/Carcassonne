@@ -2,9 +2,12 @@ package Jeu;
 
 import javafx.scene.control.Tab;
 
+import java.awt.*;
+
 public class Carte {
     private int identifiant;
-    private int nord, sud, est, ouest, x, y;
+    private Point nbPosition;
+    private int nord, sud, est, ouest;
     private boolean isAbbaye;
 
     public Carte(int valId, int valNord, int valEst, int valSud, int valOuest){

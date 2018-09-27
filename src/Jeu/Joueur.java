@@ -75,4 +75,25 @@ public class Joueur {
     public void setPointsAbbaye(int pointsAbbaye) {
         this.pointsAbbaye = pointsAbbaye;
     }
+
+    public void joue(){
+        carteEnMain = piocherCarte();
+        System.out.println("Joueur " + idJoueur + " a piocher " + carteEnMain.getIdentifiant() );  // Teste pour voir si ca pioche
+        //poserCarte();
+        //poserPartisant();
+    }
+
+    private Carte piocherCarte(){
+        Carte cartePiocher = p.piocher();
+        return cartePiocher;
+    }
+
+    private void poserCarte() {
+
+    }
+
+    private void poserPartisant() {
+
+    }
+
 }
