@@ -11,19 +11,20 @@ import javafx.stage.Stage;
 
 public class Fenetre extends Application {
 
+    Carcassonne carcassonne;
     Stage fenetre;
     Scene scene;
     Scene scene1;
     Scene scene2;
+    Button btn;
+    Button btn1;
+    Button btn2;
 
-    // Pour tester
-    public static void main(String[] args) {
+    public Fenetre(Carcassonne carcassonne){
         Application.launch(Fenetre.class);
+        this.carcassonne = carcassonne;
     }
 
-    public Fenetre(){
-        //Application.launch(Fenetre.class);
-    }
 
     /*
         Stage = Fenetre
@@ -36,37 +37,20 @@ public class Fenetre extends Application {
     public void start(Stage fenetre) {
         this.fenetre = fenetre;
         this.fenetre.setTitle("Carcassonne");
-        Group group = new Group();
 
-        Button btn = new Button();
+        Group group = new Group();
+        btn = new Button();
         btn.setText("changer Scene 1");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                changerScene(1);
-            }
-        });
         group.getChildren().add(btn);
 
         Group group1 = new Group();
-
-        Button btn1 = new Button();
+        btn1 = new Button();
         btn1.setText("changer Scene 2");
-        btn1.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                changerScene(2);
-            }
-        });
         group1.getChildren().add(btn1);
 
         Group group2 = new Group();
-
-        Button btn2 = new Button();
+        btn2 = new Button();
         btn2.setText("changer Scene Default");
-        btn2.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                changerScene(0);
-            }
-        });
         group2.getChildren().add(btn2);
 
         scene = new Scene(group);
@@ -74,6 +58,12 @@ public class Fenetre extends Application {
         scene2 = new Scene(group2, 100, 100, Color.GREEN);
         this.fenetre.setScene(scene);
         this.fenetre.show();
+    }
+
+    public void setControlButton(EventHandler eventHandler){
+        btn.setOnAction(eventHandler);
+        btn1.setOnAction(eventHandler);
+        btn2.setOnAction(eventHandler);
     }
 
     public void changerScene(int numScene){

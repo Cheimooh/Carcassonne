@@ -1,7 +1,5 @@
 package Jeu;
 
-import javafx.scene.control.Tab;
-
 import java.awt.*;
 
 public class Carte {
@@ -16,6 +14,8 @@ public class Carte {
         this.sud = valSud;
         this.est = valEst;
         this.ouest = valOuest;
+        this.isAbbaye = false;
+        this.nbPosition = new Point(0,0);
     }
 
     public int getIdentifiant() {
@@ -64,5 +64,9 @@ public class Carte {
 
     public void setAbbaye(boolean abbaye) {
         isAbbaye = abbaye;
+    }
+
+    public void placerCarte(int x, int y){
+        nbPosition.move(x, y);
     }
 }
