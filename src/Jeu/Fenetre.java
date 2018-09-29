@@ -20,11 +20,11 @@ public class Fenetre extends Application {
     Button btn1;
     Button btn2;
 
+
     public Fenetre(Carcassonne carcassonne){
-        Application.launch(Fenetre.class);
+        Application.launch(Fenetre.class); // Probleme avec Fenetre.class car il ne trouve pas start()
         this.carcassonne = carcassonne;
     }
-
 
     /*
         Stage = Fenetre
