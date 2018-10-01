@@ -7,9 +7,9 @@ import javafx.scene.control.Button;
 public class ControlButton implements EventHandler {
 
     private Carcassonne carcassonne;
-    private Fenetre fenetre;
+    private Appli fenetre;
 
-    public ControlButton(Carcassonne carcassonne, Fenetre fenetre) {
+    public ControlButton(Carcassonne carcassonne, Appli fenetre) {
         this.carcassonne = carcassonne;
         this.fenetre = fenetre;
         fenetre.setControlButton(this);

@@ -22,7 +22,6 @@ public class Fenetre extends Application {
 
 
     public Fenetre(Carcassonne carcassonne){
-        Application.launch(Fenetre.class); // Probleme avec Fenetre.class car il ne trouve pas start()
         this.carcassonne = carcassonne;
     }
 
@@ -33,7 +32,6 @@ public class Fenetre extends Application {
         1 Scene = 1 Group
      */
 
-    @Override
     public void start(Stage fenetre) {
         this.fenetre = fenetre;
         this.fenetre.setTitle("Carcassonne");
