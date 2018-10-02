@@ -21,7 +21,7 @@ public class Appli extends Application {
     Button btn2;
 
     public static void main(String[] args) {
-        Application.launch(Appli.class);
+        launch();
     }
 
 
@@ -54,10 +54,10 @@ public class Appli extends Application {
         this.fenetre.show();
     }
 
-    public void setControlButton(EventHandler<ActionEvent> eventHandler){
-        btn.setOnAction(eventHandler);
-        btn1.setOnAction(eventHandler);
-        btn2.setOnAction(eventHandler);
+    public void setControlButton(ControlButton controlButton){
+        btn.setOnAction(controlButton);
+        btn1.setOnAction(controlButton);
+        btn2.setOnAction(controlButton);
     }
 
     public void changerScene(int numScene){
