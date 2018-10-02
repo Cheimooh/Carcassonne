@@ -1,6 +1,7 @@
 package Jeu;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -25,10 +26,10 @@ public class Appli extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage){
         carcassonne = new Carcassonne();
         new ControlGroup(carcassonne, this);
-        this.fenetre = fenetre;
+        this.fenetre = primaryStage;
         this.fenetre.setTitle("Carcassonne");
 
         Group group = new Group();
@@ -53,7 +54,7 @@ public class Appli extends Application {
         this.fenetre.show();
     }
 
-    public void setControlButton(EventHandler eventHandler){
+    public void setControlButton(EventHandler<ActionEvent> eventHandler){
         btn.setOnAction(eventHandler);
         btn1.setOnAction(eventHandler);
         btn2.setOnAction(eventHandler);

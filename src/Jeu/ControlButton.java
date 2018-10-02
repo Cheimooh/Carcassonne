@@ -1,10 +1,10 @@
 package Jeu;
 
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
-public class ControlButton implements EventHandler {
+public class ControlButton implements EventHandler<ActionEvent> {
 
     private Carcassonne carcassonne;
     private Appli fenetre;
@@ -16,7 +16,7 @@ public class ControlButton implements EventHandler {
     }
 
     @Override
-    public void handle(Event event) {
+    public void handle(ActionEvent event) {
         Button boutonSource = (Button) event.getSource();
         if(boutonSource == fenetre.btn){
             fenetre.changerScene(1);
