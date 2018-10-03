@@ -1,8 +1,13 @@
 package Jeu;
 
+import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+
 import java.util.ArrayList;
 
-public class Carcassonne {
+public class Carcassonne extends Parent {
 
     private final int NB_CARTES = 10;
     private final int NB_CASES = NB_CARTES*2 -1;
@@ -22,6 +27,16 @@ public class Carcassonne {
     public Carcassonne(){
         initTab();
         p = new Pioche(NB_CARTES);
+        ImageView premiereCarte = new ImageView(new Image("Jeu/prairie.jpg"));
+        premiereCarte.setFitHeight(50);
+        premiereCarte.setFitWidth(50);
+
+        GridPane gridPane = new GridPane();
+        gridPane.add(premiereCarte, 1,0);
+
+        this.getChildren().add(gridPane);
+        this.setTranslateX(350);
+        this.setTranslateY(300);
     }
 
     public int getNbJoueur() {
