@@ -5,7 +5,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Carcassonne extends Parent {
 
@@ -15,12 +18,13 @@ public class Carcassonne extends Parent {
     public static Pioche p;
 
     private int nbJoueur;
-    private int numJoueur; // Lucas: Pour moi c'est inutile car utiliser dans une seule méthode
+    private int numJoueur;
     private Joueur[] tabJoueur;
 
     private int[][] tabIndex; //index avec x, y toutes les cases que l'ont peut prendre sur le plateau
     private int[][] tabDispo; //determine si une case est occupee 2 , peut être occupee 1 ou désactivee 0
 
+    private Map<Point, Carte> pointCarteMap; // Map qui contient pour chaque Point ca Carte
     private ArrayList<Carte> lNodes; //liste qui contient les noeuds (donc les cartes) et qui peut s'etendre
     private ArrayList<Carte[]> lEdges; //liste qui contient un tableau d'arretes représentées par (carte1 et carte2)
 
@@ -73,6 +77,7 @@ public class Carcassonne extends Parent {
 
 
     public void initTab(){
+        pointCarteMap = new HashMap<>();
         lEdges = new ArrayList<>();
         lNodes = new ArrayList<>();
         tabDispo = new int[NB_CASES][NB_CASES];
