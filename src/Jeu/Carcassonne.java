@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Carcassonne extends Parent {
+public class Carcassonne {
 
     private final int NB_CARTES = 10;
     private final int NB_CASES = NB_CARTES*2 -1;
 
     public static Pioche p;
+    public static Fenetre fenetre;
 
     private int nbJoueur;
     private int numJoueur;
@@ -28,19 +29,14 @@ public class Carcassonne extends Parent {
     private ArrayList<Carte> lNodes; //liste qui contient les noeuds (donc les cartes) et qui peut s'etendre
     private ArrayList<Carte[]> lEdges; //liste qui contient un tableau d'arretes représentées par (carte1 et carte2)
 
-    public Carcassonne(){
+    private Carte carteDeBase;
+
+    public Carcassonne(Fenetre fenetre){
         initTab();
         p = new Pioche(NB_CARTES);
-        ImageView premiereCarte = new ImageView(new Image("Jeu/prairie.jpg"));
-        premiereCarte.setFitHeight(50);
-        premiereCarte.setFitWidth(50);
-
-        GridPane gridPane = new GridPane();
-        gridPane.add(premiereCarte, 1,0);
-
-        this.getChildren().add(gridPane);
-        this.setTranslateX(350);
-        this.setTranslateY(300);
+        this.fenetre = fenetre;
+        carteDeBase = new Carte(0,CoteCarte.prairie,CoteCarte.prairie,CoteCarte.prairie,CoteCarte.prairie);
+        fenetre.placerCarte(carteDeBase, carteDeBase.getNbPosition());
     }
 
     public int getNbJoueur() {
