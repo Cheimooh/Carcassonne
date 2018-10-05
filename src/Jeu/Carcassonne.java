@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import javax.lang.model.element.TypeElement;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class Carcassonne {
         initTab();
         p = new Pioche(NB_CARTES);
         this.fenetre = fenetre;
-        carteDeBase = new Carte(0,CoteCarte.prairie,CoteCarte.prairie,CoteCarte.prairie,CoteCarte.prairie);
+        carteDeBase = new Carte(0, TypeCarte.cartePPPP);
         fenetre.placerCarte(carteDeBase, carteDeBase.getNbPosition());
     }
 

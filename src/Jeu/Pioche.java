@@ -14,7 +14,7 @@ public class Pioche {
     public Pioche(int taille){
         this.taille = taille;
         for (int i = 0; i < taille ; i++) {
-            lCarte.add(new Carte(i, CoteCarte.prairie,CoteCarte.prairie,CoteCarte.prairie,CoteCarte.prairie));
+            lCarte.add(new Carte(i, TypeCarte.cartePPPP));
         }
     }
 

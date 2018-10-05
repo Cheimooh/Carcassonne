@@ -8,12 +8,12 @@ public class Carte {
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
 
-    public Carte(int valId, CoteCarte valNord, CoteCarte valEst, CoteCarte valSud, CoteCarte valOuest){
+    public Carte(int valId, TypeCarte typeCarte){
         this.identifiant = valId;
-        this.nord = valNord;
-        this.sud = valSud;
-        this.est = valEst;
-        this.ouest = valOuest;
+        this.nord = typeCarte.getNord();
+        this.sud = typeCarte.getSud();
+        this.est = typeCarte.getEst();
+        this.ouest = typeCarte.getOuest();
         this.isAbbaye = false;
         this.nbPosition = new Point(0,0);
     }
