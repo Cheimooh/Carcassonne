@@ -1,11 +1,5 @@
 package Jeu;
 
-import javafx.scene.Parent;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-
-import javax.lang.model.element.TypeElement;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +32,13 @@ public class Carcassonne {
         this.fenetre = fenetre;
         carteDeBase = new Carte(0, TypeCarte.cartePPPP);
         fenetre.placerCarte(carteDeBase, carteDeBase.getNbPosition());
+        tabDispo[NB_CASES/2][NB_CASES/2]=2;
+        // Cases à côté de la case où se trouve la carte de base
+        tabDispo[(NB_CASES/2)-1][NB_CASES/2]=1;
+        tabDispo[(NB_CASES/2)+1][NB_CASES/2]=1;
+        tabDispo[NB_CASES/2][(NB_CASES/2)-1]=1;
+        tabDispo[NB_CASES/2][(NB_CASES/2)+1]=1;
+        attribuerJoueur(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
     }
 
     public int getNbJoueur() {
@@ -81,23 +82,20 @@ public class Carcassonne {
         tabIndex = new int[NB_CASES][NB_CASES];
         for (int i = 0; i < NB_CASES; i++) {
             for (int j = 0; j < NB_CASES ; j++) {
-                if(i == NB_CASES/2 && j== NB_CASES/2 ){
-                    tabDispo[i][j]=2;
-                }
-                else tabDispo[i][j]=0;
+                tabDispo[i][j]=0;
             }
         }
     }
 
     public void attribuerJoueur(int nbJoueur, String[] nomJoueur){
+        tabJoueur = new Joueur[nbJoueur];
         for (int i = 0; i < nbJoueur ; i++) {
-            tabJoueur[i]= new Joueur(i, p);
+            tabJoueur[i]= new Joueur(i+1, p);
             tabJoueur[i].setNom(nomJoueur[i]);
         }
     }
 
     public void jouer(){
-        //mise en place du plateau et de la première carte
         numJoueur = (int) Math.random()*nbJoueur;
         int i;
         boolean tourFait;
