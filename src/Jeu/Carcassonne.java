@@ -31,6 +31,7 @@ public class Carcassonne {
         p = new Pioche(NB_CARTES);
         this.fenetre = fenetre;
         carteDeBase = new Carte(0, TypeCarte.cartePPPP);
+        carteDeBase.setNbPosition(new Point(2,2));
         fenetre.placerCarte(carteDeBase, carteDeBase.getNbPosition());
         tabDispo[NB_CASES/2][NB_CASES/2]=2;
         // Cases à côté de la case où se trouve la carte de base
