@@ -1,5 +1,7 @@
 package Jeu;
 
+import javafx.scene.layout.GridPane;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ public class Carcassonne {
 
     public static Pioche p;
     public static Fenetre fenetre;
+    private GridPane lastGridPane;
 
     private int nbJoueur;
     private int numJoueur;
@@ -27,12 +30,13 @@ public class Carcassonne {
     private Carte carteDeBase;
 
     public Carcassonne(Fenetre fenetre){
+        lastGridPane = new GridPane();
         initTab();
         p = new Pioche(NB_CARTES);
         this.fenetre = fenetre;
         carteDeBase = new Carte(0, TypeCarte.cartePPPP);
         carteDeBase.setNbPosition(new Point(2,2));
-        fenetre.placerCarte(carteDeBase, carteDeBase.getNbPosition());
+        lastGridPane = fenetre.placerCarte(carteDeBase, carteDeBase.getNbPosition(), lastGridPane);
         tabDispo[NB_CASES/2][NB_CASES/2]=2;
         // Cases à côté de la case où se trouve la carte de base
         tabDispo[(NB_CASES/2)-1][NB_CASES/2]=1;
