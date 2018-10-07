@@ -27,23 +27,21 @@ public class Carcassonne {
     private ArrayList<Carte> lNodes; //liste qui contient les noeuds (donc les cartes) et qui peut s'etendre
     private ArrayList<Carte[]> lEdges; //liste qui contient un tableau d'arretes représentées par (carte1 et carte2)
 
-    private Carte carteDeBase;
 
     public Carcassonne(Fenetre fenetre){
         lastGridPane = new GridPane();
+//        new ControlButton(fenetre, this);
         initTab();
         p = new Pioche(NB_CARTES);
         this.fenetre = fenetre;
-        carteDeBase = new Carte(0, TypeCarte.cartePPPP);
+        Carte carteDeBase = new Carte(0, TypeCarte.cartePPPP);
         carteDeBase.setNbPosition(new Point(NB_CASES/2,NB_CASES/2));
 
-        fenetre.placerCarte(carteDeBase, carteDeBase.getNbPosition());
-        tabDispo[NB_CASES/2][NB_CASES/2]=2;
+        fenetre.placerCarte(carteDeBase);
+
         // Cases à côté de la case où se trouve la carte de base
-        tabDispo[(NB_CASES/2)-1][NB_CASES/2]=1;
-        tabDispo[(NB_CASES/2)+1][NB_CASES/2]=1;
-        tabDispo[NB_CASES/2][(NB_CASES/2)-1]=1;
-        tabDispo[NB_CASES/2][(NB_CASES/2)+1]=1;
+        placerTableCote(NB_CASES/2, NB_CASES/2, carteDeBase);
+
         attribuerJoueur(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
     }
 
@@ -118,5 +116,19 @@ public class Carcassonne {
                 i++;
             }
         }
+    }
+
+    public void placerTableCote(int x, int y, Carte carte){
+        tabDispo[x][y]=2;
+        tabDispo[x-1][y]=1;
+        tabDispo[x+1][y]=1;
+        tabDispo[x][y-1]=1;
+        tabDispo[x][y+1]=1;
+        pointCarteMap.put(new Point(x,y), carte);
+        lNodes.add(carte);
+    }
+
+    public void placerEdgesCarte(Carte carte1, Carte carte2){
+        lEdges.add(new Carte[]{carte1, carte2});
     }
 }
