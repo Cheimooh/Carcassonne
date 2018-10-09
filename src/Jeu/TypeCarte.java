@@ -1,5 +1,7 @@
 package Jeu;
 
+import javafx.scene.image.ImageView;
+
 public enum TypeCarte {
 
     /*  P = Prairie
@@ -8,35 +10,39 @@ public enum TypeCarte {
      *  Les "lieux" sont dans l'ordre nord, est, sud, ouest
      */
 
-    cartePPCC(CoteCarte.prairie, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin),
-    carteVCCP(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.prairie),
-    carteVCCV(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.ville),
-    carteVVCV(CoteCarte.ville, CoteCarte.ville, CoteCarte.chemin, CoteCarte.ville),
-    carteVVPV(CoteCarte.ville, CoteCarte.ville, CoteCarte.prairie, CoteCarte.ville),
-    carteVCCC(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin),
-    carteCPCP(CoteCarte.chemin, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.prairie),
-    cartePCCC(CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin),
-    carteVPPP(CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie, CoteCarte.prairie),
-    carteVVPP(CoteCarte.ville, CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie),
-    cartePPPP(CoteCarte.prairie, CoteCarte.prairie, CoteCarte.prairie, CoteCarte.prairie),
-    cartePPCP(CoteCarte.prairie, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.prairie),
-    carteVPPV(CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie, CoteCarte.ville),
-    cartePVPV(CoteCarte.prairie, CoteCarte.ville, CoteCarte.prairie, CoteCarte.ville),
-    carteVCPC(CoteCarte.ville, CoteCarte.chemin, CoteCarte.prairie, CoteCarte.chemin),
-    carteVPCC(CoteCarte.ville, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin),
-    carteVVVV(CoteCarte.ville, CoteCarte.ville, CoteCarte.ville, CoteCarte.ville),
-    carteCCCC(CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin);
+    cartePPCC(CoteCarte.prairie, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin, new ImageView("Jeu/prairie.jpg")),
+    carteVCCP(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.prairie, new ImageView("Jeu/prairie.jpg")),
+    carteVCCV(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.ville, new ImageView("Jeu/prairie.jpg")),
+    carteVVCV(CoteCarte.ville, CoteCarte.ville, CoteCarte.chemin, CoteCarte.ville, new ImageView("Jeu/prairie.jpg")),
+    carteVVPV(CoteCarte.ville, CoteCarte.ville, CoteCarte.prairie, CoteCarte.ville, new ImageView("Jeu/prairie.jpg")),
+    carteVCCC(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin, new ImageView("Jeu/prairie.jpg")),
+    carteCPCP(CoteCarte.chemin, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.prairie, new ImageView("Jeu/prairie.jpg")),
+    cartePCCC(CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin, new ImageView("Jeu/prairie.jpg")),
+    carteVPPP(CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie, CoteCarte.prairie, new ImageView("Jeu/prairie.jpg")),
+    carteVVPP(CoteCarte.ville, CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie, new ImageView("Jeu/prairie.jpg")),
+    cartePPPP(CoteCarte.prairie, CoteCarte.prairie, CoteCarte.prairie, CoteCarte.prairie, new ImageView("Jeu/prairie.jpg")),
+    cartePPCP(CoteCarte.prairie, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.prairie, new ImageView("Jeu/prairie.jpg")),
+    carteVPPV(CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie, CoteCarte.ville, new ImageView("Jeu/prairie.jpg")),
+    cartePVPV(CoteCarte.prairie, CoteCarte.ville, CoteCarte.prairie, CoteCarte.ville, new ImageView("Jeu/prairie.jpg")),
+    carteVCPC(CoteCarte.ville, CoteCarte.chemin, CoteCarte.prairie, CoteCarte.chemin, new ImageView("Jeu/prairie.jpg")),
+    carteVPCC(CoteCarte.ville, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin, new ImageView("Jeu/prairie.jpg")),
+    carteVVVV(CoteCarte.ville, CoteCarte.ville, CoteCarte.ville, CoteCarte.ville, new ImageView("Jeu/prairie.jpg")),
+    carteCCCC(CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin, new ImageView("Jeu/prairie.jpg"));
 
     private CoteCarte nord;
     private CoteCarte est;
     private CoteCarte sud;
     private CoteCarte ouest;
+    private ImageView img;
 
-    TypeCarte(CoteCarte nord, CoteCarte est, CoteCarte sud, CoteCarte ouest) {
+    TypeCarte(CoteCarte nord, CoteCarte est, CoteCarte sud, CoteCarte ouest, ImageView imageView) {
         this.nord=nord;
         this.est=est;
         this.sud=sud;
         this.ouest=ouest;
+        this.img=imageView;
+        img.setFitHeight(50);
+        img.setFitWidth(50);
     }
 
     public CoteCarte getNord() { return nord; }
@@ -46,4 +52,6 @@ public enum TypeCarte {
     public CoteCarte getSud() { return sud; }
 
     public CoteCarte getOuest() { return ouest; }
+
+    public ImageView getImg() { return img; }
 }

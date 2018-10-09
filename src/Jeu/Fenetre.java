@@ -7,48 +7,81 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import java.awt.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 public class Fenetre extends Parent {
 
     private static Bouton bouton;
     private static GridPane gridPane;
-    Button[] tabButton;
+    private ArrayDeque <Button> pBouton;
+    private ImageView image;
+    private ControlButton controlButton;
+    private ArrayList <Point> lDispo;
+    private ArrayList <Point> lOccupee;
+    private Point p; //point temporaire qui permet de tester si lDispo contient ce point
+
 
     public Fenetre(){
         gridPane = new GridPane();
         bouton = new Bouton(gridPane);
+        lDispo = new ArrayList<>();
+        lOccupee = new ArrayList<>();
+        pBouton = new ArrayDeque<>();
     }
 
     public void placerCarte(Carte carte){
-        tabButton = new Button[]{bouton.createBouton(), bouton.createBouton(), bouton.createBouton(), bouton.createBouton()};
-        new ControlButton(this);
-        ImageView premiereCarte = new ImageView("Jeu/prairie.jpg"); // A modifier, toutes les cartes ne sont pas des prairies :)
-        premiereCarte.setFitHeight(50);
-        premiereCarte.setFitWidth(50);
+        lOccupee.add(carte.getPosition());
+        image = carte.getDraw().img;
+        int x = (int) carte.getPosition().getX();
+        int y = (int) carte.getPosition().getY();
 
-        int x = (int) carte.getNbPosition().getX();
-        int y = (int) carte.getNbPosition().getY();
-        Button button = new Button("", premiereCarte);
+        //bloc de test pour tester les listes
+        p = new Point(x+1,y);
+        if ( !lDispo.contains(p)) {
+            lDispo.add(new Point(x+1, y));
+            pBouton.addLast(bouton.createBouton());
+            gridPane.add(pBouton.getLast(),x+1,y);
+        }
+        p = new Point(x-1,y);
+        if ( !lDispo.contains(p)) {
+            lDispo.add(new Point(x-1, y));
+            pBouton.addLast(bouton.createBouton());
+            gridPane.add(pBouton.getLast(),x-1,y);
+        }
+        p = new Point(x,y+1);
+        if ( !lDispo.contains(p)) {
+            lDispo.add(new Point(x, y+1));
+            pBouton.addLast(bouton.createBouton());
+            gridPane.add(pBouton.getLast(),x,y+1);
+        }
+        p = new Point(x,y-1);
+        if ( !lDispo.contains(p)) {
+            lDispo.add(new Point(x, y-1));
+            pBouton.addLast(bouton.createBouton());
+            gridPane.add(pBouton.getLast(),x,y-1);
+        }
+        if (lDispo.contains(carte.getPosition())){
+            lDispo.remove(carte.getPosition());
+        }
+
+        Button button = new Button("", image);
         button.setDisable(true);
 
-        gridPane.add(button, x,y);
+        controlButton = new ControlButton(this);
 
-        gridPane.add(tabButton[0],x,y+1);
-        gridPane.add(tabButton[1],x-1,y);
-        gridPane.add(tabButton[2],x+1,y);
-        gridPane.add(tabButton[3],x,y-1);
+        gridPane.add(button, x,y);
 
         this.getChildren().add(gridPane);
         this.setTranslateX(50*x);
         this.setTranslateY(50*y);
-        // Voir taille fenetre, je met l'image dans le coin en haut à gauche pour le moment
-
     }
 
     public void setControlButton(EventHandler<ActionEvent> eventEventHandler){
-        for (int i = 0; i < tabButton.length; i++) {
-            tabButton[i].setOnAction(eventEventHandler);
+        for (Button b:pBouton) {
+            b.setOnAction(eventEventHandler);
         }
     }
 
+    public ImageView getImage() { return image; }
 }
