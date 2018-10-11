@@ -4,11 +4,11 @@ package Jeu;
 //souris recupère une ccordonnée dans la zone visible, mais il faut recuperer les coordonnée de la zone sur la map
 //penser a linvisible : translation
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -18,7 +18,7 @@ public class Fenetre extends Parent {
 
     private static Bouton bouton;
     private static GridPane gridPane;
-    private ArrayDeque <Button> pBouton;
+    private ArrayDeque <ImageView> pBouton;
     private ImageView image;
     private ControlButton controlButton;
     private ArrayList <Point> lDispo;
@@ -28,6 +28,9 @@ public class Fenetre extends Parent {
 
     public Fenetre(){
         gridPane = new GridPane();
+        gridPane.setMaxSize(71*71, 71*71);
+        gridPane.setMinSize(71*71, 71*71);
+        gridPane.setOnMouseClicked(new ControlMouse(this, gridPane));
         bouton = new Bouton(gridPane);
         lDispo = new ArrayList<>();
         lOccupee = new ArrayList<>();
@@ -69,23 +72,19 @@ public class Fenetre extends Parent {
             lDispo.remove(carte.getPosition());
         }
 
-        Button button = new Button("", image);
-        button.setDisable(true);
 
         controlButton = new ControlButton(this);
 
-        gridPane.add(button, x,y);
+        gridPane.add(image, x,y);
 
         this.getChildren().add(gridPane);
         this.setTranslateX(50*x);
         this.setTranslateY(50*y);
     }
 
-    public void setControlButton(EventHandler<ActionEvent> eventEventHandler){
-        for (Button b:pBouton) {
-            b.setOnAction(eventEventHandler);
-        }
-    }
-
     public ImageView getImage() { return image; }
+
+    public static GridPane getGridPane() {
+        return gridPane;
+    }
 }

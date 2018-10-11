@@ -14,15 +14,11 @@ public class Bouton {
         this.gridPane = gridPane;
     }
 
-    Button createBouton() {
+    ImageView createBouton() {
         ImageView imageView = new ImageView("Jeu/plus.png");
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
 
-        Button button = new Button("", imageView);
-
-        button.setMaxSize(50,50);
-
-        return button;
+        return imageView;
     }
 }

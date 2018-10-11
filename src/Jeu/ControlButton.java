@@ -11,7 +11,7 @@ public class ControlButton implements EventHandler<ActionEvent> {
 
     public ControlButton(Fenetre fenetre) {
         this.fenetre = fenetre;
-        fenetre.setControlButton(this);
+        //fenetre.setControlButton(this);
     }
 
     @Override
