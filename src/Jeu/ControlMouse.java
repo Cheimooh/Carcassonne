@@ -8,11 +8,12 @@ import javafx.scene.layout.GridPane;
 public class ControlMouse implements EventHandler<MouseEvent> {
 
     private Fenetre fenetre;
-    private static GridPane gridPane;
+    private GridPane gridPane;
+    private Carte carteEnMain;
 
     public ControlMouse(Fenetre fenetre, GridPane gridPane){
         this.fenetre = fenetre;
-        this.gridPane = gridPane;
+        this.gridPane=fenetre.getGridPane();
     }
 
     @Override
@@ -20,10 +21,17 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         System.out.println("x: " + event.getX());
         System.out.println("y: " + event.getY());
         if((event.getX()>=102 && event.getX()<=146) && (event.getY()>=51 && event.getY()<=90)){
-            ImageView imageView = new ImageView("Jeu/prairie.jpg");
+            ImageView imageView = carteEnMain.getDraw().img;
             imageView.setFitHeight(50);
             imageView.setFitWidth(50);
-            gridPane.add(imageView, 1,1);
+            GridPane gridPane2 = new GridPane();
+            gridPane2.add(imageView, 1,1);
+            gridPane.getChildren().add(gridPane2);
+            fenetre.setGridPane(gridPane2);
         }
+    }
+
+    public void setCarteEnMain(Carte carteEnMain) {
+        this.carteEnMain = carteEnMain;
     }
 }

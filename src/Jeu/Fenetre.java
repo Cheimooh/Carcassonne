@@ -16,21 +16,23 @@ import java.util.ArrayList;
 
 public class Fenetre extends Parent {
 
-    private static Bouton bouton;
-    private static GridPane gridPane;
+    public static Bouton bouton;
+    public GridPane gridPane;
     private ArrayDeque <ImageView> pBouton;
     private ImageView image;
     private ControlButton controlButton;
     private ArrayList <Point> lDispo;
     private ArrayList <Point> lOccupee;
     private Point p; //point temporaire qui permet de tester si lDispo contient ce point
+    private ControlMouse controlMouse;
 
 
     public Fenetre(){
         gridPane = new GridPane();
         gridPane.setMaxSize(71*71, 71*71);
         gridPane.setMinSize(71*71, 71*71);
-        gridPane.setOnMouseClicked(new ControlMouse(this, gridPane));
+        controlMouse = new ControlMouse(this, gridPane);
+        gridPane.setOnMouseClicked(controlMouse);
         bouton = new Bouton(gridPane);
         lDispo = new ArrayList<>();
         lOccupee = new ArrayList<>();
@@ -38,6 +40,7 @@ public class Fenetre extends Parent {
     }
 
     public void placerCarte(Carte carte){
+        controlMouse.setCarteEnMain(carte);
         lOccupee.add(carte.getPosition());
         image = carte.getDraw().img;
         int x = (int) carte.getPosition().getX();
@@ -84,7 +87,11 @@ public class Fenetre extends Parent {
 
     public ImageView getImage() { return image; }
 
-    public static GridPane getGridPane() {
+    public GridPane getGridPane() {
         return gridPane;
+    }
+
+    public void setGridPane(GridPane gridPane) {
+        this.gridPane = gridPane;
     }
 }
