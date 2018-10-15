@@ -8,16 +8,14 @@ import javafx.stage.Stage;
 
 public class Appli extends Application {
 
-    private Carcassonne carcassonne;
     public static Fenetre fenetre;
 
     @Override
     public void start(Stage primaryStage){
         primaryStage.setTitle("Carcassonne");
         Group root = new Group();
-        fenetre = new Fenetre();
+        fenetre = new Fenetre(new Carcassonne());
         root.getChildren().add(fenetre);
-        carcassonne = new Carcassonne(fenetre);
         primaryStage.setScene(new Scene(root, 800, 650, Color.LIGHTGREY));
         primaryStage.show();
     }

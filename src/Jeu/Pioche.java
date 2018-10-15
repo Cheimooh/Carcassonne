@@ -10,7 +10,7 @@ public class Pioche {
     public Pioche(int taille){
         this.taille = taille;
         for (int i = 0; i < taille ; i++) {
-            lCarte.add(new Carte(i, TypeCarte.cartePPPP));
+            lCarte.add(new Carte(TypeCarte.cartePPPP));
         }
     }
 

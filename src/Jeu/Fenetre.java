@@ -4,11 +4,8 @@ package Jeu;
 //souris recupère une ccordonnée dans la zone visible, mais il faut recuperer les coordonnée de la zone sur la map
 //penser a linvisible : translation
 
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -16,27 +13,29 @@ import java.util.ArrayList;
 
 public class Fenetre extends Parent {
 
-    public static Bouton bouton;
+    public static PlaceDispo placeDispo;
     public GridPane gridPane;
-    private ArrayDeque <ImageView> pBouton;
+    private ArrayDeque <ImageView> queueImage;
     private ImageView image;
     private ControlButton controlButton;
     private ArrayList <Point> lDispo;
     private ArrayList <Point> lOccupee;
-    private Point p; //point temporaire qui permet de tester si lDispo contient ce point
     private ControlMouse controlMouse;
+    private Carcassonne carcassonne;
 
-
-    public Fenetre(){
+    public Fenetre(Carcassonne newCarcassonne){
+        carcassonne = newCarcassonne;
         gridPane = new GridPane();
-        gridPane.setMaxSize(71*71, 71*71);
-        gridPane.setMinSize(71*71, 71*71);
+        int nbCases = carcassonne.getNB_CASES();
+        gridPane.setMaxSize(nbCases, nbCases);
+        gridPane.setMinSize(nbCases,nbCases);
         controlMouse = new ControlMouse(this, gridPane);
         gridPane.setOnMouseClicked(controlMouse);
-        bouton = new Bouton(gridPane);
+        placeDispo = new PlaceDispo();
         lDispo = new ArrayList<>();
         lOccupee = new ArrayList<>();
-        pBouton = new ArrayDeque<>();
+        queueImage = new ArrayDeque<>();
+        placerCarte(carcassonne.getCarteDeBase());
     }
 
     public void placerCarte(Carte carte){
@@ -47,36 +46,19 @@ public class Fenetre extends Parent {
         int y = (int) carte.getPosition().getY();
 
         //bloc de test pour tester les listes
-        p = new Point(x+1,y);
-        if ( !lDispo.contains(p)) {
-            lDispo.add(new Point(x+1, y));
-            pBouton.addLast(bouton.createBouton());
-            gridPane.add(pBouton.getLast(),x+1,y);
-        }
-        p = new Point(x-1,y);
-        if ( !lDispo.contains(p)) {
-            lDispo.add(new Point(x-1, y));
-            pBouton.addLast(bouton.createBouton());
-            gridPane.add(pBouton.getLast(),x-1,y);
-        }
-        p = new Point(x,y+1);
-        if ( !lDispo.contains(p)) {
-            lDispo.add(new Point(x, y+1));
-            pBouton.addLast(bouton.createBouton());
-            gridPane.add(pBouton.getLast(),x,y+1);
-        }
-        p = new Point(x,y-1);
-        if ( !lDispo.contains(p)) {
-            lDispo.add(new Point(x, y-1));
-            pBouton.addLast(bouton.createBouton());
-            gridPane.add(pBouton.getLast(),x,y-1);
-        }
-        if (lDispo.contains(carte.getPosition())){
-            lDispo.remove(carte.getPosition());
-        }
+        Point p = new Point(x+1,y);
+        testLDispo(p);
 
+        p.setLocation(x-1,y);
+        testLDispo(p);
 
-        controlButton = new ControlButton(this);
+        p.setLocation(x,y+1);
+        testLDispo(p);
+
+        p.setLocation(x,y-1);
+        testLDispo(p);
+
+        if (lDispo.contains(carte.getPosition())){ lDispo.remove(carte.getPosition()); }
 
         gridPane.add(image, x,y);
 
@@ -94,4 +76,13 @@ public class Fenetre extends Parent {
     public void setGridPane(GridPane gridPane) {
         this.gridPane = gridPane;
     }
+
+    public void testLDispo(Point p){
+        if ( !lDispo.contains(p)) {
+            lDispo.add(new Point((int)p.getX(), (int)p.getY()));
+            queueImage.addLast(placeDispo.createPlaceDispo());
+            gridPane.add(queueImage.getLast(),(int)p.getX(), (int)p.getY());
+        }
+    }
+
 }
