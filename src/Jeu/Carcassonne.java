@@ -27,6 +27,10 @@ public class Carcassonne {
         p = new Pioche(NB_CARTES);
         carteDeBase = new Carte(TypeCarte.cartePPPP);
         carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
+        listPointDispo.add(new Point(NB_CASES/2+1,NB_CASES/2));
+        listPointDispo.add(new Point(NB_CASES/2-1,NB_CASES/2));
+        listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2+1));
+        listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2-1));
 
         // Cases à côté de la case où se trouve la carte de base
         pointCarteMap.put(new Point(NB_CASES/2,NB_CASES/2), carteDeBase);

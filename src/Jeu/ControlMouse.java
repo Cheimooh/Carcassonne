@@ -25,7 +25,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             imageView.setFitHeight(50);
             imageView.setFitWidth(50);
             GridPane gridPane2 = new GridPane();
-            gridPane2.add(imageView, (int)carteEnMain.getPosition().getX(),(int)carteEnMain.getPosition().getY());
+            gridPane2.add(imageView, (int)carteEnMain.getPosition().getX()+1,(int)carteEnMain.getPosition().getY());
             gridPane.getChildren().add(gridPane2);
             fenetre.setGridPane(gridPane);
         }
