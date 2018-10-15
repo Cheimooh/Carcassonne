@@ -29,7 +29,7 @@ public class Fenetre extends Parent {
         int nbCases = carcassonne.getNB_CASES();
         gridPane.setMaxSize(nbCases, nbCases);
         gridPane.setMinSize(nbCases,nbCases);
-        controlMouse = new ControlMouse(this, gridPane);
+        controlMouse = new ControlMouse(this);
         gridPane.setOnMouseClicked(controlMouse);
         placeDispo = new PlaceDispo();
         lDispo = new ArrayList<>();
@@ -71,6 +71,10 @@ public class Fenetre extends Parent {
 
     public GridPane getGridPane() {
         return gridPane;
+    }
+
+    public Carcassonne getCarcassonne() {
+        return carcassonne;
     }
 
     public void setGridPane(GridPane gridPane) {

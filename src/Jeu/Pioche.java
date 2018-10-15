@@ -18,10 +18,6 @@ public class Pioche {
         return lCarte;
     }
 
-    public void setPioche(Queue<Carte> lCarte) {
-        this.lCarte = lCarte;
-    }
-
     public int getTaille() {
         return taille;
     }

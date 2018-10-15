@@ -1,6 +1,7 @@
 package Jeu;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +17,13 @@ public class Carcassonne {
     private Joueur[] tabJoueur;
 
     private Map<Point, Carte> pointCarteMap; // Map qui contient pour chaque point sa Carte
+    private ArrayList<Point> listPointDispo;
 
     private Carte carteDeBase;
 
     public Carcassonne(){
         pointCarteMap = new HashMap<>();
+        listPointDispo = new ArrayList<>();
         p = new Pioche(NB_CARTES);
         carteDeBase = new Carte(TypeCarte.cartePPPP);
         carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
