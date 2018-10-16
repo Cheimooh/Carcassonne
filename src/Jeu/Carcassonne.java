@@ -21,6 +21,8 @@ public class Carcassonne {
 
     private Carte carteDeBase;
 
+    private boolean aJouer = false;
+
     public Carcassonne(){
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
@@ -48,15 +50,20 @@ public class Carcassonne {
     }
 
     public void jouer(){
-        numJoueur = (int) Math.random()*nbJoueur;
+        numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
         int i;
         boolean tourFait;
         while (p.getTaille() > 0){
             i=0;
             tourFait = false;
-            while(!tourFait ){
+            while(!tourFait || i<tabJoueur.length){
                 if (tabJoueur[i].getIdJoueur() == numJoueur){
                     tabJoueur[i].joue();
+                    while(!aJouer){
+                        System.out.println("test dans while Jouer");
+                        continue;
+                    }
+                    aJouer = false;
                     numJoueur++;
                     numJoueur = numJoueur %nbJoueur;
                     tourFait = true;
@@ -69,4 +76,8 @@ public class Carcassonne {
     public Carte getCarteDeBase() { return carteDeBase; }
 
     public int getNB_CASES() { return NB_CASES; }
+
+    public void setaJouer(boolean aJouer) {
+        this.aJouer = aJouer;
+    }
 }

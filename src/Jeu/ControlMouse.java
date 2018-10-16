@@ -16,13 +16,12 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-//        System.out.println("x: " + event.getX()); // De gauche a droite
-//        System.out.println("y: " + event.getY()); // De haut en bas
         int x = (int)event.getX()/50;
         int y = (int)event.getY()/50;
         if(carteColler(x, y)) {
             carteEnMain.setPosition(new Point(x, y));
             fenetre.placerCarte(carteEnMain);
+            fenetre.getCarcassonne().setaJouer(true);
         }
         else{
             System.out.println("ERREUR: CLIQUEZ SUR UNE CROIX !!!!!!!!!!!!!!!");

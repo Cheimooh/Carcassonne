@@ -44,6 +44,10 @@ public class Fenetre extends Parent {
         return lOccupee;
     }
 
+    public Carcassonne getCarcassonne() {
+        return carcassonne;
+    }
+
     public void placerCarte(Carte carte){
         controlMouse.setCarteEnMain(carte);
         lOccupee.add(carte.getPosition());
