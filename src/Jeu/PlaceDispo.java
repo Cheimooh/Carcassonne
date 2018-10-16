@@ -1,13 +1,11 @@
 package Jeu;
 
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
 public class PlaceDispo {
 
-    ImageView createPlaceDispo() {
-        ImageView imageView = new ImageView("Jeu/plus.png");
-        imageView.setFitHeight(50);
-        imageView.setFitWidth(50);
+    Image createPlaceDispo() {
+        Image imageView = new Image("Jeu/plus.png");
 
         return imageView;
     }

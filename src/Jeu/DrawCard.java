@@ -1,10 +1,11 @@
 package Jeu;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class DrawCard {
-    ImageView img;
+    Image img;
 
-    public DrawCard(ImageView newImg){ this.img = newImg; }
+    public DrawCard(Image newImg){ this.img = newImg; }
 
 }

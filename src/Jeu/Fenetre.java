@@ -5,6 +5,9 @@ package Jeu;
 //penser a linvisible : translation
 
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -15,8 +18,8 @@ import java.util.ArrayList;
 public class Fenetre extends Parent {
 
     public static PlaceDispo placeDispo;
-    public GridPane gridPane;
-    private ArrayDeque <ImageView> queueImage;
+    private GraphicsContext graphicsContext;
+    private ArrayDeque <Image> queueImage;
     private ControlButton controlButton;
     private ArrayList <Point> lDispo;
     private ArrayList <Point> lOccupee;
@@ -25,23 +28,22 @@ public class Fenetre extends Parent {
 
     public Fenetre(Carcassonne newCarcassonne){
         carcassonne = newCarcassonne;
-        gridPane = new GridPane();
-        int nbCases = carcassonne.getNB_CASES();
-        gridPane.setMaxSize(nbCases, nbCases);
-        gridPane.setMinSize(nbCases,nbCases);
+        Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
         controlMouse = new ControlMouse(this);
-        gridPane.setOnMouseClicked(controlMouse);
+        canvas.setOnMouseClicked(controlMouse);
+        graphicsContext = canvas.getGraphicsContext2D();
         placeDispo = new PlaceDispo();
         lDispo = new ArrayList<>();
         lOccupee = new ArrayList<>();
         queueImage = new ArrayDeque<>();
         placerCarte(carcassonne.getCarteDeBase());
+        this.getChildren().add(canvas);
     }
 
     public void placerCarte(Carte carte){
         controlMouse.setCarteEnMain(carte);
         lOccupee.add(carte.getPosition());
-        ImageView image = carte.getDraw().img;
+        Image image = carte.getDraw().img;
         int x = (int) carte.getPosition().getX();
         int y = (int) carte.getPosition().getY();
 
@@ -60,18 +62,14 @@ public class Fenetre extends Parent {
 
         if (lDispo.contains(carte.getPosition())){ lDispo.remove(carte.getPosition()); }
 
-        gridPane.add(image, x,y);
-
-        this.getChildren().add(gridPane);
-        this.setTranslateX(50*x);
-        this.setTranslateY(50*y);
+        graphicsContext.drawImage(image, x*50,y*50, 50, 50);
     }
 
     public void testLDispo(Point p){
         if ( !lDispo.contains(p)) {
             lDispo.add(new Point((int)p.getX(), (int)p.getY()));
             queueImage.addLast(placeDispo.createPlaceDispo());
-            gridPane.add(queueImage.getLast(),(int)p.getX(), (int)p.getY());
+            graphicsContext.drawImage(queueImage.getLast(),(int)p.getX()*50, (int)p.getY()*50, 50, 50);
         }
     }
 }
