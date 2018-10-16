@@ -40,6 +40,10 @@ public class Fenetre extends Parent {
         this.getChildren().add(canvas);
     }
 
+    public ArrayList<Point> getlOccupee() {
+        return lOccupee;
+    }
+
     public void placerCarte(Carte carte){
         controlMouse.setCarteEnMain(carte);
         lOccupee.add(carte.getPosition());
@@ -66,7 +70,7 @@ public class Fenetre extends Parent {
     }
 
     public void testLDispo(Point p){
-        if ( !lDispo.contains(p)) {
+        if ( !lDispo.contains(p) && !lOccupee.contains(p)) {
             lDispo.add(new Point((int)p.getX(), (int)p.getY()));
             queueImage.addLast(placeDispo.createPlaceDispo());
             graphicsContext.drawImage(queueImage.getLast(),(int)p.getX()*50, (int)p.getY()*50, 50, 50);
