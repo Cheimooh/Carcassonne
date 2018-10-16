@@ -17,8 +17,6 @@ public class ControlButton implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
         Button button = (Button) event.getSource();
-        ImageView imageView = fenetre.getImage();
-        button.setGraphic(imageView);
         button.setDisable(true);
     }
 }

@@ -6,6 +6,7 @@ package Jeu;
 
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -16,7 +17,6 @@ public class Fenetre extends Parent {
     public static PlaceDispo placeDispo;
     public GridPane gridPane;
     private ArrayDeque <ImageView> queueImage;
-    private ImageView image;
     private ControlButton controlButton;
     private ArrayList <Point> lDispo;
     private ArrayList <Point> lOccupee;
@@ -41,7 +41,7 @@ public class Fenetre extends Parent {
     public void placerCarte(Carte carte){
         controlMouse.setCarteEnMain(carte);
         lOccupee.add(carte.getPosition());
-        image = carte.getDraw().img;
+        ImageView image = carte.getDraw().img;
         int x = (int) carte.getPosition().getX();
         int y = (int) carte.getPosition().getY();
 
@@ -67,20 +67,6 @@ public class Fenetre extends Parent {
         this.setTranslateY(50*y);
     }
 
-    public ImageView getImage() { return image; }
-
-    public GridPane getGridPane() {
-        return gridPane;
-    }
-
-    public Carcassonne getCarcassonne() {
-        return carcassonne;
-    }
-
-    public void setGridPane(GridPane gridPane) {
-        this.gridPane = gridPane;
-    }
-
     public void testLDispo(Point p){
         if ( !lDispo.contains(p)) {
             lDispo.add(new Point((int)p.getX(), (int)p.getY()));
@@ -88,5 +74,4 @@ public class Fenetre extends Parent {
             gridPane.add(queueImage.getLast(),(int)p.getX(), (int)p.getY());
         }
     }
-
 }
