@@ -38,6 +38,7 @@ public class Carcassonne {
         pointCarteMap.put(new Point(NB_CASES/2,NB_CASES/2), carteDeBase);
 
         attribuerJoueur(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
+        jouer();
     }
 
     public void attribuerJoueur(int newNbJoueur, String[] nomJoueur){
@@ -47,30 +48,22 @@ public class Carcassonne {
             tabJoueur[i]= new Joueur(i+1, p);
             tabJoueur[i].setNom(nomJoueur[i]);
         }
+        numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
     }
 
     public void jouer(){
-        numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
-        int i;
-        boolean tourFait;
-        while (p.getTaille() > 0){
-            i=0;
-            tourFait = false;
-            while(!tourFait || i<tabJoueur.length){
-                if (tabJoueur[i].getIdJoueur() == numJoueur){
-                    tabJoueur[i].joue();
-                    while(!aJouer){
-                        System.out.println("test dans while Jouer");
-                        continue;
-                    }
-                    aJouer = false;
-                    numJoueur++;
-                    numJoueur = numJoueur %nbJoueur;
-                    tourFait = true;
-                }
-                i++;
+        System.out.println("test Jouer");
+        for (int i = 0; i < tabJoueur.length; i++) {
+            if (tabJoueur[i].getIdJoueur() == numJoueur){
+                tabJoueur[i].joue();
             }
         }
+    }
+
+    public void joueurSuivant(){
+        numJoueur++;
+        numJoueur = numJoueur %nbJoueur +1;
+        jouer();
     }
 
     public Carte getCarteDeBase() { return carteDeBase; }
@@ -79,5 +72,17 @@ public class Carcassonne {
 
     public void setaJouer(boolean aJouer) {
         this.aJouer = aJouer;
+    }
+
+    public Joueur[] getTabJoueur() {
+        return tabJoueur;
+    }
+
+    public int getNumJoueur() {
+        return numJoueur;
+    }
+
+    public static Pioche getP() {
+        return p;
     }
 }

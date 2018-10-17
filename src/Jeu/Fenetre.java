@@ -8,9 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -49,7 +47,6 @@ public class Fenetre extends Parent {
     }
 
     public void placerCarte(Carte carte){
-        controlMouse.setCarteEnMain(carte);
         lOccupee.add(carte.getPosition());
         Image image = carte.getDraw().img;
         int x = (int) carte.getPosition().getX();
@@ -76,7 +73,7 @@ public class Fenetre extends Parent {
     public void testLDispo(Point p){
         if ( !lDispo.contains(p) && !lOccupee.contains(p)) {
             lDispo.add(new Point((int)p.getX(), (int)p.getY()));
-            queueImage.addLast(placeDispo.createPlaceDispo());
+            queueImage.addLast(placeDispo.getImagePlus());
             graphicsContext.drawImage(queueImage.getLast(),(int)p.getX()*50, (int)p.getY()*50, 50, 50);
         }
     }

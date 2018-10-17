@@ -19,7 +19,7 @@ public class Joueur {
 
     public void joue(){
         carteEnMain = piocherCarte();
-        //System.out.println("Joueur " + idJoueur + " a piocher la carte n°" + carteEnMain.getIdentifiant() );  // Teste pour voir si ca pioche
+        System.out.println(carteEnMain);
         //poserCarte();
         //poserPartisant();
     }
@@ -42,4 +42,8 @@ public class Joueur {
     }
 
     private void poserPartisant() { }
+
+    public Carte getCarteEnMain() {
+        return carteEnMain;
+    }
 }
