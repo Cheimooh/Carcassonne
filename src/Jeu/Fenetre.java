@@ -3,6 +3,7 @@ package Jeu;
 //detection de la posisition de la souris.
 //souris recupère une ccordonnée dans la zone visible, mais il faut recuperer les coordonnée de la zone sur la map
 //penser a linvisible : translation
+//
 
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;

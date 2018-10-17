@@ -5,6 +5,8 @@ import javafx.scene.input.MouseEvent;
 
 import java.awt.*;
 
+//
+
 public class ControlMouse implements EventHandler<MouseEvent> {
 
     private Fenetre fenetre;
