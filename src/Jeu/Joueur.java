@@ -19,7 +19,6 @@ public class Joueur {
 
     public void joue(){
         carteEnMain = piocherCarte();
-        System.out.println(carteEnMain);
         //poserCarte();
         //poserPartisant();
     }

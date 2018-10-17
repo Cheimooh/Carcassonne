@@ -16,20 +16,20 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-        if(fenetre.getCarcassonne().getNumJoueur())
-        System.out.println(fenetre.getCarcassonne().getNumJoueur());
-        setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur()-1].getCarteEnMain());
-        System.out.println(carteEnMain);
-        int x = (int)event.getX()/50;
-        int y = (int)event.getY()/50;
-        if(carteAdjacent(x, y)) {
-            carteEnMain.setPosition(new Point(x, y));
-            fenetre.placerCarte(carteEnMain);
-            fenetre.getCarcassonne().joueurSuivant();
+        if(fenetre.getCarcassonne().getP().getTaille()>=0) {
+            setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
+            int x = (int) event.getX() / 50;
+            int y = (int) event.getY() / 50;
+            if (carteAdjacent(x, y)) {
+                carteEnMain.setPosition(new Point(x, y));
+                fenetre.placerCarte(carteEnMain);
+                fenetre.getCarcassonne().joueurSuivant();
+            } else {
+                System.out.println("ERREUR: CLIQUEZ SUR UNE CROIX !!!!!!!!!!!!!!!");
+            }
         }
-        else{
-            System.out.println("ERREUR: CLIQUEZ SUR UNE CROIX !!!!!!!!!!!!!!!");
-        }
+        else
+            System.out.println("Plus de carte");
     }
 
     public void setCarteEnMain(Carte carteEnMain) {

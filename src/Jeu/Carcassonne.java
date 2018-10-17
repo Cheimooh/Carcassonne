@@ -52,7 +52,6 @@ public class Carcassonne {
     }
 
     public void jouer(){
-        System.out.println("test Jouer");
         for (int i = 0; i < tabJoueur.length; i++) {
             if (tabJoueur[i].getIdJoueur() == numJoueur){
                 tabJoueur[i].joue();
@@ -62,7 +61,10 @@ public class Carcassonne {
 
     public void joueurSuivant(){
         numJoueur++;
-        numJoueur = numJoueur %nbJoueur +1;
+        numJoueur = numJoueur %(nbJoueur+1);
+        if(numJoueur == 0){
+            numJoueur++;
+        }
         jouer();
     }
 
