@@ -27,8 +27,8 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 System.out.println("ERREUR: Une carte est déjà placée à cet endroit");
             } else if (carteAdjacent(x, y)) {
                 carteEnMain.setPosition(new Point(x, y));
-                fenetre.placerCarte(carteEnMain);
                 fenetre.getCarcassonne().joueurSuivant();
+                fenetre.placerCarte(carteEnMain);
             } else {
                 System.out.println("ERREUR: CLIQUEZ SUR UNE CROIX !!!!!!!!!!!!!!!");
             }

@@ -90,12 +90,18 @@ public class Fenetre extends Parent {
         graphicsContextInfos.clearRect(0,0,1000,100);
         drawLigneSeparatrice();
 
-        graphicsContextInfos.drawImage(carcassonne.getP().getProchaineCarte().getDraw().img, 500,20,50,50);
+        String s;
 
-        int numJoueur = carcassonne.getNumJoueur();
-        String s="Joueur " + numJoueur;
-        s+= " : "+carcassonne.getTabJoueur()[numJoueur-1].getNom();
+        if(carcassonne.getP().getTaille()<=0){
+            s = "Fin de partie";
+        }
+        else {
+            graphicsContextInfos.drawImage(carcassonne.getP().getProchaineCarte().getDraw().img, 500, 20, 50, 50);
 
+            int numJoueur = carcassonne.getNumJoueur();
+            s = "Joueur " + numJoueur;
+            s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
+        }
         graphicsContextInfos.strokeText(s, 250, 50);
     }
 
