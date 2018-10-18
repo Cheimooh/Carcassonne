@@ -22,7 +22,10 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
             int x = (int) event.getX() / 50;
             int y = (int) event.getY() / 50;
-            if (carteAdjacent(x, y)) {
+            Point point = new Point(x,y);
+            if (fenetre.getlOccupee().contains(point)){
+                System.out.println("ERREUR: Une carte est déjà placée à cet endroit");
+            } else if (carteAdjacent(x, y)) {
                 carteEnMain.setPosition(new Point(x, y));
                 fenetre.placerCarte(carteEnMain);
                 fenetre.getCarcassonne().joueurSuivant();

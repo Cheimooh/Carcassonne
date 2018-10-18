@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Carcassonne {
 
-    private final int NB_CARTES = 10;
+    private final int NB_CARTES = 72;
     private final int NB_CASES = NB_CARTES*2 -1;
 
     public static Pioche p;
@@ -30,14 +30,19 @@ public class Carcassonne {
         listPointDispo = new ArrayList<>();
         p = new Pioche(NB_CARTES);
         carteDeBase = new Carte(TypeCarte.cartePPPP);
-        carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
-        listPointDispo.add(new Point(NB_CASES/2+1,NB_CASES/2));
-        listPointDispo.add(new Point(NB_CASES/2-1,NB_CASES/2));
-        listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2+1));
-        listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2-1));
+        //carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
+        //listPointDispo.add(new Point(NB_CASES/2+1,NB_CASES/2));
+        //listPointDispo.add(new Point(NB_CASES/2-1,NB_CASES/2));
+        //listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2+1));
+        //listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2-1));
+        //pointCarteMap.put(new Point(NB_CASES/2,NB_CASES/2), carteDeBase);
 
-        // Cases à côté de la case où se trouve la carte de base
-        pointCarteMap.put(new Point(NB_CASES/2,NB_CASES/2), carteDeBase);
+        carteDeBase.setPosition(new Point(10,10));
+        listPointDispo.add(new Point(11,10));
+        listPointDispo.add(new Point(9,10));
+        listPointDispo.add(new Point(10,11));
+        listPointDispo.add(new Point(10,9));
+        pointCarteMap.put(new Point(10,10), carteDeBase);
 
         attribuerJoueur(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
         jouer();
