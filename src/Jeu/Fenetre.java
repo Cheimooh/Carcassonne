@@ -37,6 +37,7 @@ public class Fenetre extends Parent {
         queueImage = new ArrayDeque<>();
         placerCarte(carcassonne.getCarteDeBase());
         this.getChildren().add(canvas);
+        carcassonne.jouer();
     }
 
     public ArrayList<Point> getlOccupee() {
