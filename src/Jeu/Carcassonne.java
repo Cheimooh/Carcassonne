@@ -79,10 +79,6 @@ public class Carcassonne {
 
     public int getNB_CASES() { return NB_CASES; }
 
-    public void setaJouer(boolean aJouer) {
-        this.aJouer = aJouer;
-    }
-
     public Joueur[] getTabJoueur() {
         return tabJoueur;
     }
@@ -91,7 +87,7 @@ public class Carcassonne {
         return numJoueur;
     }
 
-    public static Pioche getP() {
+    public Pioche getP() {
         return p;
     }
 }

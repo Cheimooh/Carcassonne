@@ -94,4 +94,8 @@ public class Pioche {
         taille--;
         return lCarte.poll();
     }
+
+    public Carte getProchaineCarte(){
+        return lCarte.peek();
+    }
 }

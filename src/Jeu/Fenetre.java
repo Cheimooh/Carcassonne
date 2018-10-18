@@ -18,6 +18,7 @@ public class Fenetre extends Parent {
 
     public static PlaceDispo placeDispo;
     private GraphicsContext graphicsContext;
+    private GraphicsContext graphicsContextInfos;
     private ArrayDeque <Image> queueImage;
     private ControlButton controlButton;
     private ArrayList <Point> lDispo;
@@ -28,15 +29,18 @@ public class Fenetre extends Parent {
     public Fenetre(Carcassonne newCarcassonne){
         carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
+        Canvas infos = new Canvas(1000, 100);
         controlMouse = new ControlMouse(this);
         canvas.setOnMouseClicked(controlMouse);
         graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContextInfos = infos.getGraphicsContext2D();
         placeDispo = new PlaceDispo();
         lDispo = new ArrayList<>();
         lOccupee = new ArrayList<>();
         queueImage = new ArrayDeque<>();
         placerCarte(carcassonne.getCarteDeBase());
         this.getChildren().add(canvas);
+        this.getChildren().add(infos);
         carcassonne.jouer();
     }
 
@@ -70,6 +74,8 @@ public class Fenetre extends Parent {
         if (lDispo.contains(carte.getPosition())){ lDispo.remove(carte.getPosition()); }
 
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
+
+        drawInformations();
     }
 
     public void testLDispo(Point p){
@@ -78,5 +84,24 @@ public class Fenetre extends Parent {
             queueImage.addLast(placeDispo.getImagePlus());
             graphicsContext.drawImage(queueImage.getLast(),(int)p.getX()*50, (int)p.getY()*50, 50, 50);
         }
+    }
+
+    private void drawInformations(){
+        graphicsContextInfos.clearRect(0,0,1000,100);
+        drawLigneSeparatrice();
+
+        graphicsContextInfos.drawImage(carcassonne.getP().getProchaineCarte().getDraw().img, 500,20,50,50);
+
+        int numJoueur = carcassonne.getNumJoueur();
+        String s="Joueur " + numJoueur;
+        s+= " : "+carcassonne.getTabJoueur()[numJoueur-1].getNom();
+
+        graphicsContextInfos.strokeText(s, 250, 50);
+    }
+
+    private void drawLigneSeparatrice() {
+        graphicsContextInfos.moveTo(0,100);
+        graphicsContextInfos.lineTo(1000,100);
+        graphicsContextInfos.stroke();
     }
 }

@@ -45,4 +45,6 @@ public class Joueur {
     public Carte getCarteEnMain() {
         return carteEnMain;
     }
+
+    public String getNom() { return nom; }
 }
