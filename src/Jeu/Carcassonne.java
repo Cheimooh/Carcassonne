@@ -72,7 +72,6 @@ public class Carcassonne {
         if(numJoueur == 0){
             numJoueur++;
         }
-        jouer();
     }
 
     public Carte getCarteDeBase() { return carteDeBase; }

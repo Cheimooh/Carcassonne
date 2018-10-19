@@ -29,6 +29,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 carteEnMain.setPosition(new Point(x, y));
                 fenetre.getCarcassonne().joueurSuivant();
                 fenetre.placerCarte(carteEnMain);
+                fenetre.getCarcassonne().jouer();
             } else {
                 System.out.println("ERREUR: CLIQUEZ SUR UNE CROIX !!!!!!!!!!!!!!!");
             }
