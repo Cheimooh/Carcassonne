@@ -27,4 +27,12 @@ public class Carte {
     public void setPosition(Point nbPosition) { this.position = nbPosition; }
 
     public DrawCard getDraw() { return draw; }
+
+    public CoteCarte getNord() { return nord; }
+
+    public CoteCarte getSud() { return sud; }
+
+    public CoteCarte getEst() { return est; }
+
+    public CoteCarte getOuest() { return ouest; }
 }

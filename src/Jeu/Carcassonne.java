@@ -89,4 +89,6 @@ public class Carcassonne {
     public Pioche getP() {
         return p;
     }
+
+    public Map<Point, Carte> getPointCarteMap() { return pointCarteMap; }
 }

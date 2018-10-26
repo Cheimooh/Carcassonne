@@ -26,10 +26,12 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             if (fenetre.getlOccupee().contains(point)){
                 System.out.println("ERREUR: Une carte est déjà placée à cet endroit");
             } else if (carteAdjacent(x, y)) {
-                carteEnMain.setPosition(new Point(x, y));
-                fenetre.getCarcassonne().joueurSuivant();
-                fenetre.placerCarte(carteEnMain);
-                fenetre.getCarcassonne().jouer();
+                if (isPlacable(x,y)) {
+                    carteEnMain.setPosition(new Point(x, y));
+                    fenetre.getCarcassonne().joueurSuivant();
+                    fenetre.placerCarte(carteEnMain);
+                    fenetre.getCarcassonne().jouer();
+                } else System.out.println("ERREUR : La carte ne peut pas être placée à cet endroit");
             } else {
                 System.out.println("ERREUR: CLIQUEZ SUR UNE CROIX !!!!!!!!!!!!!!!");
             }
@@ -38,9 +40,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             System.out.println("Plus de carte");
     }
 
-    public void setCarteEnMain(Carte carteEnMain) {
-        this.carteEnMain = carteEnMain;
-    }
+    public void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
 
     private boolean carteAdjacent(int x, int y){
         Point point = new Point(x+1, y);
@@ -56,4 +56,42 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         if(fenetre.getlOccupee().contains(point)) return true;
         return false;
     }
+
+    private boolean isPlacable(int x, int y) {
+        boolean isPlacable = true;
+        Point point = new Point(x-1, y);
+        if(fenetre.getlOccupee().contains(point)){
+            Carte c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            if (c.getEst() != carteEnMain.getOuest()){
+                isPlacable=false;
+            }
+        }
+
+        point = new Point(x+1, y);
+        if(fenetre.getlOccupee().contains(point)){
+            Carte c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            if (c.getOuest() != carteEnMain.getEst()){
+                isPlacable=false;
+            }
+        }
+
+        point = new Point(x, y-1);
+        if(fenetre.getlOccupee().contains(point)){
+            Carte c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            if (c.getSud() != carteEnMain.getNord()){
+                isPlacable=false;
+            }
+        }
+
+        point = new Point(x, y+1);
+        if(fenetre.getlOccupee().contains(point)){
+            Carte c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            if (c.getNord() != carteEnMain.getSud()){
+                isPlacable=false;
+            }
+        }
+
+        return isPlacable;
+    }
+
 }

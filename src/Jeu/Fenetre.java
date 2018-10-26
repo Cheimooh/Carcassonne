@@ -54,6 +54,7 @@ public class Fenetre extends Parent {
 
     public void placerCarte(Carte carte){
         lOccupee.add(carte.getPosition());
+        carcassonne.getPointCarteMap().put(carte.getPosition(), carte);
         Image image = carte.getDraw().img;
         int x = (int) carte.getPosition().getX();
         int y = (int) carte.getPosition().getY();
