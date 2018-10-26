@@ -7,6 +7,7 @@ public class Carte {
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
     private DrawCard draw;
+    private int nbRotation;
 
     public Carte(TypeCarte typeCarte){
         this.nord = typeCarte.getNord();
@@ -16,6 +17,7 @@ public class Carte {
         this.draw = new DrawCard(typeCarte.getImg());
         this.isAbbaye = false;
         this.position = new Point();
+        nbRotation=0;
     }
 
     public void placerCarte(int x, int y){
@@ -35,4 +37,8 @@ public class Carte {
     public CoteCarte getEst() { return est; }
 
     public CoteCarte getOuest() { return ouest; }
+
+    public int getNbRotation() { return nbRotation; }
+
+    public void setNbRotation(int nbRotation) { this.nbRotation = nbRotation; }
 }

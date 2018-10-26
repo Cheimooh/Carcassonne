@@ -24,14 +24,17 @@ public class Fenetre extends Parent {
     private ArrayList <Point> lDispo;
     private ArrayList <Point> lOccupee;
     private ControlMouse controlMouse;
+    private ControlMouse controlMouseInfos;
     private Carcassonne carcassonne;
 
     public Fenetre(Carcassonne newCarcassonne){
         carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
         Canvas infos = new Canvas(1000, 100);
-        controlMouse = new ControlMouse(this);
+        controlMouse = new ControlMouse(this, "fenetreDeJeu");
+        controlMouseInfos = new ControlMouse(this, "barreInfos");
         canvas.setOnMouseClicked(controlMouse);
+        infos.setOnMouseClicked(controlMouseInfos);
         graphicsContext = canvas.getGraphicsContext2D();
         graphicsContextInfos = infos.getGraphicsContext2D();
         placeDispo = new PlaceDispo();
@@ -75,8 +78,8 @@ public class Fenetre extends Parent {
         if (lDispo.contains(carte.getPosition())){ lDispo.remove(carte.getPosition()); }
 
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
-
-        drawInformations();
+        Image prochaineCarte = carcassonne.getP().getProchaineCarte().getDraw().img;
+        drawInformations(prochaineCarte);
     }
 
     public void testLDispo(Point p){
@@ -87,7 +90,7 @@ public class Fenetre extends Parent {
         }
     }
 
-    private void drawInformations(){
+    private void drawInformations(Image prochaineCarte){
         graphicsContextInfos.clearRect(0,0,1000,100);
         drawLigneSeparatrice();
 
@@ -97,7 +100,7 @@ public class Fenetre extends Parent {
             s = "Fin de partie";
         }
         else {
-            graphicsContextInfos.drawImage(carcassonne.getP().getProchaineCarte().getDraw().img, 500, 20, 50, 50);
+            graphicsContextInfos.drawImage(prochaineCarte, 500, 20, 50, 50);
 
             int numJoueur = carcassonne.getNumJoueur();
             s = "Joueur " + numJoueur;
@@ -110,5 +113,9 @@ public class Fenetre extends Parent {
         graphicsContextInfos.moveTo(0,100);
         graphicsContextInfos.lineTo(1000,100);
         graphicsContextInfos.stroke();
+    }
+
+    public void rotateCarteSuivante(int nbRotation){
+        System.out.println("clic " + nbRotation);
     }
 }
