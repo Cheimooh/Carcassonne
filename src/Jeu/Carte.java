@@ -32,11 +32,19 @@ public class Carte {
 
     public CoteCarte getNord() { return nord; }
 
+    public void setNord(CoteCarte nord) { this.nord = nord; }
+
     public CoteCarte getSud() { return sud; }
+
+    public void setSud(CoteCarte sud) { this.sud = sud; }
 
     public CoteCarte getEst() { return est; }
 
+    public void setEst(CoteCarte est) { this.est = est; }
+
     public CoteCarte getOuest() { return ouest; }
+
+    public void setOuest(CoteCarte ouest) { this.ouest = ouest; }
 
     public int getNbRotation() { return nbRotation; }
 

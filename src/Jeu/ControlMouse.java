@@ -51,6 +51,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                     nbRotation++;
                     nbRotation=nbRotation%4;
                     carteEnMain.setNbRotation(nbRotation);
+                    pivoterCoteCarte(carteEnMain);
                     fenetre.rotateCarteSuivante(carteEnMain);
                 }
             } else {
@@ -111,6 +112,18 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         }
 
         return isPlacable;
+    }
+
+    public void pivoterCoteCarte(Carte carte){
+        CoteCarte nord = carte.getNord();
+        CoteCarte est = carte.getEst();
+        CoteCarte sud = carte.getSud();
+        CoteCarte ouest = carte.getOuest();
+
+        carte.setNord(ouest);
+        carte.setEst(nord);
+        carte.setSud(est);
+        carte.setOuest(sud);
     }
 
 }

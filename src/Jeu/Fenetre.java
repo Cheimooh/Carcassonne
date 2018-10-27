@@ -58,7 +58,8 @@ public class Fenetre extends Parent {
     public void placerCarte(Carte carte){
         lOccupee.add(carte.getPosition());
         carcassonne.getPointCarteMap().put(carte.getPosition(), carte);
-        Image image = carte.getDraw().img;
+        Image image = getImage(carte);
+
         int x = (int) carte.getPosition().getX();
         int y = (int) carte.getPosition().getY();
 
@@ -116,6 +117,11 @@ public class Fenetre extends Parent {
     }
 
     public void rotateCarteSuivante(Carte carte){
+        Image image = getImage(carte);
+        drawInformations(image);
+    }
+
+    public Image getImage(Carte carte){
         int nbRotation=carte.getNbRotation();
         Image image;
         switch (nbRotation){
@@ -134,6 +140,6 @@ public class Fenetre extends Parent {
             default:
                 image=null;
         }
-        drawInformations(image);
+        return image;
     }
 }
