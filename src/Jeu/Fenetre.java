@@ -115,7 +115,25 @@ public class Fenetre extends Parent {
         graphicsContextInfos.stroke();
     }
 
-    public void rotateCarteSuivante(int nbRotation){
-        System.out.println("clic " + nbRotation);
+    public void rotateCarteSuivante(Carte carte){
+        int nbRotation=carte.getNbRotation();
+        Image image;
+        switch (nbRotation){
+            case 0:
+                image= carte.getDraw().img;
+                break;
+            case 1:
+                image = carte.getDraw().img90;
+                break;
+            case 2:
+                image = carte.getDraw().img180;
+                break;
+            case 3:
+                image = carte.getDraw().img270;
+                break;
+            default:
+                image=null;
+        }
+        drawInformations(image);
     }
 }

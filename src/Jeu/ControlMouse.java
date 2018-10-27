@@ -51,7 +51,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                     nbRotation++;
                     nbRotation=nbRotation%4;
                     carteEnMain.setNbRotation(nbRotation);
-                    fenetre.rotateCarteSuivante(carteEnMain.getNbRotation());
+                    fenetre.rotateCarteSuivante(carteEnMain);
                 }
             } else {
                 System.out.println("Plus de carte");

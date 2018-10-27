@@ -14,7 +14,7 @@ public class Carte {
         this.sud = typeCarte.getSud();
         this.est = typeCarte.getEst();
         this.ouest = typeCarte.getOuest();
-        this.draw = new DrawCard(typeCarte.getImg());
+        this.draw = new DrawCard(typeCarte.getImg(), typeCarte.getImg90(), typeCarte.getImg180(), typeCarte.getImg270());
         this.isAbbaye = false;
         this.position = new Point();
         nbRotation=0;
