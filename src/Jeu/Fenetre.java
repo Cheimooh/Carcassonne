@@ -26,11 +26,15 @@ public class Fenetre extends Parent {
     private ControlMouse controlMouse;
     private ControlMouse controlMouseInfos;
     private Carcassonne carcassonne;
+    private int width;
+    private int height;
 
-    public Fenetre(Carcassonne newCarcassonne){
+    public Fenetre(Carcassonne newCarcassonne, int width, int height){
+        this.width=width;
+        this.height=height;
         carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
-        Canvas infos = new Canvas(1000, 100);
+        Canvas infos = new Canvas(width, 100);
         controlMouse = new ControlMouse(this, "fenetreDeJeu");
         controlMouseInfos = new ControlMouse(this, "barreInfos");
         canvas.setOnMouseClicked(controlMouse);
@@ -92,7 +96,7 @@ public class Fenetre extends Parent {
     }
 
     private void drawInformations(Image prochaineCarte){
-        graphicsContextInfos.clearRect(0,0,1000,100);
+        graphicsContextInfos.clearRect(0,0,width,100);
         drawLigneSeparatrice();
 
         String s;
@@ -101,18 +105,18 @@ public class Fenetre extends Parent {
             s = "Fin de partie";
         }
         else {
-            graphicsContextInfos.drawImage(prochaineCarte, 500, 20, 50, 50);
+            graphicsContextInfos.drawImage(prochaineCarte, (width/2), 20, 50, 50);
 
             int numJoueur = carcassonne.getNumJoueur();
             s = "Joueur " + numJoueur;
             s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
         }
-        graphicsContextInfos.strokeText(s, 250, 50);
+        graphicsContextInfos.strokeText(s, (width/4), 50);
     }
 
     private void drawLigneSeparatrice() {
         graphicsContextInfos.moveTo(0,100);
-        graphicsContextInfos.lineTo(1000,100);
+        graphicsContextInfos.lineTo(width,100);
         graphicsContextInfos.stroke();
     }
 
