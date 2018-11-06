@@ -51,8 +51,13 @@ public class Carcassonne {
     public void attribuerJoueur(int newNbJoueur, String[] nomJoueur){
         nbJoueur=newNbJoueur;
         tabJoueur = new Joueur[nbJoueur];
+        Color[] tabCouleur = new Color[4];
+        tabCouleur[0] = Color.green;
+        tabCouleur[1] = Color.red;
+        tabCouleur[2] = Color.blue;
+        tabCouleur[3] = Color.yellow;
         for (int i = 0; i < nbJoueur ; i++) {
-            tabJoueur[i]= new Joueur(i+1, p);
+            tabJoueur[i]= new Joueur(i+1, p, tabCouleur[i]);
             tabJoueur[i].setNom(nomJoueur[i]);
         }
         numJoueur = (int) (Math.random()*(nbJoueur-1))+1;

@@ -110,6 +110,15 @@ public class Fenetre extends Parent {
             int numJoueur = carcassonne.getNumJoueur();
             s = "Joueur " + numJoueur;
             s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
+
+            Image imagePartisan = carcassonne.getTabJoueur()[numJoueur-1].getImagePartisan();
+            int nbPartisans = carcassonne.getTabJoueur()[numJoueur-1].getNombrePartisansRestants();
+
+            if (imagePartisan!=null){
+                graphicsContextInfos.drawImage(imagePartisan, (width/4)*3 , 25, 50, 50);
+                graphicsContextInfos.strokeText("x "+nbPartisans, (width/4)*3+50, 35);
+            }
+
         }
         graphicsContextInfos.strokeText(s, (width/4), 50);
     }
