@@ -158,4 +158,11 @@ public class Fenetre extends Parent {
         }
         return image;
     }
+
+    public void placerPartisan(int x, int y) {
+        int numJoueur = (carcassonne.getNumJoueur()-2)%4;
+        String nom = carcassonne.getTabJoueur()[numJoueur].getNom();
+        System.out.println(nom+" place un partisan en "+x+" "+y);
+        carcassonne.getTabJoueur()[numJoueur].placePartisan();
+    }
 }

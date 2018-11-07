@@ -57,4 +57,8 @@ public class Joueur {
     public int getNombrePartisansRestants(){ return nombrePartisansRestants; }
 
     public Color getColor(){return color;}
+
+    public void placePartisan() {
+        if (nombrePartisansRestants>0) nombrePartisansRestants--;
+    }
 }
