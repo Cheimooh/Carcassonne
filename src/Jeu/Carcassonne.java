@@ -1,5 +1,8 @@
 package Jeu;
 
+
+import javafx.scene.paint.Color;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,10 +55,10 @@ public class Carcassonne {
         nbJoueur=newNbJoueur;
         tabJoueur = new Joueur[nbJoueur];
         Color[] tabCouleur = new Color[4];
-        tabCouleur[0] = Color.green;
-        tabCouleur[1] = Color.red;
-        tabCouleur[2] = Color.blue;
-        tabCouleur[3] = Color.yellow;
+        tabCouleur[0] = Color.GREEN;
+        tabCouleur[1] = Color.RED;
+        tabCouleur[2] = Color.BLUE;
+        tabCouleur[3] = Color.YELLOW;
         for (int i = 0; i < nbJoueur ; i++) {
             tabJoueur[i]= new Joueur(i+1, p, tabCouleur[i]);
             tabJoueur[i].setNom(nomJoueur[i]);

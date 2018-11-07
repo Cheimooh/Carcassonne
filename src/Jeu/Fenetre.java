@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -111,11 +112,13 @@ public class Fenetre extends Parent {
             s = "Joueur " + numJoueur;
             s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
 
-            Image imagePartisan = carcassonne.getTabJoueur()[numJoueur-1].getImagePartisan();
             int nbPartisans = carcassonne.getTabJoueur()[numJoueur-1].getNombrePartisansRestants();
+            Color color = carcassonne.getTabJoueur()[numJoueur-1].getColor();
 
-            if (imagePartisan!=null){
-                graphicsContextInfos.drawImage(imagePartisan, (width/4)*3 , 25, 50, 50);
+            if (nbPartisans>0){
+                graphicsContextInfos.setFill(color);
+                graphicsContextInfos.fillOval((width/4)*3, 25, 50, 50);
+                graphicsContextInfos.setFill(Color.BLACK);
                 graphicsContextInfos.strokeText("x "+nbPartisans, (width/4)*3+50, 35);
             }
 
