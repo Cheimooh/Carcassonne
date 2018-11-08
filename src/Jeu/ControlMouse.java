@@ -33,7 +33,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                         System.out.println("ERREUR: Une carte est déjà placée à cet endroit");
                     } else if (carteAdjacent(x, y)) {
                         if (isPlacable(x, y)) {
-                            placerPartisans=true;
+                            //placerPartisans=true;
                             carteEnMain.setPosition(new Point(x, y));
                             fenetre.getCarcassonne().joueurSuivant();
                             fenetre.placerCarte(carteEnMain);
@@ -61,14 +61,14 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                     System.out.println("Plus de carte");
                 }
             }
-        } else {
+        }/* else {
             if (s == "fenetreDeJeu") {
                 placerPartisans=false;
                 int x = (int) event.getX() / 50;
                 int y = (int) event.getY() / 50;
                 fenetre.placerPartisan(x,y);
             }
-        }
+        }*/
     }
 
     public void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
