@@ -1,4 +1,4 @@
-package Jeu;
+package Jeu.Model;
 
 public enum CoteCarte {
     prairie,

@@ -1,5 +1,8 @@
-package Jeu;
+package Jeu.Controller;
 
+import Jeu.Model.Carte;
+import Jeu.Model.CoteCarte;
+import Jeu.View.Fenetre;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 

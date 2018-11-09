@@ -1,10 +1,14 @@
-package Jeu;
+package Jeu.View;
 
 //detection de la posisition de la souris.
 //souris recupère une ccordonnée dans la zone visible, mais il faut recuperer les coordonnée de la zone sur la map
 //penser a linvisible : translation
 //
 
+import Jeu.Controller.ControlButton;
+import Jeu.Controller.ControlMouse;
+import Jeu.Model.Carcassonne;
+import Jeu.Model.Carte;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

@@ -1,4 +1,7 @@
-package Jeu;
+package Jeu.Model;
+
+import Jeu.Model.Carte;
+import Jeu.Model.TypeCarte;
 
 import java.util.*;
 
