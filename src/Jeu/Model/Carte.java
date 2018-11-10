@@ -51,4 +51,6 @@ public class Carte {
     public int getNbRotation() { return nbRotation; }
 
     public void setNbRotation(int nbRotation) { this.nbRotation = nbRotation; }
+
+    public boolean isAbbaye() { return isAbbaye; }
 }

@@ -8,6 +8,7 @@ package Jeu.View;
 import Jeu.Controller.ControlMouse;
 import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
+import Jeu.Model.CartePosse;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,8 +25,6 @@ public class Fenetre extends Parent {
     private GraphicsContext graphicsContext;
     private GraphicsContext graphicsContextInfos;
     private ArrayDeque <Image> queueImage;
-    private ArrayList <Point> lDispo;
-    private ArrayList <Point> lOccupee;
     private Carcassonne carcassonne;
     private int width;
     private int height;
@@ -43,16 +42,10 @@ public class Fenetre extends Parent {
         graphicsContext = canvas.getGraphicsContext2D();
         graphicsContextInfos = infos.getGraphicsContext2D();
         placeDispo = new PlaceDispo();
-        lDispo = new ArrayList<>();
-        lOccupee = new ArrayList<>();
         queueImage = new ArrayDeque<>();
         placerCarte(carcassonne.getCarteDeBase());
         this.getChildren().add(canvas);
         this.getChildren().add(infos);
-    }
-
-    public ArrayList<Point> getlOccupee() {
-        return lOccupee;
     }
 
     public Carcassonne getCarcassonne() {
@@ -60,12 +53,13 @@ public class Fenetre extends Parent {
     }
 
     public void placerCarte(Carte carte){
-        lOccupee.add(carte.getPosition());
-        carcassonne.getPointCarteMap().put(carte.getPosition(), carte);
-        Image image = getImage(carte);
+        CartePosse cartePosse = new CartePosse(carte);
+        carcassonne.getListPointOccupe().add(cartePosse.getPosition());
+        carcassonne.getPointCarteMap().put(carte.getPosition(), cartePosse);
+        Image image = cartePosse.getImageCarte();
 
-        int x = (int) carte.getPosition().getX();
-        int y = (int) carte.getPosition().getY();
+        int x = (int) cartePosse.getPosition().getX();
+        int y = (int) cartePosse.getPosition().getY();
 
         //bloc de test pour tester les listes
         Point p = new Point(x+1,y);
@@ -80,13 +74,15 @@ public class Fenetre extends Parent {
         p.setLocation(x,y-1);
         testLDispo(p);
 
-        lDispo.remove(carte.getPosition());
+        carcassonne.getListPointDispo().remove(cartePosse.getPosition());
 
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
         drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
     }
 
     private void testLDispo(Point p){
+        ArrayList<Point> lDispo = carcassonne.getListPointDispo();
+        ArrayList<Point> lOccupee = carcassonne.getListPointOccupe();
         if ( !lDispo.contains(p) && !lOccupee.contains(p)) {
             lDispo.add(new Point((int)p.getX(), (int)p.getY()));
             queueImage.addLast(placeDispo.getImagePlus());

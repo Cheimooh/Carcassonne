@@ -21,8 +21,9 @@ public class Carcassonne {
     private int numJoueur;
     private Joueur[] tabJoueur;
 
-    private Map<Point, Carte> pointCarteMap; // Map qui contient pour chaque point sa Carte
+    private Map<Point, CartePosse> pointCarteMap; // Map qui contient pour chaque point sa Carte
     private ArrayList<Point> listPointDispo;
+    private ArrayList<Point> listPointOccupe;
 
     private Carte carteDeBase;
 
@@ -31,6 +32,7 @@ public class Carcassonne {
     public Carcassonne(){
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
+        listPointOccupe = new ArrayList<>();
         p = new Pioche(NB_CARTES);
         carteDeBase = new Carte(TypeCarte.cartePPPP);
         //carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
@@ -41,11 +43,7 @@ public class Carcassonne {
         //pointCarteMap.put(new Point(NB_CASES/2,NB_CASES/2), carteDeBase);
 
         carteDeBase.setPosition(new Point(10,10));
-        listPointDispo.add(new Point(11,10));
-        listPointDispo.add(new Point(9,10));
-        listPointDispo.add(new Point(10,11));
-        listPointDispo.add(new Point(10,9));
-        pointCarteMap.put(new Point(10,10), carteDeBase);
+        listPointDispo.add(carteDeBase.getPosition());
 
         attribuerJoueur(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
     }
@@ -97,5 +95,9 @@ public class Carcassonne {
         return p;
     }
 
-    public Map<Point, Carte> getPointCarteMap() { return pointCarteMap; }
+    public Map<Point, CartePosse> getPointCarteMap() { return pointCarteMap; }
+
+    public ArrayList<Point> getListPointDispo() { return listPointDispo; }
+
+    public ArrayList<Point> getListPointOccupe() { return listPointOccupe; }
 }
