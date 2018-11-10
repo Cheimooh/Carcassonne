@@ -1,7 +1,7 @@
 package Jeu.Controller;
 
 import Jeu.Model.Carte;
-import Jeu.Model.CartePosse;
+import Jeu.Model.CartePosee;
 import Jeu.Model.CoteCarte;
 import Jeu.View.Fenetre;
 import javafx.event.EventHandler;
@@ -107,7 +107,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         boolean isPlacable = true;
         Point point = new Point(x-1, y);
         if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosse c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
             if (c.getEst() != carteEnMain.getOuest()){
                 isPlacable=false;
             }
@@ -115,7 +115,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
         point = new Point(x+1, y);
         if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosse c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
             if (c.getOuest() != carteEnMain.getEst()){
                 isPlacable=false;
             }
@@ -123,7 +123,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
         point = new Point(x, y-1);
         if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosse c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
             if (c.getSud() != carteEnMain.getNord()){
                 isPlacable=false;
             }
@@ -131,7 +131,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
         point = new Point(x, y+1);
         if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosse c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
             if (c.getNord() != carteEnMain.getSud()){
                 isPlacable=false;
             }

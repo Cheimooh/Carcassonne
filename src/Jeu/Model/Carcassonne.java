@@ -21,7 +21,7 @@ public class Carcassonne {
     private int numJoueur;
     private Joueur[] tabJoueur;
 
-    private Map<Point, CartePosse> pointCarteMap; // Map qui contient pour chaque point sa Carte
+    private Map<Point, CartePosee> pointCarteMap; // Map qui contient pour chaque point sa Carte
     private ArrayList<Point> listPointDispo;
     private ArrayList<Point> listPointOccupe;
 
@@ -95,7 +95,7 @@ public class Carcassonne {
         return p;
     }
 
-    public Map<Point, CartePosse> getPointCarteMap() { return pointCarteMap; }
+    public Map<Point, CartePosee> getPointCarteMap() { return pointCarteMap; }
 
     public ArrayList<Point> getListPointDispo() { return listPointDispo; }
 

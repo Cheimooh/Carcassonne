@@ -8,7 +8,7 @@ package Jeu.View;
 import Jeu.Controller.ControlMouse;
 import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
-import Jeu.Model.CartePosse;
+import Jeu.Model.CartePosee;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -28,6 +28,7 @@ public class Fenetre extends Parent {
     private Carcassonne carcassonne;
     private int width;
     private int height;
+    private Image imageAffichee;
 
     public Fenetre(Carcassonne newCarcassonne, int width, int height){
         this.width=width;
@@ -53,13 +54,13 @@ public class Fenetre extends Parent {
     }
 
     public void placerCarte(Carte carte){
-        CartePosse cartePosse = new CartePosse(carte);
-        carcassonne.getListPointOccupe().add(cartePosse.getPosition());
-        carcassonne.getPointCarteMap().put(carte.getPosition(), cartePosse);
-        Image image = cartePosse.getImageCarte();
+        CartePosee cartePosee = new CartePosee(carte);
+        carcassonne.getListPointOccupe().add(cartePosee.getPosition());
+        carcassonne.getPointCarteMap().put(carte.getPosition(), cartePosee);
+        Image image = cartePosee.getImageCarte();
 
-        int x = (int) cartePosse.getPosition().getX();
-        int y = (int) cartePosse.getPosition().getY();
+        int x = (int) cartePosee.getPosition().getX();
+        int y = (int) cartePosee.getPosition().getY();
 
         //bloc de test pour tester les listes
         Point p = new Point(x+1,y);
@@ -74,7 +75,7 @@ public class Fenetre extends Parent {
         p.setLocation(x,y-1);
         testLDispo(p);
 
-        carcassonne.getListPointDispo().remove(cartePosse.getPosition());
+        carcassonne.getListPointDispo().remove(cartePosee.getPosition());
 
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
         drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
@@ -117,6 +118,7 @@ public class Fenetre extends Parent {
             }
         }
         graphicsContextInfos.strokeText(s, (width/4.), 50);
+        this.imageAffichee=prochaineCarte;
     }
 
     private void drawLigneSeparatrice() {
@@ -160,7 +162,7 @@ public class Fenetre extends Parent {
     }
 
     public void afficheErreur(String erreur){
-        //drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
-        graphicsContextInfos.strokeText(erreur, (width/2.)-70, 80);
+        drawInformations(imageAffichee);
+        graphicsContextInfos.strokeText(erreur, (width/2.)-(erreur.length()*(5/3.)), 90, erreur.length()*5);
     }
 }

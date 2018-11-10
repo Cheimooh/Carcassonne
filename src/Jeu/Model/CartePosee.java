@@ -3,14 +3,14 @@ package Jeu.Model;
 import java.awt.*;
 import javafx.scene.image.Image;
 
-public class CartePosse {
+public class CartePosee {
 
     private Point position;
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
     private Image imageCarte;
 
-    public CartePosse(Carte carte){
+    public CartePosee(Carte carte){
         this.nord = carte.getNord();
         this.sud = carte.getSud();
         this.est = carte.getEst();
