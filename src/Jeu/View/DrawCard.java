@@ -15,6 +15,4 @@ public class DrawCard {
         this.img270 = img270;
     }
 
-    public Image getImg(){return this.img;}
-
 }

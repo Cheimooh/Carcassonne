@@ -5,7 +5,6 @@ package Jeu.View;
 //penser a linvisible : translation
 //
 
-import Jeu.Controller.ControlButton;
 import Jeu.Controller.ControlMouse;
 import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
@@ -21,19 +20,15 @@ import java.util.ArrayList;
 
 public class Fenetre extends Parent {
 
-    public static PlaceDispo placeDispo;
+    private static PlaceDispo placeDispo;
     private GraphicsContext graphicsContext;
     private GraphicsContext graphicsContextInfos;
     private ArrayDeque <Image> queueImage;
-    private ControlButton controlButton;
     private ArrayList <Point> lDispo;
     private ArrayList <Point> lOccupee;
-    private ControlMouse controlMouse;
-    private ControlMouse controlMouseInfos;
     private Carcassonne carcassonne;
     private int width;
     private int height;
-    private Image prochaineCarte;
 
     public Fenetre(Carcassonne newCarcassonne, int width, int height){
         this.width=width;
@@ -41,8 +36,8 @@ public class Fenetre extends Parent {
         carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
         Canvas infos = new Canvas(width, 100);
-        controlMouse = new ControlMouse(this, "fenetreDeJeu");
-        controlMouseInfos = new ControlMouse(this, "barreInfos");
+        ControlMouse controlMouse = new ControlMouse(this, "fenetreDeJeu");
+        ControlMouse controlMouseInfos = new ControlMouse(this, "barreInfos");
         canvas.setOnMouseClicked(controlMouse);
         infos.setOnMouseClicked(controlMouseInfos);
         graphicsContext = canvas.getGraphicsContext2D();
@@ -86,11 +81,10 @@ public class Fenetre extends Parent {
         p.setLocation(x,y-1);
         testLDispo(p);
 
-        if (lDispo.contains(carte.getPosition())){ lDispo.remove(carte.getPosition()); }
+        lDispo.remove(carte.getPosition());
 
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
-        prochaineCarte = carcassonne.getP().getProchaineCarte().getDraw().img;
-        drawInformations(prochaineCarte);
+        drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
     }
 
     private void testLDispo(Point p){
@@ -124,9 +118,8 @@ public class Fenetre extends Parent {
                 graphicsContextInfos.setFill(color);
                 graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
                 graphicsContextInfos.setFill(Color.BLACK);
-                graphicsContextInfos.strokeText("x "+nbPartisans, (width/4)*3+50, 35);
+                graphicsContextInfos.strokeText("x "+nbPartisans, (width/4.)*3+50, 35);
             }
-
         }
         graphicsContextInfos.strokeText(s, (width/4.), 50);
     }
@@ -142,7 +135,7 @@ public class Fenetre extends Parent {
         drawInformations(image);
     }
 
-    public Image getImage(Carte carte){
+    private Image getImage(Carte carte){
         int nbRotation=carte.getNbRotation();
         Image image;
         switch (nbRotation){
@@ -172,7 +165,7 @@ public class Fenetre extends Parent {
     }
 
     public void afficheErreur(String erreur){
-        drawInformations(prochaineCarte);
+        drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
         graphicsContextInfos.strokeText(erreur, (width/2.)-70, 80);
     }
 }

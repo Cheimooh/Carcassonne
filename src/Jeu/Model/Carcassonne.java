@@ -15,7 +15,7 @@ public class Carcassonne {
     private final int NB_CARTES = 72;
     private final int NB_CASES = NB_CARTES*2 -1;
 
-    public static Pioche p;
+    private static Pioche p;
 
     private int nbJoueur; // nombre de joueur
     private int numJoueur;
@@ -51,8 +51,8 @@ public class Carcassonne {
         jouer();
     }
 
-    public void attribuerJoueur(int newNbJoueur, String[] nomJoueur){
-        nbJoueur=newNbJoueur;
+    private void attribuerJoueur(int nbJoueur, String[] nomJoueur){
+        this.nbJoueur=nbJoueur;
         tabJoueur = new Joueur[nbJoueur];
         Color[] tabCouleur = new Color[4];
         tabCouleur[0] = Color.GREEN;
@@ -67,9 +67,9 @@ public class Carcassonne {
     }
 
     public void jouer(){
-        for (int i = 0; i < tabJoueur.length; i++) {
-            if (tabJoueur[i].getIdJoueur() == numJoueur){
-                tabJoueur[i].joue();
+        for (Joueur aTabJoueur : tabJoueur) {
+            if (aTabJoueur.getIdJoueur() == numJoueur) {
+                aTabJoueur.joue();
             }
         }
     }

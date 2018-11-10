@@ -26,56 +26,64 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
         if (!placerPartisans) {
-            if (s == "fenetreDeJeu") {
-                if (fenetre.getCarcassonne().getP().getTaille() >= 0) {
-                    setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
-                    int x = (int) event.getX() / 50;
-                    int y = (int) event.getY() / 50;
-                    Point point = new Point(x, y);
-                    if (fenetre.getlOccupee().contains(point)) {
-                        fenetre.afficheErreur("Une carte est déjà placée à cet endroit");
-                    } else if (carteAdjacent(x, y)) {
-                        if (isPlacable(x, y)) {
-                            //placerPartisans=true;
-                            carteEnMain.setPosition(new Point(x, y));
-                            fenetre.getCarcassonne().joueurSuivant();
-                            fenetre.placerCarte(carteEnMain);
-                            fenetre.getCarcassonne().jouer();
-                        } else {
-                            fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit");
-                        }
+            verifPlacerCarte(event);
+        } else {
+            verifPlacerPartisan(event);
+        }
+    }
+
+    private void verifPlacerPartisan(MouseEvent event) {
+        if (s.equals("fenetreDeJeu")) {
+            placerPartisans=false;
+            int x = (int) event.getX() / 50;
+            int y = (int) event.getY() / 50;
+            fenetre.placerPartisan(x,y);
+        }
+    }
+
+    private void verifPlacerCarte(MouseEvent event){
+        if (s.equals("fenetreDeJeu")) {
+            if (fenetre.getCarcassonne().getP().getTaille() >= 0) {
+                setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
+                int x = (int) event.getX() / 50;
+                int y = (int) event.getY() / 50;
+                Point point = new Point(x, y);
+                if (fenetre.getlOccupee().contains(point)) {
+                    fenetre.afficheErreur("Une carte est déjà placée à cet endroit");
+                } else if (carteAdjacent(x, y)) {
+                    if (isPlacable(x, y)) {
+                        //placerPartisans=true;
+                        carteEnMain.setPosition(new Point(x, y));
+                        fenetre.getCarcassonne().joueurSuivant();
+                        fenetre.placerCarte(carteEnMain);
+                        fenetre.getCarcassonne().jouer();
                     } else {
                         fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit");
                     }
-                }
-            } else if (s == "barreInfos") {
-                if (fenetre.getCarcassonne().getP().getTaille() >= 0) {
-                    setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
-                    int x = (int) event.getX();
-                    int y = (int) event.getY();
-                    if (x > 500 && x < 550 && y > 20 && y < 70) {
-                        int nbRotation = carteEnMain.getNbRotation();
-                        nbRotation++;
-                        nbRotation = nbRotation % 4;
-                        carteEnMain.setNbRotation(nbRotation);
-                        pivoterCoteCarte(carteEnMain);
-                        fenetre.rotateCarteSuivante(carteEnMain);
-                    }
                 } else {
-                    System.out.println("Plus de carte");
+                    fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit");
                 }
             }
-        }/* else {
-            if (s == "fenetreDeJeu") {
-                placerPartisans=false;
-                int x = (int) event.getX() / 50;
-                int y = (int) event.getY() / 50;
-                fenetre.placerPartisan(x,y);
+        } else if (s.equals("barreInfos")) {
+            if (fenetre.getCarcassonne().getP().getTaille() >= 0) {
+                setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+                if (x > 500 && x < 550 && y > 20 && y < 70) {
+                    int nbRotation = carteEnMain.getNbRotation();
+                    nbRotation++;
+                    nbRotation = nbRotation % 4;
+                    carteEnMain.setNbRotation(nbRotation);
+                    pivoterCoteCarte(carteEnMain);
+                    fenetre.rotateCarteSuivante(carteEnMain);
+                }
+            } else {
+                System.out.println("Plus de carte");
             }
-        }*/
+        }
     }
 
-    public void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
+    private void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
 
     private boolean carteAdjacent(int x, int y){
         Point point = new Point(x+1, y);
@@ -129,7 +137,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         return isPlacable;
     }
 
-    public void pivoterCoteCarte(Carte carte){
+    private void pivoterCoteCarte(Carte carte){
         CoteCarte nord = carte.getNord();
         CoteCarte est = carte.getEst();
         CoteCarte sud = carte.getSud();

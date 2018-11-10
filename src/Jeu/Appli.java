@@ -12,16 +12,14 @@ import javafx.stage.Stage;
 
 public class Appli extends Application {
 
-    public static Fenetre fenetre;
-    private final int WIDTH =1000;
-    private final int HEIGHT =1000;
-
     @Override
     public void start(Stage primaryStage){
         primaryStage.setTitle("Carcassonne");
         Group root = new Group();
         Carcassonne carcasonne = new Carcassonne();
-        fenetre = new Fenetre(carcasonne, WIDTH, HEIGHT);
+        int WIDTH = 1000;
+        int HEIGHT = 1000;
+        Fenetre fenetre = new Fenetre(carcasonne, WIDTH, HEIGHT);
         root.getChildren().add(fenetre);
         //primaryStage.setScene(new Scene(root, carcasonne.getNB_CASES()*50, carcasonne.getNB_CASES()*50, Color.LIGHTGREY));
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));

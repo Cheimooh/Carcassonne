@@ -12,13 +12,13 @@ public class Joueur {
     private int pointsVille;
     private int pointsAbbaye;
     private Carte carteEnMain;
-    public static Pioche p;
+    private static Pioche p;
     private Color color;
     private int nombrePartisansRestants;
 
     public Joueur (int newId, Pioche newP, Color newColor){
         this.idJoueur = newId;
-        this.p = newP;
+        p = newP;
         this.color = newColor;
         nombrePartisansRestants=8;
     }
