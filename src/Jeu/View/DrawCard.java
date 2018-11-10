@@ -1,7 +1,6 @@
 package Jeu.View;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class DrawCard {
     Image img;
@@ -15,5 +14,7 @@ public class DrawCard {
         this.img180 = img180;
         this.img270 = img270;
     }
+
+    public Image getImg(){return this.img;}
 
 }

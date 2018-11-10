@@ -33,6 +33,7 @@ public class Fenetre extends Parent {
     private Carcassonne carcassonne;
     private int width;
     private int height;
+    private Image prochaineCarte;
 
     public Fenetre(Carcassonne newCarcassonne, int width, int height){
         this.width=width;
@@ -88,11 +89,11 @@ public class Fenetre extends Parent {
         if (lDispo.contains(carte.getPosition())){ lDispo.remove(carte.getPosition()); }
 
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
-        Image prochaineCarte = carcassonne.getP().getProchaineCarte().getDraw().img;
+        prochaineCarte = carcassonne.getP().getProchaineCarte().getDraw().img;
         drawInformations(prochaineCarte);
     }
 
-    public void testLDispo(Point p){
+    private void testLDispo(Point p){
         if ( !lDispo.contains(p) && !lOccupee.contains(p)) {
             lDispo.add(new Point((int)p.getX(), (int)p.getY()));
             queueImage.addLast(placeDispo.getImagePlus());
@@ -110,7 +111,7 @@ public class Fenetre extends Parent {
             s = "Fin de partie";
         }
         else {
-            graphicsContextInfos.drawImage(prochaineCarte, (width/2), 20, 50, 50);
+            graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 20, 50, 50);
 
             int numJoueur = carcassonne.getNumJoueur();
             s = "Joueur " + numJoueur;
@@ -121,13 +122,13 @@ public class Fenetre extends Parent {
 
             if (nbPartisans>0){
                 graphicsContextInfos.setFill(color);
-                graphicsContextInfos.fillOval((width/4)*3, 25, 50, 50);
+                graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
                 graphicsContextInfos.setFill(Color.BLACK);
                 graphicsContextInfos.strokeText("x "+nbPartisans, (width/4)*3+50, 35);
             }
 
         }
-        graphicsContextInfos.strokeText(s, (width/4), 50);
+        graphicsContextInfos.strokeText(s, (width/4.), 50);
     }
 
     private void drawLigneSeparatrice() {
@@ -168,5 +169,10 @@ public class Fenetre extends Parent {
         String nom = carcassonne.getTabJoueur()[numJoueur].getNom();
         System.out.println(nom+" place un partisan en "+x+" "+y);
         carcassonne.getTabJoueur()[numJoueur].placePartisan();
+    }
+
+    public void afficheErreur(String erreur){
+        drawInformations(prochaineCarte);
+        graphicsContextInfos.strokeText(erreur, (width/2.)-70, 80);
     }
 }
