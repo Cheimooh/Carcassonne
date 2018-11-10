@@ -49,7 +49,6 @@ public class Fenetre extends Parent {
         placerCarte(carcassonne.getCarteDeBase());
         this.getChildren().add(canvas);
         this.getChildren().add(infos);
-        carcassonne.jouer();
     }
 
     public ArrayList<Point> getlOccupee() {
@@ -165,7 +164,7 @@ public class Fenetre extends Parent {
     }
 
     public void afficheErreur(String erreur){
-        drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
+        //drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
         graphicsContextInfos.strokeText(erreur, (width/2.)-70, 80);
     }
 }

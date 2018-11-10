@@ -48,7 +48,6 @@ public class Carcassonne {
         pointCarteMap.put(new Point(10,10), carteDeBase);
 
         attribuerJoueur(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
-        jouer();
     }
 
     private void attribuerJoueur(int nbJoueur, String[] nomJoueur){

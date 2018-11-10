@@ -63,6 +63,8 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 } else {
                     fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit");
                 }
+            }else {
+                System.out.println("Plus de carte");
             }
         } else if (s.equals("barreInfos")) {
             if (fenetre.getCarcassonne().getP().getTaille() >= 0) {

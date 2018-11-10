@@ -24,7 +24,7 @@ public class Appli extends Application {
         //primaryStage.setScene(new Scene(root, carcasonne.getNB_CASES()*50, carcasonne.getNB_CASES()*50, Color.LIGHTGREY));
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
         primaryStage.show();
-        //carcasonne.jouer();
+        carcasonne.jouer();
     }
 
 
