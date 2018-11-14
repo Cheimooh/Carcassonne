@@ -2,6 +2,9 @@ package Jeu.Model;
 
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum TypeCarte {
     /*  P = Prairie
      *  C = Chemin
@@ -115,7 +118,7 @@ public enum TypeCarte {
     private Image img180;
     private Image img270;
     private boolean isBlason;
-    private String[] zones;
+    private List<String> zones;
     private String zoneCentrale;
 
     TypeCarte(CoteCarte nord, CoteCarte est, CoteCarte sud, CoteCarte ouest,
@@ -130,12 +133,12 @@ public enum TypeCarte {
         this.img180=img180;
         this.img270=img270;
         this.isBlason=isBlason;
-        zones = new String[8];
+        zones = new ArrayList<>();
         for (int i = 0; i < zonesInt.length; i++) {
-            if (zonesInt[i]==0) zones[i]="prairie";
-            if (zonesInt[i]==1) zones[i]="ville";
-            if (zonesInt[i]==2) zones[i]="chemin";
-            if (zonesInt[i]==3) zones[i]="prairie/ville";
+            if (zonesInt[i]==0) zones.set(i, "prairie");
+            if (zonesInt[i]==1) zones.set(i, "ville");
+            if (zonesInt[i]==2) zones.set(i, "chemin");
+            if (zonesInt[i]==3) zones.set(i, "prairie/ville");
         }
         this.zoneCentrale = zoneCentrale;
     }
@@ -158,7 +161,7 @@ public enum TypeCarte {
 
     public boolean isBlason() { return isBlason; }
 
-    public String[] getZones() { return zones; }
+    public List<String> getZones() { return zones; }
 
     public String getZoneCentrale() { return zoneCentrale; }
 }

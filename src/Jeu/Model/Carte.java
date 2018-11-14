@@ -3,6 +3,8 @@ package Jeu.Model;
 import Jeu.View.DrawCard;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Carte {
     private Point position;
@@ -10,7 +12,7 @@ public class Carte {
     private boolean isAbbaye;
     private DrawCard draw;
     private int nbRotation;
-    private String[] zones;
+    private List<String> zones;
     private String zoneCentrale;
 
     public Carte(TypeCarte typeCarte){
@@ -19,10 +21,10 @@ public class Carte {
         this.est = typeCarte.getEst();
         this.ouest = typeCarte.getOuest();
         this.draw = new DrawCard(typeCarte.getImg(), typeCarte.getImg90(), typeCarte.getImg180(), typeCarte.getImg270());
+        this.zones = new ArrayList<>();
         this.zones = typeCarte.getZones();
         this.zoneCentrale = typeCarte.getZoneCentrale();
-        if (typeCarte.getZoneCentrale().equals("abbaye")) this.isAbbaye = true;
-        else this.isAbbaye = false;
+        this.isAbbaye = typeCarte.getZoneCentrale().equals("abbaye");
         this.position = new Point();
         nbRotation=0;
     }
@@ -58,4 +60,6 @@ public class Carte {
     public void setNbRotation(int nbRotation) { this.nbRotation = nbRotation; }
 
     public boolean isAbbaye() { return isAbbaye; }
+
+    public List<String> getZones() { return zones; }
 }

@@ -146,6 +146,13 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         carte.setEst(nord);
         carte.setSud(est);
         carte.setOuest(sud);
+
+        for (int i = 0; i < 7 ; i++) {
+            carte.getZones().add(carte.getZones().get(i));
+        }
+        for (int j = 0; j < 7 ; j++) {
+            carte.getZones().remove(0);
+        }
     }
 
 }
