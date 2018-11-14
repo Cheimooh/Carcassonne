@@ -159,4 +159,6 @@ public enum TypeCarte {
     public boolean isBlason() { return isBlason; }
 
     public String[] getZones() { return zones; }
+
+    public String getZoneCentrale() { return zoneCentrale; }
 }
