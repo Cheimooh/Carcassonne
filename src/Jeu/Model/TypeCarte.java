@@ -135,10 +135,10 @@ public enum TypeCarte {
         this.isBlason=isBlason;
         zones = new ArrayList<>();
         for (int i = 0; i < zonesInt.length; i++) {
-            if (zonesInt[i]==0) zones.set(i, "prairie");
-            if (zonesInt[i]==1) zones.set(i, "ville");
-            if (zonesInt[i]==2) zones.set(i, "chemin");
-            if (zonesInt[i]==3) zones.set(i, "prairie/ville");
+            if (zonesInt[i]==0) zones.add("prairie");
+            if (zonesInt[i]==1) zones.add("ville");
+            if (zonesInt[i]==2) zones.add("chemin");
+            if (zonesInt[i]==3) zones.add("prairie/ville");
         }
         this.zoneCentrale = zoneCentrale;
     }

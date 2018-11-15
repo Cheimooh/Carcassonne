@@ -110,6 +110,11 @@ public class Fenetre extends Parent {
             int nbPartisans = carcassonne.getTabJoueur()[numJoueur-1].getNombrePartisansRestants();
             Color color = carcassonne.getTabJoueur()[numJoueur-1].getColor();
 
+            String defausse = "Defausse";
+
+            graphicsContextInfos.strokeRect(50,35,100,30);
+            graphicsContextInfos.strokeText(defausse, 70,52);
+
             if (nbPartisans>0){
                 graphicsContextInfos.setFill(color);
                 graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
@@ -164,5 +169,10 @@ public class Fenetre extends Parent {
     public void afficheErreur(String erreur){
         drawInformations(imageAffichee);
         graphicsContextInfos.strokeText(erreur, (width/2.)-(erreur.length()*(5/3.)), 90, erreur.length()*5);
+    }
+
+    public void defausserCarte() {
+        // A MODIFIER
+        carcassonne.jouer();
     }
 }

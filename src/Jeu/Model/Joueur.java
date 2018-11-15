@@ -25,8 +25,6 @@ public class Joueur {
 
     public void joue(){
         carteEnMain = piocherCarte();
-        //poserCarte();
-        //poserPartisant();
     }
 
     private Carte piocherCarte(){

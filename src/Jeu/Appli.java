@@ -21,7 +21,6 @@ public class Appli extends Application {
         int HEIGHT = 1000;
         Fenetre fenetre = new Fenetre(carcasonne, WIDTH, HEIGHT);
         root.getChildren().add(fenetre);
-        //primaryStage.setScene(new Scene(root, carcasonne.getNB_CASES()*50, carcasonne.getNB_CASES()*50, Color.LIGHTGREY));
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
         primaryStage.show();
         carcasonne.jouer();
