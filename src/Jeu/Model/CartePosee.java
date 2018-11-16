@@ -1,6 +1,8 @@
 package Jeu.Model;
 
 import java.awt.*;
+import java.util.List;
+
 import javafx.scene.image.Image;
 
 public class CartePosee {
@@ -9,15 +11,17 @@ public class CartePosee {
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
     private Image imageCarte;
+    private List<String> listZones;
 
     public CartePosee(Carte carte){
-        this.nord = carte.getNord();
-        this.sud = carte.getSud();
-        this.est = carte.getEst();
-        this.ouest = carte.getOuest();
-        this.isAbbaye = carte.isAbbaye();
-        this.imageCarte = setImageCarte(carte);
-        this.position = carte.getPosition();
+        nord = carte.getNord();
+        sud = carte.getSud();
+        est = carte.getEst();
+        ouest = carte.getOuest();
+        isAbbaye = carte.isAbbaye();
+        imageCarte = setImageCarte(carte);
+        position = carte.getPosition();
+        listZones = carte.getZones();
     }
 
     private Image setImageCarte(Carte carte){
@@ -54,4 +58,6 @@ public class CartePosee {
     public boolean isAbbaye() { return isAbbaye; }
 
     public Image getImageCarte() { return imageCarte; }
+
+    public List<String> getListZones() { return listZones; }
 }

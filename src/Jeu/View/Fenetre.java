@@ -45,6 +45,7 @@ public class Fenetre extends Parent {
         placeDispo = new PlaceDispo();
         queueImage = new ArrayDeque<>();
         placerCarte(carcassonne.getCarteDeBase());
+        afficherCarteSuivant();
         this.getChildren().add(canvas);
         this.getChildren().add(infos);
     }
@@ -78,7 +79,6 @@ public class Fenetre extends Parent {
         carcassonne.getListPointDispo().remove(cartePosee.getPosition());
 
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
-        drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
     }
 
     private void testLDispo(Point p){
@@ -176,5 +176,9 @@ public class Fenetre extends Parent {
         carcassonne.getDefausse().add(carte);
         carcassonne.jouer();
         drawInformations(carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
+    }
+
+    public void afficherCarteSuivant() {
+        drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
     }
 }

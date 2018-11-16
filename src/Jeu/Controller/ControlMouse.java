@@ -18,6 +18,9 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     private String s;
     private boolean placerPartisans;
 
+    private int xCartePlacee;
+    private int yCartePlacee;
+
     public ControlMouse(Fenetre fenetre, String s){
         this.fenetre = fenetre;
         this.s=s;
@@ -35,10 +38,18 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     private void verifPlacerPartisan(MouseEvent event) {
         if (s.equals("fenetreDeJeu")) {
-            placerPartisans=false;
             int x = (int) event.getX() / 50;
             int y = (int) event.getY() / 50;
-            fenetre.placerPartisan(x,y);
+            if(x==xCartePlacee && y==yCartePlacee){
+                //fenetre.placerPartisan(x,y);
+                placerPartisans=false;
+                System.out.println(x);
+                System.out.println(y);
+                fenetre.getCarcassonne().joueurSuivant();
+                fenetre.afficherCarteSuivant();
+                fenetre.getCarcassonne().jouer();
+            }
+            else fenetre.afficheErreur("Placer partisant sur la carte placée");
         }
     }
 
@@ -46,18 +57,16 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         if (s.equals("fenetreDeJeu")) {
             if (fenetre.getCarcassonne().getP().getTaille() >= 0) {
                 setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
-                int x = (int) event.getX() / 50;
-                int y = (int) event.getY() / 50;
-                Point point = new Point(x, y);
+                xCartePlacee = (int) event.getX() / 50;
+                yCartePlacee = (int) event.getY() / 50;
+                Point point = new Point(xCartePlacee, yCartePlacee);
                 if (fenetre.getCarcassonne().getListPointOccupe().contains(point)) {
                     fenetre.afficheErreur("Une carte est déjà placée à cet endroit");
-                } else if (carteAdjacent(x, y)) {
-                    if (isPlacable(x, y)) {
-                        //placerPartisans=true;
-                        carteEnMain.setPosition(new Point(x, y));
-                        fenetre.getCarcassonne().joueurSuivant();
+                } else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
+                    if (isPlacable(xCartePlacee, yCartePlacee)) {
+                        placerPartisans=true;
+                        carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
                         fenetre.placerCarte(carteEnMain);
-                        fenetre.getCarcassonne().jouer();
                     } else {
                         fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit");
                     }
