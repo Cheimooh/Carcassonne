@@ -171,8 +171,10 @@ public class Fenetre extends Parent {
         graphicsContextInfos.strokeText(erreur, (width/2.)-(erreur.length()*(5/3.)), 90, erreur.length()*5);
     }
 
-    public void defausserCarte() {
+    public void defausserCarte(Carte carte) {
         // A MODIFIER
+        carcassonne.getDefausse().add(carte);
         carcassonne.jouer();
+        drawInformations(carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
     }
 }

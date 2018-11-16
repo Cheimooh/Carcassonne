@@ -79,7 +79,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                     fenetre.rotateCarteSuivante(carteEnMain);
                 }
                 if (x > 50 && x<150 && y>35 && y<65){
-                    fenetre.defausserCarte();
+                    fenetre.defausserCarte(carteEnMain);
                 }
             }
         }

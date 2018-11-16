@@ -24,6 +24,7 @@ public class Carcassonne {
     private Map<Point, CartePosee> pointCarteMap; // Map qui contient pour chaque point sa Carte
     private ArrayList<Point> listPointDispo;
     private ArrayList<Point> listPointOccupe;
+    private ArrayList<Carte> defausse;
 
     private Carte carteDeBase;
 
@@ -33,6 +34,7 @@ public class Carcassonne {
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
+        defausse = new ArrayList<>();
         p = new Pioche(NB_CARTES);
         carteDeBase = new Carte(TypeCarte.cartePPPP);
         //carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
@@ -100,4 +102,6 @@ public class Carcassonne {
     public ArrayList<Point> getListPointDispo() { return listPointDispo; }
 
     public ArrayList<Point> getListPointOccupe() { return listPointOccupe; }
+
+    public ArrayList<Carte> getDefausse() { return defausse; }
 }
