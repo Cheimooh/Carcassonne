@@ -12,6 +12,8 @@ import Jeu.Model.CartePosee;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -166,9 +168,12 @@ public class Fenetre extends Parent {
         carcassonne.getTabJoueur()[numJoueur].placePartisan();
     }
 
-    public void afficheErreur(String erreur){
-        drawInformations(imageAffichee);
-        graphicsContextInfos.strokeText(erreur, (width/2.)-(erreur.length()*(5/3.)), 90, erreur.length()*5);
+    public void afficheErreur(String erreur, String title){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+
+        alert.setContentText(erreur);
+        alert.showAndWait();
     }
 
     public void defausserCarte(Carte carte) {

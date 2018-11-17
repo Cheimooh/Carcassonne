@@ -49,7 +49,8 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 fenetre.afficherCarteSuivant();
                 fenetre.getCarcassonne().jouer();
             }
-            else fenetre.afficheErreur("Placer partisant sur la carte placée");
+            else fenetre.afficheErreur("Votre partisan doit être placé sur la carte que vous venez de placer",
+                    "Placement de partisans impossible");
         }
     }
 
@@ -61,17 +62,17 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 yCartePlacee = (int) event.getY() / 50;
                 Point point = new Point(xCartePlacee, yCartePlacee);
                 if (fenetre.getCarcassonne().getListPointOccupe().contains(point)) {
-                    fenetre.afficheErreur("Une carte est déjà placée à cet endroit");
+                    fenetre.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
                 } else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
                     if (isPlacable(xCartePlacee, yCartePlacee)) {
                         placerPartisans=true;
                         carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
                         fenetre.placerCarte(carteEnMain);
                     } else {
-                        fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit");
+                        fenetre.afficheErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
                     }
                 } else {
-                    fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit");
+                    fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");
                 }
             }
         } else if (s.equals("barreInfos")) {
