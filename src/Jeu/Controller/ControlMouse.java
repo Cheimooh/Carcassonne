@@ -24,12 +24,12 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     public ControlMouse(Fenetre fenetre, String s){
         this.fenetre = fenetre;
         this.s=s;
-        placerPartisans=false;
+        placerPartisans=true;
     }
 
     @Override
     public void handle(MouseEvent event) {
-        if (!placerPartisans) {
+        if (placerPartisans) {
             verifPlacerCarte(event);
         } else {
             verifPlacerPartisan(event);
@@ -38,13 +38,11 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     private void verifPlacerPartisan(MouseEvent event) {
         if (s.equals("fenetreDeJeu")) {
-            int x = (int) event.getX() / 50;
-            int y = (int) event.getY() / 50;
-            if(x==xCartePlacee && y==yCartePlacee){
-                //fenetre.placerPartisan(x,y);
-                placerPartisans=false;
-                System.out.println(x);
-                System.out.println(y);
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            if(x/50==xCartePlacee && y/50==yCartePlacee){
+                fenetre.placerPartisan(x,y);
+                placerPartisans=true;
                 fenetre.getCarcassonne().joueurSuivant();
                 fenetre.afficherCarteSuivant();
                 fenetre.getCarcassonne().jouer();
@@ -65,7 +63,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                     fenetre.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
                 } else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
                     if (isPlacable(xCartePlacee, yCartePlacee)) {
-                        placerPartisans=true;
+                        placerPartisans=false;
                         carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
                         fenetre.placerCarte(carteEnMain);
                     } else {

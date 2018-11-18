@@ -162,9 +162,25 @@ public class Fenetre extends Parent {
     }
 
     public void placerPartisan(int x, int y) {
-        int numJoueur = (carcassonne.getNumJoueur()-2)%4;
+        int numJoueur = (carcassonne.getNumJoueur()-1);
         String nom = carcassonne.getTabJoueur()[numJoueur].getNom();
-        System.out.println(nom+" place un partisan en "+x+" "+y);
+        x = x-(x /50)*50;
+        y = y-(y /50)*50;
+        String s="";
+        if (y<50/3){
+            if (x<50/3) s+=" place un partisan dans le coin en haut à gauche (zone 1).";
+            else if (x<(50/3)*2) s+=" place un partisan en haut au centre (zone 2).";
+            else s+=" place un partisan en haut à droite (zone 3).";
+        } else if (y<(50/3)*2) {
+            if (x<50/3) s+=" place un partisan dans le coin au milieu à gauche (zone 8).";
+            else if (x<(50/3)*2) s+=" place un partisan sur le centre de la carte (zone centrale).";
+            else s+=" place un partisan au milieu à droite (zone 4).";
+        } else {
+            if (x<50/3) s+=" place un partisan dans le coin en bas à gauche (zone 7).";
+            else if (x<(50/3)*2) s+=" place un partisan en bas au centre (zone 6).";
+            else s+=" place un partisan en bas à droite (zone 5).";
+        }
+        System.out.println(nom+s);
         carcassonne.getTabJoueur()[numJoueur].placePartisan();
     }
 
