@@ -118,7 +118,7 @@ public enum TypeCarte {
     private Image img180;
     private Image img270;
     private boolean isBlason;
-    private List<String> zones;
+    private ArrayList<String> zones;
     private String zoneCentrale;
 
     TypeCarte(CoteCarte nord, CoteCarte est, CoteCarte sud, CoteCarte ouest,
@@ -161,7 +161,7 @@ public enum TypeCarte {
 
     public boolean isBlason() { return isBlason; }
 
-    public List<String> getZones() { return zones; }
+    public ArrayList<String> getZones() { return zones; }
 
     public String getZoneCentrale() { return zoneCentrale; }
 }

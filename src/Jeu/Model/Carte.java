@@ -12,7 +12,7 @@ public class Carte {
     private boolean isAbbaye;
     private DrawCard draw;
     private int nbRotation;
-    private List<String> zones;
+    private ArrayList<String> zones;
     private String zoneCentrale;
 
     public Carte(TypeCarte typeCarte){
@@ -61,5 +61,7 @@ public class Carte {
 
     public boolean isAbbaye() { return isAbbaye; }
 
-    public List<String> getZones() { return zones; }
+    public ArrayList<String> getZones() { return zones; }
+
+    public String getZoneCentrale() { return zoneCentrale; }
 }

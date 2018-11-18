@@ -6,10 +6,8 @@ import Jeu.Model.CoteCarte;
 import Jeu.View.Fenetre;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
 import java.awt.*;
-
-//
+import java.util.ArrayList;
 
 public class ControlMouse implements EventHandler<MouseEvent> {
 
@@ -41,7 +39,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             int x = (int) event.getX();
             int y = (int) event.getY();
             if(x/50==xCartePlacee && y/50==yCartePlacee){
-                fenetre.placerPartisan(x,y);
+                getZonePlacementPartisan(x,y);
                 placerPartisans=true;
                 fenetre.getCarcassonne().joueurSuivant();
                 fenetre.afficherCarteSuivant();
@@ -50,6 +48,30 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             else fenetre.afficheErreur("Votre partisan doit être placé sur la carte que vous venez de placer",
                     "Placement de partisans impossible");
         }
+    }
+
+    private void getZonePlacementPartisan(int x, int y) {
+        x = x-(x /50)*50;
+        y = y-(y /50)*50;
+        int numZone;
+        if (y<50/3){
+            if (x<50/3) numZone=1;
+            else if (x<(50/3)*2) numZone=2;
+            else numZone=3;
+        } else if (y<(50/3)*2) {
+            if (x<50/3) numZone=8;
+            else if (x<(50/3)*2) numZone=9;
+            else numZone=4;
+        } else {
+            if (x<50/3) numZone=7;
+            else if (x<(50/3)*2) numZone=6;
+            else numZone=5;
+        }
+        ArrayList<String> listeZones = carteEnMain.getZones();
+        String s = "";
+        if (numZone==9) s+= carteEnMain.getZoneCentrale();
+        else s+= listeZones.get(numZone);
+        fenetre.placerPartisan(numZone, s);
     }
 
     private void verifPlacerCarte(MouseEvent event){
