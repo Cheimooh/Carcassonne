@@ -161,10 +161,11 @@ public class Fenetre extends Parent {
         return image;
     }
 
-    public void placerPartisan(int numZone, String zone) {
+    public void placerPartisan(int x, int y) {
         int numJoueur = (carcassonne.getNumJoueur()-1);
-        String nom = carcassonne.getTabJoueur()[numJoueur].getNom();
-        System.out.println(nom+" place un partisan dans la zone "+numZone+". Cette zone est un/une "+zone+".");
+        Color colorJoueur = carcassonne.getTabJoueur()[numJoueur].getColor();
+        graphicsContext.setFill(colorJoueur);
+        graphicsContext.fillOval(x-5, y-5, 10, 10);
         carcassonne.getTabJoueur()[numJoueur].placePartisan();
     }
 

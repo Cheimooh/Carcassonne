@@ -39,7 +39,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             int x = (int) event.getX();
             int y = (int) event.getY();
             if(x/50==xCartePlacee && y/50==yCartePlacee){
-                getZonePlacementPartisan(x,y);
+                getZonePlacementPartisan(x, y, x, y);
                 placerPartisans=true;
                 fenetre.getCarcassonne().joueurSuivant();
                 fenetre.afficherCarteSuivant();
@@ -50,7 +50,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         }
     }
 
-    private void getZonePlacementPartisan(int x, int y) {
+    private void getZonePlacementPartisan(int x, int y, int xClique, int yClique) {
         x = x-(x /50)*50;
         y = y-(y /50)*50;
         int numZone;
@@ -70,8 +70,8 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         ArrayList<String> listeZones = carteEnMain.getZones();
         String s = "";
         if (numZone==9) s+= carteEnMain.getZoneCentrale();
-        else s+= listeZones.get(numZone);
-        fenetre.placerPartisan(numZone, s);
+        else s+= listeZones.get(numZone-1);
+        fenetre.placerPartisan(xClique, yClique);
     }
 
     private void verifPlacerCarte(MouseEvent event){
@@ -180,12 +180,10 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         carte.setSud(est);
         carte.setOuest(sud);
 
-        for (int i = 0; i < 7 ; i++) {
-            carte.getZones().add(carte.getZones().get(i));
-        }
-        for (int j = 0; j < 7 ; j++) {
-            carte.getZones().remove(0);
-        }
+        carte.getZones().add(0, carte.getZones().get(6));
+        carte.getZones().add(1, carte.getZones().get(7));
+        carte.getZones().remove(9);
+        carte.getZones().remove(8);
     }
 
 }
