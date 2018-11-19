@@ -43,6 +43,7 @@ public class Fenetre extends Parent {
         canvas.setOnMouseClicked(controlMouse);
         infos.setOnMouseClicked(controlMouseInfos);
         graphicsContext = canvas.getGraphicsContext2D();
+        //graphicsContextInfos.drawImage(new Image("Jeu/imgCartes/fond.jpg"),0,0,width,height );
         graphicsContextInfos = infos.getGraphicsContext2D();
         placeDispo = new PlaceDispo();
         queueImage = new ArrayDeque<>();
@@ -95,6 +96,7 @@ public class Fenetre extends Parent {
 
     private void drawInformations(Image prochaineCarte){
         graphicsContextInfos.clearRect(0,0,width,100);
+        graphicsContextInfos.setFill(Color.BLACK);
         drawLigneSeparatrice();
 
         String s;
@@ -103,7 +105,7 @@ public class Fenetre extends Parent {
             s = "Fin de partie";
         }
         else {
-            graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 20, 50, 50);
+            graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 30, 50, 50);
 
             int numJoueur = carcassonne.getNumJoueur();
             s = "Joueur " + numJoueur;
@@ -114,17 +116,20 @@ public class Fenetre extends Parent {
 
             String defausse = "Defausse";
 
-            graphicsContextInfos.strokeRect(50,35,100,30);
-            graphicsContextInfos.strokeText(defausse, 70,52);
+            graphicsContextInfos.strokeRect(width*3/4,35,100,30);
+            graphicsContextInfos.strokeText(defausse, width*3/4+20,52);
 
             if (nbPartisans>0){
-                graphicsContextInfos.setFill(color);
-                graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
-                graphicsContextInfos.setFill(Color.BLACK);
-                graphicsContextInfos.strokeText("x "+nbPartisans, (width/4.)*3+50, 35);
+                // A DEPLACER OUAIS
+
+                //graphicsContextInfos.setFill(color);
+                //graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
+                //graphicsContextInfos.setFill(Color.BLACK);
+                //graphicsContextInfos.strokeText("x "+nbPartisans, (width/4.)*3+50, 35);
             }
         }
-        graphicsContextInfos.strokeText(s, (width/4.), 50);
+        graphicsContextInfos.strokeText(s, (width/2.), 15);
+        //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
         this.imageAffichee=prochaineCarte;
     }
 

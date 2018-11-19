@@ -97,7 +97,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                if (x > 500 && x < 550 && y > 20 && y < 70) {
+                if (x > 500 && x < 550 && y > 30 && y < 80) {
                     int nbRotation = carteEnMain.getNbRotation();
                     nbRotation++;
                     nbRotation = nbRotation % 4;
@@ -105,7 +105,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                     pivoterCoteCarte(carteEnMain);
                     fenetre.rotateCarteSuivante(carteEnMain);
                 }
-                if (x > 50 && x<150 && y>35 && y<65){
+                if (x > 3000/4 && x<3000/4+100 && y>35 && y<65){
                     fenetre.defausserCarte(carteEnMain);
                 }
             }
