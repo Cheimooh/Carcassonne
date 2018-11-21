@@ -18,7 +18,7 @@ public class Appli extends Application {
         Group root = new Group();
         Carcassonne carcasonne = new Carcassonne();
         int WIDTH = 1000;
-        int HEIGHT = 1000;
+        int HEIGHT = 700;
         Fenetre fenetre = new Fenetre(carcasonne, WIDTH, HEIGHT);
         root.getChildren().add(fenetre);
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));

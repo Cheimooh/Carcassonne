@@ -6,6 +6,7 @@ package Jeu.View;
 //
 
 import Jeu.Controller.ControlMouse;
+import Jeu.Controller.ControlMouseInfos;
 import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
 import Jeu.Model.CartePosee;
@@ -38,8 +39,8 @@ public class Fenetre extends Parent {
         carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
         Canvas infos = new Canvas(width, 100);
-        ControlMouse controlMouse = new ControlMouse(this, "fenetreDeJeu");
-        ControlMouse controlMouseInfos = new ControlMouse(this, "barreInfos");
+        ControlMouse controlMouse = new ControlMouse(this);
+        ControlMouseInfos controlMouseInfos = new ControlMouseInfos(this, controlMouse);
         canvas.setOnMouseClicked(controlMouse);
         infos.setOnMouseClicked(controlMouseInfos);
         graphicsContext = canvas.getGraphicsContext2D();
@@ -94,7 +95,42 @@ public class Fenetre extends Parent {
         }
     }
 
-    private void drawInformations(Image prochaineCarte){
+    private void drawInformationsCarte(Image prochaineCarte){
+        graphicsContextInfos.clearRect(0,0,width,100);
+        graphicsContextInfos.setFill(Color.BLACK);
+        drawLigneSeparatrice();
+
+        String s;
+
+        if(carcassonne.getP().getTaille()<=0){
+            s = "Fin de partie";
+        }
+        else {
+            graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 30, 50, 50);
+
+            int numJoueur = carcassonne.getNumJoueur();
+            s = "Joueur " + numJoueur;
+            s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
+
+            String defausse = "Defausser ma carte";
+            String voirPioche = "Pioche";
+            String voirDefausse = "Défausse";
+
+            graphicsContextInfos.strokeRect(width/7,15, 100,30);
+            graphicsContextInfos.strokeText(voirPioche, width/7+20,32);
+
+            graphicsContextInfos.strokeRect(width/7,55,100,30);
+            graphicsContextInfos.strokeText(voirDefausse, width/7+20,72);
+
+            graphicsContextInfos.strokeRect(width*3/4,35,140,30);
+            graphicsContextInfos.strokeText(defausse, width*3/4+20,52);
+        }
+        graphicsContextInfos.strokeText(s, (width/2.), 15);
+        //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
+        this.imageAffichee=prochaineCarte;
+    }
+
+    private void drawInformationsPartisans(Image prochaineCarte){
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
         drawLigneSeparatrice();
@@ -141,7 +177,7 @@ public class Fenetre extends Parent {
 
     public void rotateCarteSuivante(Carte carte){
         Image image = getImage(carte);
-        drawInformations(image);
+        drawInformationsCarte(image);
     }
 
     private Image getImage(Carte carte){
@@ -228,10 +264,10 @@ public class Fenetre extends Parent {
         // A MODIFIER
         carcassonne.getDefausse().add(carte);
         carcassonne.jouer();
-        drawInformations(carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
+        drawInformationsCarte(carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
     }
 
     public void afficherCarteSuivant() {
-        drawInformations(getImage(carcassonne.getP().getProchaineCarte()));
+        drawInformationsCarte(getImage(carcassonne.getP().getProchaineCarte()));
     }
 }
