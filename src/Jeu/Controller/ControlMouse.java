@@ -2,8 +2,7 @@ package Jeu.Controller;
 
 import Jeu.Model.Carte;
 import Jeu.Model.CartePosee;
-import Jeu.Model.CoteCarte;
-import Jeu.View.Fenetre;
+import Jeu.View.FenetreJeu;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import java.awt.*;
@@ -11,15 +10,15 @@ import java.util.ArrayList;
 
 public class ControlMouse implements EventHandler<MouseEvent> {
 
-    private Fenetre fenetre;
+    private FenetreJeu fenetreJeu;
     private Carte carteEnMain;
     private boolean placerPartisans;
 
     private int xCartePlacee;
     private int yCartePlacee;
 
-    public ControlMouse(Fenetre fenetre){
-        this.fenetre = fenetre;
+    public ControlMouse(FenetreJeu fenetreJeu){
+        this.fenetreJeu = fenetreJeu;
         placerPartisans=true;
     }
 
@@ -38,11 +37,11 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         if(x/50==xCartePlacee && y/50==yCartePlacee){
             getZonePlacementPartisan(x, y);
             placerPartisans=true;
-            fenetre.getCarcassonne().joueurSuivant();
-            fenetre.afficherCarteSuivant();
-            fenetre.getCarcassonne().jouer();
+            fenetreJeu.getCarcassonne().joueurSuivant();
+            fenetreJeu.getBarreInfos().afficherCarteSuivant();
+            fenetreJeu.getCarcassonne().jouer();
         }
-        else fenetre.afficheErreur("Votre partisan doit être placé sur la carte que vous venez de placer",
+        else fenetreJeu.afficheErreur("Votre partisan doit être placé sur la carte que vous venez de placer",
                 "Placement de partisans impossible");
     }
 
@@ -64,75 +63,75 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             else numZone=5;
         }
         ArrayList<String> listeZones = carteEnMain.getZones();
-        fenetre.placerPartisan(numZone);
+        fenetreJeu.placerPartisan(numZone);
     }
 
     private void verifPlacerCarte(MouseEvent event){
-        if (fenetre.getCarcassonne().getP().getTaille() >= 0) {
-            setCarteEnMain(fenetre.getCarcassonne().getTabJoueur()[fenetre.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
+        if (fenetreJeu.getCarcassonne().getP().getTaille() >= 0) {
+            setCarteEnMain(fenetreJeu.getCarcassonne().getTabJoueur()[fenetreJeu.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
             xCartePlacee = (int) event.getX() / 50;
             yCartePlacee = (int) event.getY() / 50;
             Point point = new Point(xCartePlacee, yCartePlacee);
-            if (fenetre.getCarcassonne().getListPointOccupe().contains(point)) {
-                fenetre.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
+            if (fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) {
+                fenetreJeu.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
             } else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
                 if (isPlacable(xCartePlacee, yCartePlacee)) {
                     placerPartisans=false;
                     carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
-                    fenetre.placerCarte(carteEnMain);
+                    fenetreJeu.placerCarte(carteEnMain);
                 } else {
-                    fenetre.afficheErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
+                    fenetreJeu.afficheErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
                 }
             } else {
-                fenetre.afficheErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");
+                fenetreJeu.afficheErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");
             }
         }
     }
 
     private boolean carteAdjacent(int x, int y){
         Point point = new Point(x+1, y);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)) return true;
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) return true;
 
         point = new Point(x-1, y);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)) return true;
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) return true;
 
         point = new Point(x, y+1);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)) return true;
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) return true;
 
         point = new Point(x, y-1);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)) return true;
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) return true;
         return false;
     }
 
     private boolean isPlacable(int x, int y) {
         boolean isPlacable = true;
         Point point = new Point(x-1, y);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)){
+            CartePosee c = fenetreJeu.getCarcassonne().getPointCarteMap().get(point);
             if (c.getEst() != carteEnMain.getOuest()){
                 isPlacable=false;
             }
         }
 
         point = new Point(x+1, y);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)){
+            CartePosee c = fenetreJeu.getCarcassonne().getPointCarteMap().get(point);
             if (c.getOuest() != carteEnMain.getEst()){
                 isPlacable=false;
             }
         }
 
         point = new Point(x, y-1);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)){
+            CartePosee c = fenetreJeu.getCarcassonne().getPointCarteMap().get(point);
             if (c.getSud() != carteEnMain.getNord()){
                 isPlacable=false;
             }
         }
 
         point = new Point(x, y+1);
-        if(fenetre.getCarcassonne().getListPointOccupe().contains(point)){
-            CartePosee c = fenetre.getCarcassonne().getPointCarteMap().get(point);
+        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)){
+            CartePosee c = fenetreJeu.getCarcassonne().getPointCarteMap().get(point);
             if (c.getNord() != carteEnMain.getSud()){
                 isPlacable=false;
             }

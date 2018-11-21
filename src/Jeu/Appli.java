@@ -1,7 +1,7 @@
 package Jeu;
 
 import Jeu.Model.Carcassonne;
-import Jeu.View.Fenetre;
+import Jeu.View.FenetreJeu;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,8 +19,8 @@ public class Appli extends Application {
         Carcassonne carcasonne = new Carcassonne();
         int WIDTH = 1000;
         int HEIGHT = 700;
-        Fenetre fenetre = new Fenetre(carcasonne, WIDTH, HEIGHT);
-        root.getChildren().add(fenetre);
+        FenetreJeu fenetreJeu = new FenetreJeu(carcasonne, WIDTH, HEIGHT);
+        root.getChildren().add(fenetreJeu);
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
         primaryStage.show();
         carcasonne.jouer();
