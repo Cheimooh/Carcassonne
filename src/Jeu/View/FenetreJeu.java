@@ -94,7 +94,6 @@ public class FenetreJeu extends Parent {
         int x = (int)carte.getPosition().getX();
         int y = (int)carte.getPosition().getY();
         Color colorJoueur = carcassonne.getTabJoueur()[numJoueur].getColor();
-        System.out.println(numZone);
         switch (numZone){
             case 1:
                 x=x*50+(50/6);

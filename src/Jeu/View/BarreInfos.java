@@ -13,10 +13,8 @@ public class BarreInfos {
     private GraphicsContext graphicsContextInfos;
     private Canvas infos;
 
-    private Image imageAffichee;
-
-    private int width;
-    private int height;
+    private int width; // largeur de l'image
+    private int height; // hauteur de l'image
 
     public BarreInfos(int width, int height, FenetreJeu f){
         this.width=width;
@@ -28,6 +26,9 @@ public class BarreInfos {
         graphicsContextInfos = infos.getGraphicsContext2D();
     }
 
+    /*
+     * Dessine la barre d'infos lorsque le joueur doit poser une carte
+     */
     private void drawInformationsCarte(Image prochaineCarte){
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
@@ -35,6 +36,7 @@ public class BarreInfos {
 
         String s;
 
+        //Pioche vide
         if(carcassonne.getP().getTaille()<=0){
             s = "Fin de partie";
         }
@@ -49,20 +51,23 @@ public class BarreInfos {
             String voirPioche = "Pioche";
             String voirDefausse = "Défausse";
 
+            //Affichage du "bouton" pour voir la pioche
             graphicsContextInfos.strokeRect(width/7,15, 100,30);
             graphicsContextInfos.strokeText(voirPioche, width/7+20,32);
-
+            //Affichage du "bouton" pour voir la défausse
             graphicsContextInfos.strokeRect(width/7,55,100,30);
             graphicsContextInfos.strokeText(voirDefausse, width/7+20,72);
-
+            //Affichage du "bouton" pour défausser une carte
             graphicsContextInfos.strokeRect(width*3/4,35,140,30);
             graphicsContextInfos.strokeText(defausse, width*3/4+20,52);
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
         //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
-        this.imageAffichee=prochaineCarte;
     }
 
+    /*
+     * Dessine la barre d'infos lorsque le joueur doit poser un partisan
+     */
     private void drawInformationsPartisans(Image prochaineCarte){
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
@@ -99,7 +104,6 @@ public class BarreInfos {
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
         //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
-        this.imageAffichee=prochaineCarte;
     }
 
     public void rotateCarteSuivante(Carte carte){
