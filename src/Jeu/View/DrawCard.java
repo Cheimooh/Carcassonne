@@ -3,10 +3,10 @@ package Jeu.View;
 import javafx.scene.image.Image;
 
 public class DrawCard {
-    Image img;
-    Image img90;
-    Image img180;
-    Image img270;
+    Image img; // Image non tournée
+    Image img90; // Image tournée à 90 degrés
+    Image img180; // Image tournée à 180 degrés
+    Image img270; // Image tournée à 270 degrés
 
     public DrawCard(Image newImg, Image img90, Image img180, Image img270){
         this.img = newImg;

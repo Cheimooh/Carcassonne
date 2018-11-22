@@ -1,42 +1,38 @@
 package Jeu.Model;
 
-
 import javafx.scene.paint.Color;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//
-
 public class Carcassonne {
 
     private final int NB_CARTES = 72;
-    private final int NB_CASES = NB_CARTES*2 -1;
 
     private static Pioche p;
 
-    private int nbJoueur; // nombre de joueur
-    private int numJoueur;
-    private Joueur[] tabJoueur;
+    private int nbJoueur; // Nombre de joueur
+    private int numJoueur; // Numéro du joueur courant
+    private Joueur[] tabJoueur; // Tableau de joueurs
 
     private Map<Point, CartePosee> pointCarteMap; // Map qui contient pour chaque point sa Carte
-    private ArrayList<Point> listPointDispo;
-    private ArrayList<Point> listPointOccupe;
-    private ArrayList<Carte> defausse;
+    private ArrayList<Point> listPointDispo; // Liste de point où l'on peut ajouter une carte
+    private ArrayList<Point> listPointOccupe; // Liste de point où il y a déjà une carte posée
+    private ArrayList<Carte> defausse; // Liste de carte où il y a la défausse
 
-    private Carte carteDeBase;
-
-    private boolean aJouer = false;
+    private Carte carteDeBase; // Carte posée au départ (à modifier)
 
     public Carcassonne(){
+        // Initialisation des listes et maps
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
         p = new Pioche(NB_CARTES);
+        // A MODIFIER
         carteDeBase = new Carte(TypeCarte.cartePPPP);
+
         //carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
         //listPointDispo.add(new Point(NB_CASES/2+1,NB_CASES/2));
         //listPointDispo.add(new Point(NB_CASES/2-1,NB_CASES/2));
@@ -47,10 +43,14 @@ public class Carcassonne {
         carteDeBase.setPosition(new Point(10,10));
         listPointDispo.add(carteDeBase.getPosition());
 
-        attribuerJoueur(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
+        // Attributs à modifier en fonction du menu permettant de sélectionner le nombre de joueur et leur nom
+        initialisationJoueurs(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
     }
 
-    private void attribuerJoueur(int nbJoueur, String[] nomJoueur){
+    /*
+     * Fonction qui permet d'initialiser les joueurs
+     */
+    private void initialisationJoueurs(int nbJoueur, String[] nomJoueur){
         this.nbJoueur=nbJoueur;
         tabJoueur = new Joueur[nbJoueur];
         Color[] tabCouleur = new Color[4];
@@ -65,6 +65,9 @@ public class Carcassonne {
         numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
     }
 
+    /*
+     * Demande au joueur suivant de jouer
+     */
     public void jouer(){
         for (Joueur aTabJoueur : tabJoueur) {
             if (aTabJoueur.getIdJoueur() == numJoueur) {
@@ -73,7 +76,11 @@ public class Carcassonne {
         }
     }
 
+    /*
+     * Permet de passer au joueur suivant
+     */
     public void joueurSuivant(){
+        // C'est très mal fait
         numJoueur++;
         numJoueur = numJoueur %(nbJoueur+1);
         if(numJoueur == 0){
@@ -83,19 +90,13 @@ public class Carcassonne {
 
     public Carte getCarteDeBase() { return carteDeBase; }
 
-    public int getNB_CASES() { return NB_CASES; }
+    public int getNB_CASES() { return NB_CARTES * 2 - 1; }
 
-    public Joueur[] getTabJoueur() {
-        return tabJoueur;
-    }
+    public Joueur[] getTabJoueur() { return tabJoueur; }
 
-    public int getNumJoueur() {
-        return numJoueur;
-    }
+    public int getNumJoueur() { return numJoueur; }
 
-    public Pioche getP() {
-        return p;
-    }
+    public Pioche getP() { return p; }
 
     public Map<Point, CartePosee> getPointCarteMap() { return pointCarteMap; }
 

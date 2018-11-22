@@ -12,77 +12,99 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     private FenetreJeu fenetreJeu;
     private Carte carteEnMain;
-    private boolean placerPartisans;
+    private boolean placerCarte; // Booléen qui indique si c'est le moment de placer une carte ou non
+                                 // Si non, il faut placer un partisan
 
-    private int xCartePlacee;
-    private int yCartePlacee;
+    private int xCartePlacee; // Position x de la dernière carte placée
+    private int yCartePlacee; // Position y de la dernière carte placée
 
     public ControlMouse(FenetreJeu fenetreJeu){
         this.fenetreJeu = fenetreJeu;
-        placerPartisans=true;
+        placerCarte=true;
     }
 
+    /*
+     * S'active si l'on clique sur un endroit de la fenêtre de jeu
+     */
     @Override
     public void handle(MouseEvent event) {
-        if (placerPartisans) {
+        if (placerCarte) {
             verifPlacerCarte(event);
         } else {
             verifPlacerPartisan(event);
         }
     }
 
+    /*
+     * Si l'on doit placer un partisan sur la fenêtre, on appelle cette fonction
+     */
     private void verifPlacerPartisan(MouseEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
+        // Si l'on clique sur la carte placée précédemment
         if(x/50==xCartePlacee && y/50==yCartePlacee){
             getZonePlacementPartisan(x, y);
-            placerPartisans=true;
+            placerCarte=true;
             fenetreJeu.getCarcassonne().joueurSuivant();
             fenetreJeu.getBarreInfos().afficherCarteSuivant();
             fenetreJeu.getCarcassonne().jouer();
         }
+        // Erreur si l'on clique à un autre endroit que l'endroit où se trouve la carte précédemment placée
         else fenetreJeu.afficheErreur("Votre partisan doit être placé sur la carte que vous venez de placer",
                 "Placement de partisans impossible");
     }
 
+    /*
+     * Récupère la zone où l'on clique
+     */
     private void getZonePlacementPartisan(int x, int y) {
         x = x-(x /50)*50;
         y = y-(y /50)*50;
         int numZone;
         if (y<50/3){
-            if (x<50/3) numZone=1;
-            else if (x<(50/3)*2) numZone=2;
-            else numZone=3;
+            if (x<50/3) numZone=1; // Zone en haut à gauche
+            else if (x<(50/3)*2) numZone=2; // Zone en haut au centre
+            else numZone=3; // Zone en haut à droite
         } else if (y<(50/3)*2) {
-            if (x<50/3) numZone=8;
-            else if (x<(50/3)*2) numZone=9;
-            else numZone=4;
+            if (x<50/3) numZone=8; // Zone au milieu à gauche
+            else if (x<(50/3)*2) numZone=9; // Zone au centre de la carte
+            else numZone=4; // Zone au milieu à droite
         } else {
-            if (x<50/3) numZone=7;
-            else if (x<(50/3)*2) numZone=6;
-            else numZone=5;
+            if (x<50/3) numZone=7; // Zone en bas à gauche
+            else if (x<(50/3)*2) numZone=6; // Zone en bas au centre
+            else numZone=5; // Zone en bas à droite
         }
         ArrayList<String> listeZones = carteEnMain.getZones();
         fenetreJeu.placerPartisan(numZone);
     }
 
+    /*
+     * Si l'on doit placer une carte sur la fenêtre, on appelle cette fonction
+     */
     private void verifPlacerCarte(MouseEvent event){
+        // Si la pioche n'est pas vide
         if (fenetreJeu.getCarcassonne().getP().getTaille() >= 0) {
             setCarteEnMain(fenetreJeu.getCarcassonne().getTabJoueur()[fenetreJeu.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
             xCartePlacee = (int) event.getX() / 50;
             yCartePlacee = (int) event.getY() / 50;
             Point point = new Point(xCartePlacee, yCartePlacee);
+            // Erreur s'il y a déjà une carte où l'on a cliqué
             if (fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) {
                 fenetreJeu.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
-            } else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
+            }
+            else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
                 if (isPlacable(xCartePlacee, yCartePlacee)) {
-                    placerPartisans=false;
+                    placerCarte=false;
                     carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
                     fenetreJeu.placerCarte(carteEnMain);
-                } else {
+                }
+                // Erreur si les cartes à côté ne coïncident pas
+                else {
                     fenetreJeu.afficheErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
                 }
-            } else {
+            }
+            // Erreur s'il n'y a pas de carte à côté de l'endroit où l'on clique
+            else {
                 fenetreJeu.afficheErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");
             }
         }

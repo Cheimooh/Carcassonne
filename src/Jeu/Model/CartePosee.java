@@ -2,9 +2,11 @@ package Jeu.Model;
 
 import java.awt.*;
 import java.util.List;
-
 import javafx.scene.image.Image;
 
+/*
+ * Carte qui a déjà été placée
+ */
 public class CartePosee {
 
     private Point position;
@@ -55,9 +57,5 @@ public class CartePosee {
 
     public CoteCarte getOuest() { return ouest; }
 
-    public boolean isAbbaye() { return isAbbaye; }
-
     public Image getImageCarte() { return imageCarte; }
-
-    public List<String> getListZones() { return listZones; }
 }

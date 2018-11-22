@@ -1,13 +1,11 @@
 package Jeu.Model;
 
 import Jeu.View.DrawCard;
-
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Carte {
-    private Point position;
+    private Point position; // Position de la carte
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
     private DrawCard draw;
@@ -29,9 +27,10 @@ public class Carte {
         nbRotation=0;
     }
 
-    public void placerCarte(int x, int y){
-        position.move(x, y);
-    }
+    /*
+     * Initialise la position de la carte
+     */
+    public void placerCarte(int x, int y){ position.move(x, y); }
 
     public Point getPosition() { return position; }
 
@@ -63,5 +62,4 @@ public class Carte {
 
     public ArrayList<String> getZones() { return zones; }
 
-    public String getZoneCentrale() { return zoneCentrale; }
 }

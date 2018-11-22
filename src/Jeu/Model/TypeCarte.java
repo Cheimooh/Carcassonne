@@ -134,11 +134,11 @@ public enum TypeCarte {
         this.img270=img270;
         this.isBlason=isBlason;
         zones = new ArrayList<>();
-        for (int i = 0; i < zonesInt.length; i++) {
-            if (zonesInt[i]==0) zones.add("prairie");
-            if (zonesInt[i]==1) zones.add("ville");
-            if (zonesInt[i]==2) zones.add("chemin");
-            if (zonesInt[i]==3) zones.add("prairie/ville");
+        for (int aZonesInt : zonesInt) {
+            if (aZonesInt == 0) zones.add("prairie");
+            if (aZonesInt == 1) zones.add("ville");
+            if (aZonesInt == 2) zones.add("chemin");
+            if (aZonesInt == 3) zones.add("prairie/ville");
         }
         this.zoneCentrale = zoneCentrale;
     }

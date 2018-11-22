@@ -13,8 +13,8 @@ public class BarreInfos {
     private GraphicsContext graphicsContextInfos;
     private Canvas infos;
 
-    private int width; // largeur de l'image
-    private int height; // hauteur de l'image
+    private int width; // largeur de la fenêtre
+    private int height; // hauteur de la fenêtre
 
     public BarreInfos(int width, int height, FenetreJeu f){
         this.width=width;
@@ -106,11 +106,17 @@ public class BarreInfos {
         //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
     }
 
+    /*
+     * Permet de tourner la carte sur l'affichage dans la barre d'infos
+     */
     public void rotateCarteSuivante(Carte carte){
         Image image = getImage(carte);
         drawInformationsCarte(image);
     }
 
+    /*
+     * Permet de récupérer l'image en fonction du nombre de rotation de la carte
+     */
     private Image getImage(Carte carte){
         int nbRotation=carte.getNbRotation();
         Image image;
@@ -133,6 +139,10 @@ public class BarreInfos {
         return image;
     }
 
+    /*
+     * Supprime la carte courante de l'affichage
+     * Ajoute la carte "supprimé" à la défausse
+     */
     public void defausserCarte(Carte carte) {
         // A MODIFIER
         carcassonne.getDefausse().add(carte);
@@ -140,19 +150,23 @@ public class BarreInfos {
         drawInformationsCarte(carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
     }
 
+    /*
+     * Permet d'afficher la carte suivante
+     */
     public void afficherCarteSuivant() {
         drawInformationsCarte(getImage(carcassonne.getP().getProchaineCarte()));
     }
 
+    /*
+     * Dessine la ligne séparatrice entre la fenêtre de jeu et la barre d'infos
+     */
     private void drawLigneSeparatrice() {
         graphicsContextInfos.moveTo(0,height);
         graphicsContextInfos.lineTo(width,height);
         graphicsContextInfos.stroke();
     }
 
-    public Carcassonne getCarcassonne() {
-        return carcassonne;
-    }
+    public Carcassonne getCarcassonne() { return carcassonne; }
 
     public Canvas getInfos() { return infos; }
 }
