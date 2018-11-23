@@ -68,7 +68,7 @@ public class BarreInfos {
     /*
      * Dessine la barre d'infos lorsque le joueur doit poser un partisan
      */
-    private void drawInformationsPartisans(Image prochaineCarte){
+    public void drawInformationsPartisans(){
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
         drawLigneSeparatrice();
@@ -79,8 +79,6 @@ public class BarreInfos {
             s = "Fin de partie";
         }
         else {
-            graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 30, 50, 50);
-
             int numJoueur = carcassonne.getNumJoueur();
             s = "Joueur " + numJoueur;
             s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
@@ -94,12 +92,10 @@ public class BarreInfos {
             graphicsContextInfos.strokeText(defausse, width*3/4+20,52);
 
             if (nbPartisans>0){
-                // A DEPLACER OUAIS
-
-                //graphicsContextInfos.setFill(color);
-                //graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
-                //graphicsContextInfos.setFill(Color.BLACK);
-                //graphicsContextInfos.strokeText("x "+nbPartisans, (width/4.)*3+50, 35);
+                graphicsContextInfos.setFill(color);
+                graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
+                graphicsContextInfos.setFill(Color.BLACK);
+                graphicsContextInfos.strokeText("x "+nbPartisans, (width/4.)*3+50, 35);
             }
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
