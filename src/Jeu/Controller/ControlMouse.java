@@ -110,6 +110,10 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         }
     }
 
+    /*
+     * Permet de savoir si une carte est adjacente a l'endroit où l'on clique
+     * return true si c'est le cas, false sinon
+     */
     private boolean carteAdjacent(int x, int y){
         Point point = new Point(x+1, y);
         if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) return true;
@@ -125,8 +129,13 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         return false;
     }
 
+    /*
+     * Permet de savoir si la carte courante peut etre posée où non en fonction de si elle coincide avec les cartes
+     * adjacentes ou non
+     */
     private boolean isPlacable(int x, int y) {
         boolean isPlacable = true;
+        // creer un point temporaire pour faire les verifications
         Point point = new Point(x-1, y);
         if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)){
             CartePosee c = fenetreJeu.getCarcassonne().getPointCarteMap().get(point);
