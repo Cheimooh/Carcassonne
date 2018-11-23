@@ -16,12 +16,15 @@ public class BarreInfos {
     private int width; // largeur de la fenêtre
     private int height; // hauteur de la fenêtre
 
+    private int[] tabDefausseCarte = new int[]{750, 35, 140, 30};
+    // {position x, position y, largeur, hauteur}
+
     public BarreInfos(int width, int height, FenetreJeu f){
         this.width=width;
         this.height=height;
         carcassonne = f.getCarcassonne();
         infos = new Canvas(width, height);
-        ControlMouseInfos controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse());
+        ControlMouseInfos controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
         infos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = infos.getGraphicsContext2D();
     }
@@ -52,14 +55,14 @@ public class BarreInfos {
             String voirDefausse = "Défausse";
 
             //Affichage du "bouton" pour voir la pioche
-            graphicsContextInfos.strokeRect(width/7,15, 100,30);
-            graphicsContextInfos.strokeText(voirPioche, width/7+20,32);
+            graphicsContextInfos.strokeRect(width/7.,15, 100,30);
+            graphicsContextInfos.strokeText(voirPioche, width/7.+20,32);
             //Affichage du "bouton" pour voir la défausse
-            graphicsContextInfos.strokeRect(width/7,55,100,30);
-            graphicsContextInfos.strokeText(voirDefausse, width/7+20,72);
+            graphicsContextInfos.strokeRect(width/7.,55,100,30);
+            graphicsContextInfos.strokeText(voirDefausse, width/7.+20,72);
             //Affichage du "bouton" pour défausser une carte
-            graphicsContextInfos.strokeRect(width*3/4,35,140,30);
-            graphicsContextInfos.strokeText(defausse, width*3/4+20,52);
+            graphicsContextInfos.strokeRect(tabDefausseCarte[0],tabDefausseCarte[1],tabDefausseCarte[2],tabDefausseCarte[3]);
+            graphicsContextInfos.strokeText(defausse, tabDefausseCarte[0]+20,52);
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
         //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
@@ -86,16 +89,21 @@ public class BarreInfos {
             int nbPartisans = carcassonne.getTabJoueur()[numJoueur-1].getNombrePartisansRestants();
             Color color = carcassonne.getTabJoueur()[numJoueur-1].getColor();
 
-            String defausse = "Defausse";
+            String voirPioche = "Pioche";
+            String voirDefausse = "Défausse";
 
-            graphicsContextInfos.strokeRect(width*3/4,35,100,30);
-            graphicsContextInfos.strokeText(defausse, width*3/4+20,52);
+            //Affichage du "bouton" pour voir la pioche
+            graphicsContextInfos.strokeRect(width/7.,15, 100,30);
+            graphicsContextInfos.strokeText(voirPioche, width/7.+20,32);
+            //Affichage du "bouton" pour voir la défausse
+            graphicsContextInfos.strokeRect(width/7.,55,100,30);
+            graphicsContextInfos.strokeText(voirDefausse, width/7.+20,72);
 
             if (nbPartisans>0){
                 graphicsContextInfos.setFill(color);
-                graphicsContextInfos.fillOval((width/4.)*3, 25, 50, 50);
+                graphicsContextInfos.fillOval(width/2., 25, 50, 50);
                 graphicsContextInfos.setFill(Color.BLACK);
-                graphicsContextInfos.strokeText("x "+nbPartisans, (width/4.)*3+50, 35);
+                graphicsContextInfos.strokeText("x "+nbPartisans, width/2.+50, 35);
             }
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);

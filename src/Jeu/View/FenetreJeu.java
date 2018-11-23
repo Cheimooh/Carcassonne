@@ -133,11 +133,15 @@ public class FenetreJeu extends Parent {
                 y=y*50+(150/6);
                 break;
         }
-        //Dessine le partisan sur la carte que l'on vient de poser
-        graphicsContext.setFill(colorJoueur);
-        graphicsContext.fillOval(x-5, y-5, 10, 10);
-        //Décremente le nombre de partisan du joueur
-        carcassonne.getTabJoueur()[numJoueur].placePartisan();
+        if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants()>0) {
+            //Dessine le partisan sur la carte que l'on vient de poser
+            graphicsContext.setFill(colorJoueur);
+            graphicsContext.fillOval(x - 5, y - 5, 10, 10);
+            //Décremente le nombre de partisan du joueur
+            carcassonne.getTabJoueur()[numJoueur].placePartisan();
+        } else {
+            System.out.println(carcassonne.getTabJoueur()[numJoueur].getNom()+" n'a plus de partisans !");
+        }
     }
 
     /*

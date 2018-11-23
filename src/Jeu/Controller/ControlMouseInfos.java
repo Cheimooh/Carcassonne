@@ -9,10 +9,12 @@ import javafx.scene.input.MouseEvent;
 public class ControlMouseInfos implements EventHandler<MouseEvent> {
     private BarreInfos barreInfos;
     private ControlMouse controlMouse;
+    private int[] tabDefausseCarte;
 
-    public ControlMouseInfos(BarreInfos barreInfos, ControlMouse controlMouse){
+    public ControlMouseInfos(BarreInfos barreInfos, ControlMouse controlMouse, int[] tabDefausseCarte){
         this.barreInfos = barreInfos;
         this.controlMouse = controlMouse;
+        this.tabDefausseCarte=tabDefausseCarte;
     }
 
     /*
@@ -34,7 +36,8 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                 barreInfos.rotateCarteSuivante(controlMouse.getCarteEnMain());
             }
             //si on clique sur le "bouton" defausser carte
-            if (x > 3000 / 4 && x < 3000 / 4 + 100 && y > 35 && y < 65) {
+            if (x > tabDefausseCarte[0] && x < tabDefausseCarte[0]+tabDefausseCarte[2]
+                    && y > tabDefausseCarte[1] && y < tabDefausseCarte[1]+tabDefausseCarte[3]) {
                 barreInfos.defausserCarte(controlMouse.getCarteEnMain());
             }
         }
