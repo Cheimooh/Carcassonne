@@ -10,8 +10,7 @@ public class Carte {
     private boolean isAbbaye;
     private DrawCard draw;
     private int nbRotation;
-    private ArrayList<String> zones;
-    private String zoneCentrale;
+    private ArrayList<Point> positionsCoordonnees;
 
     public Carte(TypeCarte typeCarte){
         this.nord = typeCarte.getNord();
@@ -19,12 +18,9 @@ public class Carte {
         this.est = typeCarte.getEst();
         this.ouest = typeCarte.getOuest();
         this.draw = new DrawCard(typeCarte.getImg(), typeCarte.getImg90(), typeCarte.getImg180(), typeCarte.getImg270());
-        this.zones = new ArrayList<>();
-        this.zones = typeCarte.getZones();
-        this.zoneCentrale = typeCarte.getZoneCentrale();
-        this.isAbbaye = typeCarte.getZoneCentrale().equals("abbaye");
         this.position = new Point();
         nbRotation=0;
+        positionsCoordonnees=typeCarte.getCoordonneesPartisans();
     }
 
     /*
@@ -60,7 +56,5 @@ public class Carte {
 
     public boolean isAbbaye() { return isAbbaye; }
 
-    public ArrayList<String> getZones() { return zones; }
-
-    public String getZoneCentrale() { return zoneCentrale; }
+    public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
 }

@@ -58,9 +58,10 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
         carte.setSud(est);
         carte.setOuest(sud);
 
-        carte.getZones().add(0, carte.getZones().get(6));
-        carte.getZones().add(1, carte.getZones().get(7));
-        carte.getZones().remove(9);
-        carte.getZones().remove(8);
+        for (int i = 0; i < carte.getPositionsCoordonnees().size(); i++) {
+            double x = carte.getPositionsCoordonnees().get(i).getX();
+            double y = carte.getPositionsCoordonnees().get(i).getY();
+            carte.getPositionsCoordonnees().get(i).setLocation(50-y,x);
+        }
     }
 }

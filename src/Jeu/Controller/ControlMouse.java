@@ -13,7 +13,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     private FenetreJeu fenetreJeu;
     private Carte carteEnMain;
     private boolean placerCarte; // Booléen qui indique si c'est le moment de placer une carte ou non
-                                 // Si non, il faut placer un partisan
+    // Si non, il faut placer un partisan
 
     private int xCartePlacee; // Position x de la dernière carte placée
     private int yCartePlacee; // Position y de la dernière carte placée
@@ -43,11 +43,17 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         int y = (int) event.getY();
         // Si l'on clique sur la carte placée précédemment
         if(x/50==xCartePlacee && y/50==yCartePlacee){
-            getZonePlacementPartisan(x, y);
-            placerCarte=true;
-            fenetreJeu.getCarcassonne().joueurSuivant();
-            fenetreJeu.getBarreInfos().afficherCarteSuivant();
-            fenetreJeu.getCarcassonne().jouer();
+            // Si l'on clique pas sur une zone indiquée
+            if (getZonePlacementPartisan(x,y)==-1){
+                fenetreJeu.afficheErreur("Votre partisan doit être placé sur une des positions affichées",
+                        "Placement de partisans impossible");
+            } else {
+                fenetreJeu.placerPartisan(getZonePlacementPartisan(x,y));
+                placerCarte=true;
+                fenetreJeu.getCarcassonne().joueurSuivant();
+                fenetreJeu.getBarreInfos().afficherCarteSuivant();
+                fenetreJeu.getCarcassonne().jouer();
+            }
         }
         // Erreur si l'on clique à un autre endroit que l'endroit où se trouve la carte précédemment placée
         else fenetreJeu.afficheErreur("Votre partisan doit être placé sur la carte que vous venez de placer",
@@ -57,36 +63,19 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     /*
      * Récupère la zone où l'on clique
      */
-    private void getZonePlacementPartisan(int x, int y) {
-        x = x-(x /50)*50;
-        y = y-(y /50)*50;
-        int numZone;
-        if (y<50/3){
-            if (x<50/3) numZone=1; // Zone en haut à gauche
-            else if (x<(50/3)*2) numZone=2; // Zone en haut au centre
-            else numZone=3; // Zone en haut à droite
-        } else if (y<(50/3)*2) {
-            if (x<50/3) numZone=8; // Zone au milieu à gauche
-            else if (x<(50/3)*2) numZone=9; // Zone au centre de la carte
-            else numZone=4; // Zone au milieu à droite
-        } else {
-            if (x<50/3) numZone=7; // Zone en bas à gauche
-            else if (x<(50/3)*2) numZone=6; // Zone en bas au centre
-            else numZone=5; // Zone en bas à droite
-        }
-        fenetreJeu.placerPartisan(verifZone(numZone));
-    }
-
-    private int verifZone(int numZone) {
-        String nomZoneCentrale = carteEnMain.getZoneCentrale();
-        int zoneRetour=numZone;
-        if (numZone<9){
-            String nomZone = carteEnMain.getZones().get(numZone-1);
-            if (nomZone.equals("chemin")){
-                if (!nomZoneCentrale.equals("carrefour")) zoneRetour=9;
+    private int getZonePlacementPartisan(int x, int y) {
+        int numZone=-1;
+        for (int i = 0; i <carteEnMain.getPositionsCoordonnees().size() ; i++) {
+            double xPartisan = carteEnMain.getPositionsCoordonnees().get(i).getX();
+            double yPartisan = carteEnMain.getPositionsCoordonnees().get(i).getY();
+            xPartisan+=carteEnMain.getPosition().getX()*50;
+            yPartisan+=carteEnMain.getPosition().getY()*50;
+            // Si l'on clique 3 pixels autour d'un des cercles
+            if(x>xPartisan-3 && x<xPartisan+8 && y>yPartisan-3 && y<yPartisan+8){
+                numZone=i;
             }
         }
-        return zoneRetour;
+        return numZone;
     }
 
     /*

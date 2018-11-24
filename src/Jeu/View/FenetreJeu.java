@@ -23,6 +23,7 @@ public class FenetreJeu extends Parent {
     private Carcassonne carcassonne;
     private ControlMouse controlMouse;
     private BarreInfos barreInfos;
+    private CartePosee derniereCartePosee;
 
     /*
      * Classe qui gère l'affichage de la fenêtre de jeu
@@ -48,6 +49,7 @@ public class FenetreJeu extends Parent {
     public void placerCarte(Carte carte){
         //Ajout de la carte à la liste des cartes déjà posée
         CartePosee cartePosee = new CartePosee(carte);
+        derniereCartePosee=cartePosee;
         carcassonne.getListPointOccupe().add(cartePosee.getPosition());
         carcassonne.getPointCarteMap().put(carte.getPosition(), cartePosee);
         //Image de la carte
@@ -70,6 +72,14 @@ public class FenetreJeu extends Parent {
         carcassonne.getListPointDispo().remove(cartePosee.getPosition());
         //Dessine l'image sur la fenêtre de jeu
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
+        if(carte!=carcassonne.getCarteDeBase()) {
+            graphicsContext.setFill(Color.WHITE);
+            for (int i = 0; i < carte.getPositionsCoordonnees().size(); i++) {
+                double xPartisan = carte.getPositionsCoordonnees().get(i).getX();
+                double yPartisan = carte.getPositionsCoordonnees().get(i).getY();
+                graphicsContext.strokeOval(xPartisan + (x * 50)-2.5, yPartisan + (y * 50)-2.5, 5, 5);
+            }
+        }
     }
 
     /*
@@ -93,52 +103,17 @@ public class FenetreJeu extends Parent {
         int numJoueur = (carcassonne.getNumJoueur()-1);
         if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants()>0) {
             Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
-            int x = (int)carte.getPosition().getX();
-            int y = (int)carte.getPosition().getY();
-            Color colorJoueur = carcassonne.getTabJoueur()[numJoueur].getColor();
-            switch (numZone){
-                case 1:
-                    x=x*50+(50/6);
-                    y=y*50+(50/6);
-                    break;
-                case 2:
-                    x=x*50+(150/6);
-                    y=y*50+(50/6);
-                    break;
-                case 3:
-                    x=x*50+(250/6);
-                    y=y*50+(50/6);
-                    break;
-                case 4:
-                    x=x*50+(250/6);
-                    y=y*50+(150/6);
-                    break;
-                case 5:
-                    x=x*50+(250/6);
-                    y=y*50+(250/6);
-                    break;
-                case 6:
-                    x=x*50+(150/6);
-                    y=y*50+(250/6);
-                    break;
-                case 7:
-                    x=x*50+(50/6);
-                    y=y*50+(250/6);
-                    break;
-                case 8:
-                    x=x*50+(50/6);
-                    y=y*50+(150/6);
-                    break;
-                case 9:
-                    x=x*50+(150/6);
-                    y=y*50+(150/6);
-                    break;
-            }
+            int xCarte = (int)carte.getPosition().getX();
+            int yCarte = (int)carte.getPosition().getY();
+
+            graphicsContext.drawImage(derniereCartePosee.getImageCarte(), xCarte*50,yCarte*50, 50, 50);
+
+            double xPartisan = carte.getPositionsCoordonnees().get(numZone).getX();
+            double yPartisan = carte.getPositionsCoordonnees().get(numZone).getY();
             //Dessine le partisan sur la carte que l'on vient de poser
-            graphicsContext.setFill(colorJoueur);
-            graphicsContext.fillOval(x - 5, y - 5, 10, 10);
-            //Décremente le nombre de partisan du joueur
-            carcassonne.getTabJoueur()[numJoueur].placePartisan();
+            Color color = carcassonne.getTabJoueur()[numJoueur].getColor();
+            graphicsContext.setFill(color);
+            graphicsContext.fillOval(xPartisan+(xCarte*50)-4, yPartisan+(yCarte*50)-4,8,8);
         } else {
             System.out.println(carcassonne.getTabJoueur()[numJoueur].getNom()+" n'a plus de partisans !");
         }

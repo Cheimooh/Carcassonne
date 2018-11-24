@@ -13,7 +13,6 @@ public class CartePosee {
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
     private Image imageCarte;
-    private List<String> listZones;
 
     public CartePosee(Carte carte){
         nord = carte.getNord();
@@ -23,7 +22,6 @@ public class CartePosee {
         isAbbaye = carte.isAbbaye();
         imageCarte = setImageCarte(carte);
         position = carte.getPosition();
-        listZones = carte.getZones();
     }
 
     private Image setImageCarte(Carte carte){
