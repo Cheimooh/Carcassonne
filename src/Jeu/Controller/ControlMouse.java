@@ -74,8 +74,19 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             else if (x<(50/3)*2) numZone=6; // Zone en bas au centre
             else numZone=5; // Zone en bas à droite
         }
-        ArrayList<String> listeZones = carteEnMain.getZones();
-        fenetreJeu.placerPartisan(numZone);
+        fenetreJeu.placerPartisan(verifZone(numZone));
+    }
+
+    private int verifZone(int numZone) {
+        String nomZoneCentrale = carteEnMain.getZoneCentrale();
+        int zoneRetour=numZone;
+        if (numZone<9){
+            String nomZone = carteEnMain.getZones().get(numZone-1);
+            if (nomZone.equals("chemin")){
+                if (!nomZoneCentrale.equals("carrefour")) zoneRetour=9;
+            }
+        }
+        return zoneRetour;
     }
 
     /*
@@ -126,8 +137,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) return true;
 
         point = new Point(x, y-1);
-        if(fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) return true;
-        return false;
+        return fenetreJeu.getCarcassonne().getListPointOccupe().contains(point);
     }
 
     /*

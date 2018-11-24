@@ -91,49 +91,49 @@ public class FenetreJeu extends Parent {
      */
     public void placerPartisan(int numZone) {
         int numJoueur = (carcassonne.getNumJoueur()-1);
-        Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
-        int x = (int)carte.getPosition().getX();
-        int y = (int)carte.getPosition().getY();
-        Color colorJoueur = carcassonne.getTabJoueur()[numJoueur].getColor();
-        switch (numZone){
-            case 1:
-                x=x*50+(50/6);
-                y=y*50+(50/6);
-                break;
-            case 2:
-                x=x*50+(150/6);
-                y=y*50+(50/6);
-                break;
-            case 3:
-                x=x*50+(250/6);
-                y=y*50+(50/6);
-                break;
-            case 4:
-                x=x*50+(250/6);
-                y=y*50+(150/6);
-                break;
-            case 5:
-                x=x*50+(250/6);
-                y=y*50+(250/6);
-                break;
-            case 6:
-                x=x*50+(150/6);
-                y=y*50+(250/6);
-                break;
-            case 7:
-                x=x*50+(50/6);
-                y=y*50+(250/6);
-                break;
-            case 8:
-                x=x*50+(50/6);
-                y=y*50+(150/6);
-                break;
-            case 9:
-                x=x*50+(150/6);
-                y=y*50+(150/6);
-                break;
-        }
         if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants()>0) {
+            Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
+            int x = (int)carte.getPosition().getX();
+            int y = (int)carte.getPosition().getY();
+            Color colorJoueur = carcassonne.getTabJoueur()[numJoueur].getColor();
+            switch (numZone){
+                case 1:
+                    x=x*50+(50/6);
+                    y=y*50+(50/6);
+                    break;
+                case 2:
+                    x=x*50+(150/6);
+                    y=y*50+(50/6);
+                    break;
+                case 3:
+                    x=x*50+(250/6);
+                    y=y*50+(50/6);
+                    break;
+                case 4:
+                    x=x*50+(250/6);
+                    y=y*50+(150/6);
+                    break;
+                case 5:
+                    x=x*50+(250/6);
+                    y=y*50+(250/6);
+                    break;
+                case 6:
+                    x=x*50+(150/6);
+                    y=y*50+(250/6);
+                    break;
+                case 7:
+                    x=x*50+(50/6);
+                    y=y*50+(250/6);
+                    break;
+                case 8:
+                    x=x*50+(50/6);
+                    y=y*50+(150/6);
+                    break;
+                case 9:
+                    x=x*50+(150/6);
+                    y=y*50+(150/6);
+                    break;
+            }
             //Dessine le partisan sur la carte que l'on vient de poser
             graphicsContext.setFill(colorJoueur);
             graphicsContext.fillOval(x - 5, y - 5, 10, 10);

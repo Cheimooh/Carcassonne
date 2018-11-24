@@ -62,4 +62,5 @@ public class Carte {
 
     public ArrayList<String> getZones() { return zones; }
 
+    public String getZoneCentrale() { return zoneCentrale; }
 }
