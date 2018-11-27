@@ -57,4 +57,6 @@ public class Carte {
     public boolean isAbbaye() { return isAbbaye; }
 
     public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
+
+    public void setPositionsCoordonnees(ArrayList<Point> positionsCoordonnees) { this.positionsCoordonnees = positionsCoordonnees; }
 }

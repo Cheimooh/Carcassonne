@@ -6,6 +6,9 @@ import Jeu.View.BarreInfos;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class ControlMouseInfos implements EventHandler<MouseEvent> {
     private BarreInfos barreInfos;
     private ControlMouse controlMouse;
@@ -57,11 +60,15 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
         carte.setEst(nord);
         carte.setSud(est);
         carte.setOuest(sud);
-
+        ArrayList<Point> newCoordonnees = new ArrayList<>();
+        double x;
+        double y;
         for (int i = 0; i < carte.getPositionsCoordonnees().size(); i++) {
-            double x = carte.getPositionsCoordonnees().get(i).getX();
-            double y = carte.getPositionsCoordonnees().get(i).getY();
-            carte.getPositionsCoordonnees().get(i).setLocation(50-y,x);
+            x = 50-carte.getPositionsCoordonnees().get(i).getY();
+            y = carte.getPositionsCoordonnees().get(i).getX();
+            Point point = new Point((int)x,(int)y);
+            newCoordonnees.add(point);
         }
+        carte.setPositionsCoordonnees(newCoordonnees);
     }
 }

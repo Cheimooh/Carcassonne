@@ -102,6 +102,7 @@ public class FenetreJeu extends Parent {
     public void placerPartisan(int numZone) {
         int numJoueur = (carcassonne.getNumJoueur()-1);
         if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants()>0) {
+            carcassonne.getTabJoueur()[numJoueur].placePartisan();
             Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
             int xCarte = (int)carte.getPosition().getX();
             int yCarte = (int)carte.getPosition().getY();
@@ -115,7 +116,7 @@ public class FenetreJeu extends Parent {
             graphicsContext.setFill(color);
             graphicsContext.fillOval(xPartisan+(xCarte*50)-4, yPartisan+(yCarte*50)-4,8,8);
         } else {
-            System.out.println(carcassonne.getTabJoueur()[numJoueur].getNom()+" n'a plus de partisans !");
+            afficheErreur(carcassonne.getTabJoueur()[numJoueur].getNom()+" n'a plus de partisans !","Placement de partisans");
         }
     }
 

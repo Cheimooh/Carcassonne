@@ -70,7 +70,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             double yPartisan = carteEnMain.getPositionsCoordonnees().get(i).getY();
             xPartisan+=carteEnMain.getPosition().getX()*50;
             yPartisan+=carteEnMain.getPosition().getY()*50;
-            // Si l'on clique 3 pixels autour d'un des cercles
+            // Si l'on clique 5 pixels autour d'un des cercles
             if(x>xPartisan-3 && x<xPartisan+8 && y>yPartisan-3 && y<yPartisan+8){
                 numZone=i;
             }
