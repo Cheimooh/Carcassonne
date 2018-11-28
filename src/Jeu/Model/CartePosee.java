@@ -1,7 +1,7 @@
 package Jeu.Model;
 
 import java.awt.*;
-import java.util.List;
+import java.util.ArrayList;
 import javafx.scene.image.Image;
 
 /*
@@ -13,6 +13,8 @@ public class CartePosee {
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
     private Image imageCarte;
+    private ArrayList<CoteCarte> listeZones;
+    private ArrayList<Integer> zonesOccupees;
 
     public CartePosee(Carte carte){
         nord = carte.getNord();
@@ -22,6 +24,32 @@ public class CartePosee {
         isAbbaye = carte.isAbbaye();
         imageCarte = setImageCarte(carte);
         position = carte.getPosition();
+        listeZones = new ArrayList<>();
+        zonesOccupees = new ArrayList<>();
+        addZones();
+    }
+
+    public void addZones() {
+        addZone(nord);
+
+        addZone(est);
+
+        addZone(sud);
+
+        addZone(ouest);
+    }
+
+    private void addZone(CoteCarte cote) {
+        // Si le centre du côté est une ville
+        if (cote.equals(CoteCarte.ville)){
+            for (int i = 0; i < 3 ; i++) {
+                listeZones.add(CoteCarte.ville);
+            }
+        } else {
+            listeZones.add(CoteCarte.prairie);
+            listeZones.add(cote); // Ajoute soit un chemin soit une prairie
+            listeZones.add(CoteCarte.prairie);
+        }
     }
 
     private Image setImageCarte(Carte carte){
@@ -56,4 +84,10 @@ public class CartePosee {
     public CoteCarte getOuest() { return ouest; }
 
     public Image getImageCarte() { return imageCarte; }
+
+    public ArrayList<CoteCarte> getListeZones() { return listeZones; }
+
+    public void setZonesOccupees(ArrayList<Integer> zonesOccupees) { this.zonesOccupees = zonesOccupees; }
+
+    public ArrayList<Integer> getZonesOccupees() { return zonesOccupees; }
 }

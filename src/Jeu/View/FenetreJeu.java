@@ -49,6 +49,7 @@ public class FenetreJeu extends Parent {
     public void placerCarte(Carte carte){
         //Ajout de la carte à la liste des cartes déjà posée
         CartePosee cartePosee = new CartePosee(carte);
+        carcassonne.verifZonesDejaOccupees(cartePosee);
         derniereCartePosee=cartePosee;
         carcassonne.getListPointOccupe().add(cartePosee.getPosition());
         carcassonne.getPointCarteMap().put(carte.getPosition(), cartePosee);

@@ -88,6 +88,46 @@ public class Carcassonne {
         }
     }
 
+    public void verifZonesDejaOccupees(CartePosee cartePosee) {
+        ArrayList<Integer> zonesDejaOccupees = new ArrayList<>();
+        int x = (int)cartePosee.getPosition().getX();
+        int y = (int)cartePosee.getPosition().getY();
+
+        Point point = new Point(x-1, y);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesOccupees().contains(4)) zonesDejaOccupees.add(12);
+            if (c.getZonesOccupees().contains(5)) zonesDejaOccupees.add(11);
+            if (c.getZonesOccupees().contains(6)) zonesDejaOccupees.add(10);
+        }
+
+        point = new Point(x+1, y);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesOccupees().contains(12)) zonesDejaOccupees.add(4);
+            if (c.getZonesOccupees().contains(11)) zonesDejaOccupees.add(5);
+            if (c.getZonesOccupees().contains(10)) zonesDejaOccupees.add(6);
+        }
+
+        point = new Point(x, y-1);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesOccupees().contains(9)) zonesDejaOccupees.add(1);
+            if (c.getZonesOccupees().contains(8)) zonesDejaOccupees.add(2);
+            if (c.getZonesOccupees().contains(7)) zonesDejaOccupees.add(3);
+        }
+
+        point = new Point(x, y+1);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesOccupees().contains(1)) zonesDejaOccupees.add(9);
+            if (c.getZonesOccupees().contains(2)) zonesDejaOccupees.add(8);
+            if (c.getZonesOccupees().contains(3)) zonesDejaOccupees.add(7);
+        }
+
+        cartePosee.setZonesOccupees(zonesDejaOccupees);
+    }
+
     public Carte getCarteDeBase() { return carteDeBase; }
 
     public int getNB_CASES() { return NB_CARTES * 2 - 1; }
