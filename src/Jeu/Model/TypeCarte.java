@@ -16,53 +16,65 @@ public enum TypeCarte {
     cartePPCC(CoteCarte.prairie, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin,
             new Image("Jeu/imgCartes/PPCC.jpg"),new Image("Jeu/imgCartes/90degres/PPCC.jpg"),
             new Image("Jeu/imgCartes/180degres/PPCC.jpg"),new Image("Jeu/imgCartes/270degres/PPCC.jpg"),
-            false, new Point[]{new Point(38,14), new Point(11,39), new Point(24,27)}),
+            false, new Point[]{new Point(38,14), new Point(11,39), new Point(24,27)},
+            new int[][]{{1,2,3,4,5,6,7,12},{9,10},{8,11}}),
     carteVCCP(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.prairie,
             new Image("Jeu/imgCartes/VCCP.jpg"),new Image("Jeu/imgCartes/90degres/VCCP.jpg"),
             new Image("Jeu/imgCartes/180degres/VCCP.jpg"),new Image("Jeu/imgCartes/270degres/VCCP.jpg"),
-            false, new Point[]{new Point(26,7), new Point(12,26), new Point(31,31), new Point(40,40)}),
+            false, new Point[]{new Point(26,7), new Point(12,26), new Point(31,31), new Point(40,40)},
+            new int[][]{{1,2,3},{4,9,10,11,12},{5,8},{6,7}}),
     carteVCCV(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.ville,
             new Image("Jeu/imgCartes/VCCV.jpg"),new Image("Jeu/imgCartes/90degres/VCCV.jpg"),
             new Image("Jeu/imgCartes/180degres/VCCV.jpg"),new Image("Jeu/imgCartes/270degres/VCCV.jpg"),
-            false, new Point[]{new Point(9,9), new Point(26,27), new Point(35,35), new Point(43,42)}),
+            false, new Point[]{new Point(9,9), new Point(26,27), new Point(35,35), new Point(43,42)},
+            new int[][]{{1,2,3,10,11,12},{4,9},{5,8},{6,7}}),
     carteVCCVBlason(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.ville,
             new Image("Jeu/imgCartes/VCCVBlason.jpg"),new Image("Jeu/imgCartes/90degres/VCCVBlason.jpg"),
             new Image("Jeu/imgCartes/180degres/VCCVBlason.jpg"),new Image("Jeu/imgCartes/270degres/VCCVBlason.jpg"),
-            true, new Point[]{new Point(9,9), new Point(26,27), new Point(35,35), new Point(43,42)}),
+            true, new Point[]{new Point(9,9), new Point(26,27), new Point(35,35), new Point(43,42)},
+            new int[][]{{1,2,3,10,11,12},{4,9},{5,8},{6,7}}),
     carteVVCV(CoteCarte.ville, CoteCarte.ville, CoteCarte.chemin, CoteCarte.ville,
             new Image("Jeu/imgCartes/VVCV.jpg"),new Image("Jeu/imgCartes/90degres/VVCV.jpg"),
             new Image("Jeu/imgCartes/180degres/VVCV.jpg"),new Image("Jeu/imgCartes/270degres/VVCV.jpg"),
-            false, new Point[]{new Point(25,20),new Point(26,43),new Point(15,46),new Point(38,46)}),
+            false, new Point[]{new Point(25,20),new Point(26,43),new Point(15,46),new Point(38,46)},
+            new int[][]{{1,2,3,4,5,6,10,11,12},{8},{9},{7}}),
     carteVVCVBlason(CoteCarte.ville, CoteCarte.ville, CoteCarte.chemin, CoteCarte.ville,
             new Image("Jeu/imgCartes/VVCVBlason.jpg"),new Image("Jeu/imgCartes/90degres/VVCVBlason.jpg"),
             new Image("Jeu/imgCartes/180degres/VVCVBlason.jpg"),new Image("Jeu/imgCartes/270degres/VVCVBlason.jpg"),
-            true, new Point[]{new Point(25,20),new Point(26,43),new Point(15,46),new Point(38,46)}),
+            true, new Point[]{new Point(25,20),new Point(26,43),new Point(15,46),new Point(38,46)},
+            new int[][]{{1,2,3,4,5,6,10,11,12},{8},{9},{7}}),
     carteVVPV(CoteCarte.ville, CoteCarte.ville, CoteCarte.prairie, CoteCarte.ville,
             new Image("Jeu/imgCartes/VVPV.jpg"),new Image("Jeu/imgCartes/90degres/VVPV.jpg"),
             new Image("Jeu/imgCartes/180degres/VVPV.jpg"),new Image("Jeu/imgCartes/270degres/VVPV.jpg"),
-            false, new Point[]{new Point(25,20),new Point(27,43)}),
+            false, new Point[]{new Point(25,20),new Point(27,43)},
+            new int[][]{{1,2,3,4,5,6,10,11,12},{7,8,9}}),
     carteVVPVBlason(CoteCarte.ville, CoteCarte.ville, CoteCarte.prairie, CoteCarte.ville,
             new Image("Jeu/imgCartes/VVPVBlason.jpg"),new Image("Jeu/imgCartes/90degres/VVPVBlason.jpg"),
             new Image("Jeu/imgCartes/180degres/VVPVBlason.jpg"),new Image("Jeu/imgCartes/270degres/VVPVBlason.jpg"),
-            true, new Point[]{new Point(25,20),new Point(27,43)}),
+            true, new Point[]{new Point(25,20),new Point(27,43)},
+            new int[][]{{1,2,3,4,5,6,10,11,12},{7,8,9}}),
     carteVCCC(CoteCarte.ville, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin,
             new Image("Jeu/imgCartes/VCCC.jpg"),new Image("Jeu/imgCartes/90degres/VCCC.jpg")
             ,new Image("Jeu/imgCartes/180degres/VCCC.jpg"),new Image("Jeu/imgCartes/270degres/VCCC.jpg"),
             false, new Point[]{new Point(25,4),new Point(26,21),new Point(11,26),new Point(42,28),
-            new Point(24,40),new Point(9,40),new Point(39,41)}),
+            new Point(24,40),new Point(9,40),new Point(39,41)},
+            new int[][]{{1,2,3},{4,12},{11},{5},{8},{9,10},{6,7}}),
     carteCPCP(CoteCarte.chemin, CoteCarte.prairie, CoteCarte.chemin, CoteCarte.prairie,
             new Image("Jeu/imgCartes/CPCP.jpg"),new Image("Jeu/imgCartes/90degres/CPCP.jpg"),
             new Image("Jeu/imgCartes/180degres/CPCP.jpg"),new Image("Jeu/imgCartes/270degres/CPCP.jpg"),
-            false, new Point[]{new Point(10,25),new Point(26,26),new Point(40,25)}),
+            false, new Point[]{new Point(10,25),new Point(26,26),new Point(40,25)},
+            new int[][]{{1,9,10,11,12},{2,8},{3,4,5,6,7}}),
     cartePCCC(CoteCarte.prairie, CoteCarte.chemin, CoteCarte.chemin, CoteCarte.chemin,
             new Image("Jeu/imgCartes/PCCC.jpg"),new Image("Jeu/imgCartes/90degres/PCCC.jpg"),
             new Image("Jeu/imgCartes/180degres/PCCC.jpg"),new Image("Jeu/imgCartes/270degres/PCCC.jpg"),
             false, new Point[]{new Point(25,8),new Point(7,25),new Point(46,24),
-            new Point(12,39),new Point(26,39),new Point(41,38)}),
+            new Point(12,39),new Point(26,39),new Point(41,38)},
+            new int[][]{{1,2,3,4,12},{11},{5},{9,10},{8},{6,7}}),
     carteVPPP(CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie, CoteCarte.prairie,
             new Image("Jeu/imgCartes/VPPP.jpg"),new Image("Jeu/imgCartes/90degres/VPPP.jpg"),
             new Image("Jeu/imgCartes/180degres/VPPP.jpg"),new Image("Jeu/imgCartes/270degres/VPPP.jpg"),
-            false,new Point[]{new Point(25,5),new Point(25,30)}),
+            false,new Point[]{new Point(25,5),new Point(25,30)},
+            new int[][]{{1,2,3},{4,5,6,7,8,9,10,11,12}}),
     carteVVPP(CoteCarte.ville, CoteCarte.ville, CoteCarte.prairie, CoteCarte.prairie,
             new Image("Jeu/imgCartes/VVPP.jpg"),new Image("Jeu/imgCartes/90degres/VVPP.jpg"),
             new Image("Jeu/imgCartes/180degres/VVPP.jpg"),new Image("Jeu/imgCartes/270degres/VVPP.jpg"),
@@ -123,10 +135,11 @@ public enum TypeCarte {
     private Image img270;
     private boolean isBlason;
     private ArrayList<Point> coordonneesPartisans;
+    private int[][] zonesControlleesParLesPoints;
 
     TypeCarte(CoteCarte nord, CoteCarte est, CoteCarte sud, CoteCarte ouest,
               Image Image, Image img90, Image img180, Image img270, boolean isBlason,
-              Point[] coordonnees) {
+              Point[] coordonnees, int[][] zonesControlleesParLesPoints) {
         this.nord=nord;
         this.est=est;
         this.sud=sud;
@@ -141,6 +154,7 @@ public enum TypeCarte {
         for (int i = 0; i < coordonnees.length; i++) {
             coordonneesPartisans.add(coordonnees[i]);
         }
+        this.zonesControlleesParLesPoints=zonesControlleesParLesPoints;
     }
 
     public CoteCarte getNord() { return nord; }
