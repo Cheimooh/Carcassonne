@@ -1,3 +1,17 @@
+/*
+* Solution 1 :
+* calculer la possibilité de poser des partisans (au debut on peut tous les poser,
+* ensuite il faut verifier le chemin par exemple pour voir si le joueur rouge peut poser son partisan)
+*
+* Solution 2 :
+* Avoir pour chaques zones l'ensemble des couleurs admissibles graces aux couleurs voisines.
+* Principe de contamination de zones
+*
+* -> parcours de graphe
+*
+* chaque coté de carte est divisé apr 3 pour tester des connections
+* chaque carte possède x tableau qui contiennent les coté appartenant aux x zones de la carte*
+* */
 package Jeu.View;
 
 import Jeu.Controller.ControlMouse;
@@ -103,6 +117,7 @@ public class FenetreJeu extends Parent {
     public void placerPartisan(int numZone) {
         int numJoueur = (carcassonne.getNumJoueur()-1);
         if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants()>0) {
+            derniereCartePosee.addZonesOccupees(numZone);
             carcassonne.getTabJoueur()[numJoueur].placePartisan();
             Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
             int xCarte = (int)carte.getPosition().getX();
@@ -139,4 +154,6 @@ public class FenetreJeu extends Parent {
     }
 
     public BarreInfos getBarreInfos() { return barreInfos; }
+
+    public CartePosee getDerniereCartePosee() { return derniereCartePosee; }
 }

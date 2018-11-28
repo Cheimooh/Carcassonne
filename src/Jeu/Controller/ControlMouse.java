@@ -44,20 +44,40 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         // Si l'on clique sur la carte placée précédemment
         if(x/50==xCartePlacee && y/50==yCartePlacee){
             // Si l'on clique pas sur une zone indiquée
-            if (getZonePlacementPartisan(x,y)==-1){
+            int numZone = getZonePlacementPartisan(x,y);
+            if (numZone==-1){
                 fenetreJeu.afficheErreur("Votre partisan doit être placé sur une des positions affichées",
-                        "Placement de partisans impossible");
+                        "Placement de partisan impossible");
             } else {
-                fenetreJeu.placerPartisan(getZonePlacementPartisan(x,y));
-                placerCarte=true;
-                fenetreJeu.getCarcassonne().joueurSuivant();
-                fenetreJeu.getBarreInfos().afficherCarteSuivant();
-                fenetreJeu.getCarcassonne().jouer();
+                if (zonePasEncoreOccupee(numZone)) {
+                    fenetreJeu.placerPartisan(numZone);
+                    placerCarte = true;
+                    fenetreJeu.getCarcassonne().joueurSuivant();
+                    fenetreJeu.getBarreInfos().afficherCarteSuivant();
+                    fenetreJeu.getCarcassonne().jouer();
+                } else {
+                    fenetreJeu.afficheErreur("Il y a un partisan dans la même zone que celle que vous avez choisie",
+                            "Placement de partisan impossible");
+                }
             }
         }
         // Erreur si l'on clique à un autre endroit que l'endroit où se trouve la carte précédemment placée
         else fenetreJeu.afficheErreur("Votre partisan doit être placé sur la carte que vous venez de placer",
                 "Placement de partisans impossible");
+    }
+
+    private boolean zonePasEncoreOccupee(int numZone) {
+        CartePosee c = fenetreJeu.getDerniereCartePosee();
+        for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
+            if (i==numZone){
+                for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
+                    if (c.getZonesOccupees().contains(c.getZonesControlleesParLesPoints()[i][j])){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /*

@@ -11,6 +11,7 @@ public class Carte {
     private DrawCard draw;
     private int nbRotation;
     private ArrayList<Point> positionsCoordonnees;
+    private int[][] zonesControlleesParLesPoints;
 
     public Carte(TypeCarte typeCarte){
         this.nord = typeCarte.getNord();
@@ -21,6 +22,7 @@ public class Carte {
         this.position = new Point();
         nbRotation=0;
         positionsCoordonnees=typeCarte.getCoordonneesPartisans();
+        zonesControlleesParLesPoints=typeCarte.getZonesControlleesParLesPoints();
     }
 
     /*
@@ -59,4 +61,10 @@ public class Carte {
     public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
 
     public void setPositionsCoordonnees(ArrayList<Point> positionsCoordonnees) { this.positionsCoordonnees = positionsCoordonnees; }
+
+    public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
+
+    public void setZonesControlleesParLesPoints(int[][] zonesControlleesParLesPoints) {
+        this.zonesControlleesParLesPoints = zonesControlleesParLesPoints;
+    }
 }

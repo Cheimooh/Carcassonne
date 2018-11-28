@@ -15,6 +15,7 @@ public class CartePosee {
     private Image imageCarte;
     private ArrayList<CoteCarte> listeZones;
     private ArrayList<Integer> zonesOccupees;
+    private int[][] zonesControlleesParLesPoints;
 
     public CartePosee(Carte carte){
         nord = carte.getNord();
@@ -26,6 +27,7 @@ public class CartePosee {
         position = carte.getPosition();
         listeZones = new ArrayList<>();
         zonesOccupees = new ArrayList<>();
+        zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
         addZones();
     }
 
@@ -73,6 +75,16 @@ public class CartePosee {
         return image;
     }
 
+    public void addZonesOccupees(int numZone) {
+        for (int i = 0; i < zonesControlleesParLesPoints.length ; i++) {
+            if (i==numZone) {
+                for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
+                    zonesOccupees.add(zonesControlleesParLesPoints[i][j]);
+                }
+            }
+        }
+    }
+
     public Point getPosition() { return position; }
 
     public CoteCarte getNord() { return nord; }
@@ -90,4 +102,6 @@ public class CartePosee {
     public void setZonesOccupees(ArrayList<Integer> zonesOccupees) { this.zonesOccupees = zonesOccupees; }
 
     public ArrayList<Integer> getZonesOccupees() { return zonesOccupees; }
+
+    public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
 }

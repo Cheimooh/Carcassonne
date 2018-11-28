@@ -70,5 +70,17 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
             newCoordonnees.add(point);
         }
         carte.setPositionsCoordonnees(newCoordonnees);
+
+        int[][] zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
+
+        for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
+            for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
+                zonesControlleesParLesPoints[i][j] = zonesControlleesParLesPoints[i][j]+3;
+                if (zonesControlleesParLesPoints[i][j]>12) {
+                    zonesControlleesParLesPoints[i][j] = zonesControlleesParLesPoints[i][j] - 12;
+                }
+            }
+        }
+        carte.setZonesControlleesParLesPoints(zonesControlleesParLesPoints);
     }
 }
