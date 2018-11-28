@@ -97,8 +97,6 @@ public class CartePosee {
 
     public Image getImageCarte() { return imageCarte; }
 
-    public ArrayList<CoteCarte> getListeZones() { return listeZones; }
-
     public void setZonesOccupees(ArrayList<Integer> zonesOccupees) { this.zonesOccupees = zonesOccupees; }
 
     public ArrayList<Integer> getZonesOccupees() { return zonesOccupees; }

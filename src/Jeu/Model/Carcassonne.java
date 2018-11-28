@@ -95,6 +95,7 @@ public class Carcassonne {
 
         Point point = new Point(x-1, y);
         if(listPointOccupe.contains(point)){
+            System.out.println(1);
             CartePosee c = pointCarteMap.get(point);
             if (c.getZonesOccupees().contains(4)) zonesDejaOccupees.add(12);
             if (c.getZonesOccupees().contains(5)) zonesDejaOccupees.add(11);
@@ -103,27 +104,32 @@ public class Carcassonne {
 
         point = new Point(x+1, y);
         if(listPointOccupe.contains(point)){
+            System.out.println(2);
             CartePosee c = pointCarteMap.get(point);
             if (c.getZonesOccupees().contains(12)) zonesDejaOccupees.add(4);
             if (c.getZonesOccupees().contains(11)) zonesDejaOccupees.add(5);
             if (c.getZonesOccupees().contains(10)) zonesDejaOccupees.add(6);
         }
 
+        point = new Point(x, y+1);
+        if(listPointOccupe.contains(point)){
+            System.out.println(3);
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesOccupees().contains(1)) zonesDejaOccupees.add(9);
+            if (c.getZonesOccupees().contains(2)) zonesDejaOccupees.add(8);
+            if (c.getZonesOccupees().contains(3)) zonesDejaOccupees.add(7);
+        }
+
         point = new Point(x, y-1);
         if(listPointOccupe.contains(point)){
+            System.out.println(4);
             CartePosee c = pointCarteMap.get(point);
             if (c.getZonesOccupees().contains(9)) zonesDejaOccupees.add(1);
             if (c.getZonesOccupees().contains(8)) zonesDejaOccupees.add(2);
             if (c.getZonesOccupees().contains(7)) zonesDejaOccupees.add(3);
         }
 
-        point = new Point(x, y+1);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesOccupees().contains(1)) zonesDejaOccupees.add(9);
-            if (c.getZonesOccupees().contains(2)) zonesDejaOccupees.add(8);
-            if (c.getZonesOccupees().contains(3)) zonesDejaOccupees.add(7);
-        }
+
 
         cartePosee.setZonesOccupees(zonesDejaOccupees);
     }
