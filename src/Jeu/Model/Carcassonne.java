@@ -25,6 +25,7 @@ public class Carcassonne {
 
     public Carcassonne(){
         // Initialisation des listes et maps
+
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
@@ -44,22 +45,16 @@ public class Carcassonne {
         listPointDispo.add(carteDeBase.getPosition());
 
         // Attributs à modifier en fonction du menu permettant de sélectionner le nombre de joueur et leur nom
-        initialisationJoueurs(4, new String[]{"Lucas", "Maeva", "Theo", "Tugdual"});
     }
 
     /*
      * Fonction qui permet d'initialiser les joueurs
      */
-    private void initialisationJoueurs(int nbJoueur, String[] nomJoueur){
-        this.nbJoueur=nbJoueur;
+    public void initialisationJoueurs(String[] nomJoueur, Color[] couleursJoueurs){
+        this.nbJoueur=nomJoueur.length;
         tabJoueur = new Joueur[nbJoueur];
-        Color[] tabCouleur = new Color[4];
-        tabCouleur[0] = Color.GREEN;
-        tabCouleur[1] = Color.RED;
-        tabCouleur[2] = Color.BLUE;
-        tabCouleur[3] = Color.YELLOW;
         for (int i = 0; i < nbJoueur ; i++) {
-            tabJoueur[i]= new Joueur(i+1, p, tabCouleur[i]);
+            tabJoueur[i]= new Joueur(i+1, p, couleursJoueurs[i]);
             tabJoueur[i].setNom(nomJoueur[i]);
         }
         numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
