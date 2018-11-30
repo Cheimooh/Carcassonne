@@ -39,10 +39,14 @@ public class FenetreJeu extends Parent {
     private BarreInfos barreInfos;
     private CartePosee derniereCartePosee;
 
+    private PopUpPartisant popUpPartisant;
+
     /*
      * Classe qui gère l'affichage de la fenêtre de jeu
      */
-    public FenetreJeu(Carcassonne newCarcassonne, int width, int height){
+    public FenetreJeu(Carcassonne newCarcassonne, int width, int height, PopUpPartisant popUpPartisant){
+        this.popUpPartisant = popUpPartisant;
+        popUpPartisant.lierControl(this);
         carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
         controlMouse = new ControlMouse(this);
@@ -88,12 +92,8 @@ public class FenetreJeu extends Parent {
         //Dessine l'image sur la fenêtre de jeu
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
         if(carte!=carcassonne.getCarteDeBase()) {
-            graphicsContext.setFill(Color.WHITE);
-            for (int i = 0; i < carte.getPositionsCoordonnees().size(); i++) {
-                double xPartisan = carte.getPositionsCoordonnees().get(i).getX();
-                double yPartisan = carte.getPositionsCoordonnees().get(i).getY();
-                graphicsContext.strokeOval(xPartisan + (x * 50)-2.5, yPartisan + (y * 50)-2.5, 5, 5);
-            }
+            popUpPartisant.lierCarteEnMain(carte);
+            popUpPartisant.afficherCarte(cartePosee);
         }
     }
 
@@ -156,4 +156,6 @@ public class FenetreJeu extends Parent {
     public BarreInfos getBarreInfos() { return barreInfos; }
 
     public CartePosee getDerniereCartePosee() { return derniereCartePosee; }
+
+    public PopUpPartisant getPopUpPartisant() { return popUpPartisant; }
 }
