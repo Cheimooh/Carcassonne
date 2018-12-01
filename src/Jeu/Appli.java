@@ -56,7 +56,7 @@ public class Appli extends Application {
         boutonsMenu.getChildren().addAll(jouer,scores,reglage,quitter);
         jouer.setOnAction(event -> askNbJoueurs());
         quitter.setOnAction(event -> System.exit(0));
-        Scene scene = new Scene(boutonsMenu, 250,250);
+        Scene scene = new Scene(boutonsMenu, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -77,7 +77,7 @@ public class Appli extends Application {
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(l_NombreJoueurs,comboBox,b_suivant);
-        Scene scene = new Scene(vBox,500,500);
+        Scene scene = new Scene(vBox,350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -136,9 +136,9 @@ public class Appli extends Application {
 
     private void afficherFenetreInfosJoueurs() {
         Button b_suivant = new Button("suivant");
-        Label erreurNom = new Label("Le nom doit être différent des noms déja données et non vide");
+        Label erreurNom = new Label("Le nom doit être:\n- différent des noms déja données\n- non vide");
         erreurNom.setStyle("-fx-text-fill: RED");
-        Label erreurCouleur = new Label("La couleur doit être différente des couleurs déja sélectionnée et non null");
+        Label erreurCouleur = new Label("La couleur doit être:\n- différente des couleurs déja sélectionnée\n- non null");
         erreurCouleur.setStyle("-fx-text-fill: RED");
         Rectangle r_rouge = new Rectangle(30,30,Color.RED);
         Rectangle r_vert = new Rectangle(30,30,Color.GREEN);
@@ -148,6 +148,16 @@ public class Appli extends Application {
         Rectangle r_violet = new Rectangle(30,30,Color.BLUEVIOLET);
         Rectangle r_jaune = new Rectangle(30,30,Color.YELLOW);
         Rectangle r_bleuClaire = new Rectangle(30,30,Color.LIGHTBLUE);
+        if (colorJoueursCorrect == true){
+            t_rouge.setSelected(false);
+            t_vert.setSelected(false);
+            t_chartreuse.setSelected(false);
+            t_bleu.setSelected(false);
+            t_rose.setSelected(false);
+            t_violet.setSelected(false);
+            t_jaune.setSelected(false);
+            t_bleuClaire.setSelected(false);
+        }
         VBox v_rouge = new VBox(5);
         v_rouge.setAlignment(Pos.CENTER);
         VBox v_vert = new VBox(5);
@@ -178,8 +188,8 @@ public class Appli extends Application {
         bouttons.setAlignment(Pos.CENTER);
         HBox rectangle = new HBox(10);
         rectangle.setAlignment(Pos.CENTER);
-        Label l_nomjoueur = new Label("Saisissez le nom du joueur "+nombreJoueur2);
-        Label l_couleurJoueur = new Label("Selectionnez la couleur du joueur "+nombreJoueur2);
+        Label l_nomjoueur = new Label("Saisissez le nom du joueur "+(nombreJoueur2+1));
+        Label l_couleurJoueur = new Label("Selectionnez la couleur du joueur "+(nombreJoueur2+1));
         TextField t_nomJoueur;
         if (nombreJoueur2 <= nombreJoueur && tabNomjoueurs[nombreJoueur2] != null){
             t_nomJoueur = new TextField(tabNomjoueurs[nombreJoueur2]);
@@ -197,6 +207,47 @@ public class Appli extends Application {
         t_jaune.setToggleGroup(toggleGroup);
         t_bleuClaire.setToggleGroup(toggleGroup);
         bouttons.getChildren().addAll(v_rouge,v_vert,v_chartreuse,v_bleu,v_rose,v_violet,v_jaune,v_bleuClaire);
+        if (colorJoueursCorrect == true){
+            if (nomJoueursCorrect == true) {
+                for (int i = 0; i < tabColorJoueurs.length; i++) {
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.RED)
+                        bouttons.getChildren().remove(v_rouge);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.GREEN)
+                        bouttons.getChildren().remove(v_vert);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.CHARTREUSE)
+                        bouttons.getChildren().remove(v_chartreuse);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUE)
+                        bouttons.getChildren().remove(v_bleu);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.PINK)
+                        bouttons.getChildren().remove(v_rose);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUEVIOLET)
+                        bouttons.getChildren().remove(v_violet);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.YELLOW)
+                        bouttons.getChildren().remove(v_jaune);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.LIGHTBLUE)
+                        bouttons.getChildren().remove(v_bleuClaire);
+                }
+            }else{
+                for (int i = 0; i <= nombreJoueur2-1; i++) {
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.RED)
+                        bouttons.getChildren().remove(v_rouge);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.GREEN)
+                        bouttons.getChildren().remove(v_vert);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.CHARTREUSE)
+                        bouttons.getChildren().remove(v_chartreuse);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUE)
+                        bouttons.getChildren().remove(v_bleu);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.PINK)
+                        bouttons.getChildren().remove(v_rose);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUEVIOLET)
+                        bouttons.getChildren().remove(v_violet);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.YELLOW)
+                        bouttons.getChildren().remove(v_jaune);
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.LIGHTBLUE)
+                        bouttons.getChildren().remove(v_bleuClaire);
+                }
+            }
+        }
         if (nomJoueursCorrect == false)vBox.getChildren().add(erreurNom);
         vBox.getChildren().add(l_couleurJoueur);
         if (colorJoueursCorrect==false)vBox.getChildren().add(erreurCouleur);
@@ -204,7 +255,7 @@ public class Appli extends Application {
         b_suivant.setOnAction(event -> askInfosJoueurs(nombreJoueur2+1, t_nomJoueur.getText(), recupColorsToggle(toggleGroup.getSelectedToggle())));
         nomJoueursCorrect= true;
         colorJoueursCorrect=true;
-        Scene scene = new Scene(vBox, 500,500);
+        Scene scene = new Scene(vBox, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
