@@ -15,6 +15,7 @@ public class CartePosee {
     private Image imageCarte;
     private ArrayList<CoteCarte> listeZones;
     private ArrayList<Integer> zonesOccupees;
+    private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
 
     public CartePosee(Carte carte){
@@ -27,6 +28,7 @@ public class CartePosee {
         position = carte.getPosition();
         listeZones = new ArrayList<>();
         zonesOccupees = new ArrayList<>();
+        positionsCoordonnees=carte.getPositionsCoordonnees();
         zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
         addZones();
     }
@@ -102,4 +104,6 @@ public class CartePosee {
     public ArrayList<Integer> getZonesOccupees() { return zonesOccupees; }
 
     public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
+
+    public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
 }
