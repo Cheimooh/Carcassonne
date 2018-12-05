@@ -53,6 +53,10 @@ public class FenetreJeu extends Parent {
         barreInfos = new BarreInfos(width, 100, this);
         canvas.setOnMouseClicked(controlMouse);
         graphicsContext = canvas.getGraphicsContext2D();
+        Image image = new Image("Jeu/fond2.jpg");
+        graphicsContext.drawImage(image,0,100,width,height);
+        image = new Image("Jeu/fond.jpg");
+        graphicsContext.drawImage(image,0,0,width,100);
         placeDispo = new PlaceDispo();
         queueImage = new ArrayDeque<>();
         placerCarte(carcassonne.getCarteDeBase());
