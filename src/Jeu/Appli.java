@@ -69,8 +69,8 @@ public class Appli extends Application {
         int[] options = new int[]{2,3,4,5};
         ComboBox<Integer> comboBox = new ComboBox<>();
         comboBox.setPromptText("Choississez le nombre de joueurs");
-        for (int i = 0; i < options.length; i++) {
-            comboBox.getItems().add(options[i]);
+        for (int option : options) {
+            comboBox.getItems().add(option);
         }
         Button b_suivant = new Button("Suivant");
         b_suivant.setOnAction(event -> initialiseNbjoueurs(comboBox.getSelectionModel().getSelectedItem()));
@@ -148,7 +148,7 @@ public class Appli extends Application {
         Rectangle r_violet = new Rectangle(30,30,Color.BLUEVIOLET);
         Rectangle r_jaune = new Rectangle(30,30,Color.YELLOW);
         Rectangle r_bleuClaire = new Rectangle(30,30,Color.LIGHTBLUE);
-        if (colorJoueursCorrect == true){
+        if (colorJoueursCorrect){
             t_rouge.setSelected(false);
             t_vert.setSelected(false);
             t_chartreuse.setSelected(false);
@@ -207,24 +207,24 @@ public class Appli extends Application {
         t_jaune.setToggleGroup(toggleGroup);
         t_bleuClaire.setToggleGroup(toggleGroup);
         bouttons.getChildren().addAll(v_rouge,v_vert,v_chartreuse,v_bleu,v_rose,v_violet,v_jaune,v_bleuClaire);
-        if (colorJoueursCorrect == true){
-            if (nomJoueursCorrect == true) {
-                for (int i = 0; i < tabColorJoueurs.length; i++) {
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.RED)
+        if (colorJoueursCorrect){
+            if (nomJoueursCorrect) {
+                for (Color tabColorJoueur : tabColorJoueurs) {
+                    if (tabColorJoueur != null && tabColorJoueur == Color.RED)
                         bouttons.getChildren().remove(v_rouge);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.GREEN)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.GREEN)
                         bouttons.getChildren().remove(v_vert);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.CHARTREUSE)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.CHARTREUSE)
                         bouttons.getChildren().remove(v_chartreuse);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUE)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.BLUE)
                         bouttons.getChildren().remove(v_bleu);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.PINK)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.PINK)
                         bouttons.getChildren().remove(v_rose);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUEVIOLET)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.BLUEVIOLET)
                         bouttons.getChildren().remove(v_violet);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.YELLOW)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.YELLOW)
                         bouttons.getChildren().remove(v_jaune);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.LIGHTBLUE)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.LIGHTBLUE)
                         bouttons.getChildren().remove(v_bleuClaire);
                 }
             }else{
@@ -248,9 +248,9 @@ public class Appli extends Application {
                 }
             }
         }
-        if (nomJoueursCorrect == false)vBox.getChildren().add(erreurNom);
+        if (!nomJoueursCorrect)vBox.getChildren().add(erreurNom);
         vBox.getChildren().add(l_couleurJoueur);
-        if (colorJoueursCorrect==false)vBox.getChildren().add(erreurCouleur);
+        if (!colorJoueursCorrect)vBox.getChildren().add(erreurCouleur);
         vBox.getChildren().addAll(bouttons,b_suivant);
         b_suivant.setOnAction(event -> askInfosJoueurs(nombreJoueur2+1, t_nomJoueur.getText(), recupColorsToggle(toggleGroup.getSelectedToggle())));
         nomJoueursCorrect= true;

@@ -16,12 +16,13 @@ public class BarreInfos {
     private int width; // largeur de la fenêtre
     private int height; // hauteur de la fenêtre
 
-    private int[] tabDefausseCarte = new int[]{750, 35, 180, 30};
+    private int[] tabDefausseCarte;
     // {position x, position y, largeur, hauteur}
 
     public BarreInfos(int width, int height, FenetreJeu f){
         this.width=width;
         this.height=height;
+        tabDefausseCarte = new int[]{750, 35, 180, 30};
         carcassonne = f.getCarcassonne();
         infos = new Canvas(width, height);
         ControlMouseInfos controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
@@ -58,17 +59,18 @@ public class BarreInfos {
             graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
 
             //Affichage du "bouton" pour voir la pioche
-            graphicsContextInfos.fillRect(width/7.,15, 100,30);
-            graphicsContextInfos.strokeText(voirPioche, width/7.+20,32);
+            drawBouton(voirPioche, width/7., 15, 100, 30);
             //Affichage du "bouton" pour voir la défausse
-            graphicsContextInfos.fillRect(width/7.,55,100,30);
-            graphicsContextInfos.strokeText(voirDefausse, width/7.+20,72);
+            drawBouton(voirDefausse, width/7., 55, 100, 30);
             //Affichage du "bouton" pour défausser une carte
-            graphicsContextInfos.fillRect(tabDefausseCarte[0],tabDefausseCarte[1],tabDefausseCarte[2],tabDefausseCarte[3]);
-            graphicsContextInfos.strokeText(defausse, tabDefausseCarte[0]+20,52);
+            drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
-        //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
+    }
+
+    private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {
+        graphicsContextInfos.fillRoundRect(x,y, largeur,hauteur,20,20);
+        graphicsContextInfos.strokeText(texte, x+20,y+17);
     }
 
     /*
@@ -76,7 +78,6 @@ public class BarreInfos {
      */
     public void drawInformationsPartisans(){
         graphicsContextInfos.clearRect(0,0,width,100);
-        graphicsContextInfos.setFill(Color.BLACK);
         drawLigneSeparatrice();
 
         String s;
@@ -98,11 +99,9 @@ public class BarreInfos {
             graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
 
             //Affichage du "bouton" pour voir la pioche
-            graphicsContextInfos.fillRect(width/7.,15, 100,30);
-            graphicsContextInfos.strokeText(voirPioche, width/7.+20,32);
+            drawBouton(voirPioche, width/7., 15, 100, 30);
             //Affichage du "bouton" pour voir la défausse
-            graphicsContextInfos.fillRect(width/7.,55,100,30);
-            graphicsContextInfos.strokeText(voirDefausse, width/7.+20,72);
+            drawBouton(voirDefausse, width/7., 55, 100, 30);
 
             if (nbPartisans>0){
                 graphicsContextInfos.setFill(color);
@@ -112,7 +111,6 @@ public class BarreInfos {
             }
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
-        //VOIR POUR CENTRER LE TEXTE, JE SAIS COMMENT FAIRE FAUT QUE JE REGARDE SUR LE GIT
     }
 
     /*
