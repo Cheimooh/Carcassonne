@@ -19,24 +19,24 @@ import javafx.stage.Stage;
 
 public class Appli extends Application {
 
-    Carcassonne carcassonne;
-    Stage primaryStage;
-    int nombreJoueur;
-    int nombreJoueur2 = 0;
-    String[] tabNomjoueurs;
-    Color[] tabColorJoueurs;
-    boolean nomJoueursCorrect = true;
-    boolean colorJoueursCorrect = true;
+    private Carcassonne carcassonne;
+    private Stage primaryStage;
+    private int nombreJoueur;
+    private int nombreJoueur2 = 0;
+    private String[] tabNomjoueurs;
+    private Color[] tabColorJoueurs;
+    private boolean nomJoueursCorrect = true;
+    private boolean colorJoueursCorrect = true;
 
     //les boutton radio de la fenetre de selection des couleurs
-    RadioButton t_rouge = new RadioButton();
-    RadioButton t_vert = new RadioButton();
-    RadioButton t_chartreuse = new RadioButton();
-    RadioButton t_bleu = new RadioButton();
-    RadioButton t_rose = new RadioButton();
-    RadioButton t_violet = new RadioButton();
-    RadioButton t_jaune = new RadioButton();
-    RadioButton t_bleuClaire = new RadioButton();
+    private RadioButton t_rouge = new RadioButton();
+    private RadioButton t_vert = new RadioButton();
+    private RadioButton t_chartreuse = new RadioButton();
+    private RadioButton t_bleu = new RadioButton();
+    private RadioButton t_rose = new RadioButton();
+    private RadioButton t_violet = new RadioButton();
+    private RadioButton t_jaune = new RadioButton();
+    private RadioButton t_bleuClaire = new RadioButton();
 
     @Override
     public void start(Stage primaryStage){
@@ -106,7 +106,7 @@ public class Appli extends Application {
             }
         }
         if (nombreJoueur2<1 && color == null)colorJoueursCorrect=false;
-        if (nomJoueursCorrect==false || colorJoueursCorrect==false){
+        if (!nomJoueursCorrect || !colorJoueursCorrect){
             nombreJoueur2--;
         }
         if (nombreJoueur2<nombreJoueur)afficherFenetreInfosJoueurs();

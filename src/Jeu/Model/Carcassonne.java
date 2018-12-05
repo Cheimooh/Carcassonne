@@ -120,10 +120,6 @@ public class Carcassonne {
             if (c.getZonesOccupees().contains(7)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 3);
         }
 
-        for (int i = 0; i < zonesDejaOccupees.size() ; i++) {
-            System.out.println(zonesDejaOccupees.get(i));
-        }
-
         cartePosee.setZonesOccupees(zonesDejaOccupees);
     }
 

@@ -16,7 +16,7 @@ public class BarreInfos {
     private int width; // largeur de la fenêtre
     private int height; // hauteur de la fenêtre
 
-    private int[] tabDefausseCarte = new int[]{750, 35, 140, 30};
+    private int[] tabDefausseCarte = new int[]{750, 35, 180, 30};
     // {position x, position y, largeur, hauteur}
 
     public BarreInfos(int width, int height, FenetreJeu f){
@@ -27,6 +27,7 @@ public class BarreInfos {
         ControlMouseInfos controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
         infos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = infos.getGraphicsContext2D();
+        graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
     }
 
     /*
@@ -54,14 +55,16 @@ public class BarreInfos {
             String voirPioche = "Pioche";
             String voirDefausse = "Défausse";
 
+            graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+
             //Affichage du "bouton" pour voir la pioche
-            graphicsContextInfos.strokeRect(width/7.,15, 100,30);
+            graphicsContextInfos.fillRect(width/7.,15, 100,30);
             graphicsContextInfos.strokeText(voirPioche, width/7.+20,32);
             //Affichage du "bouton" pour voir la défausse
-            graphicsContextInfos.strokeRect(width/7.,55,100,30);
+            graphicsContextInfos.fillRect(width/7.,55,100,30);
             graphicsContextInfos.strokeText(voirDefausse, width/7.+20,72);
             //Affichage du "bouton" pour défausser une carte
-            graphicsContextInfos.strokeRect(tabDefausseCarte[0],tabDefausseCarte[1],tabDefausseCarte[2],tabDefausseCarte[3]);
+            graphicsContextInfos.fillRect(tabDefausseCarte[0],tabDefausseCarte[1],tabDefausseCarte[2],tabDefausseCarte[3]);
             graphicsContextInfos.strokeText(defausse, tabDefausseCarte[0]+20,52);
         }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
@@ -92,11 +95,13 @@ public class BarreInfos {
             String voirPioche = "Pioche";
             String voirDefausse = "Défausse";
 
+            graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+
             //Affichage du "bouton" pour voir la pioche
-            graphicsContextInfos.strokeRect(width/7.,15, 100,30);
+            graphicsContextInfos.fillRect(width/7.,15, 100,30);
             graphicsContextInfos.strokeText(voirPioche, width/7.+20,32);
             //Affichage du "bouton" pour voir la défausse
-            graphicsContextInfos.strokeRect(width/7.,55,100,30);
+            graphicsContextInfos.fillRect(width/7.,55,100,30);
             graphicsContextInfos.strokeText(voirDefausse, width/7.+20,72);
 
             if (nbPartisans>0){
