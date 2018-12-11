@@ -1,5 +1,6 @@
 package Jeu.Model;
 
+
 import javafx.scene.paint.Color;
 
 public class Joueur {

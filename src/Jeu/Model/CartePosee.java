@@ -1,8 +1,14 @@
 package Jeu.Model;
 
+
+
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 /*
  * Carte qui a déjà été placée
@@ -14,7 +20,7 @@ public class CartePosee {
     private boolean isAbbaye;
     private Image imageCarte;
     private ArrayList<CoteCarte> listeZones;
-    private ArrayList<Integer> zonesOccupees;
+    private Map<Integer, Color> zonesOccupees;
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
 
@@ -27,7 +33,7 @@ public class CartePosee {
         imageCarte = setImageCarte(carte);
         position = carte.getPosition();
         listeZones = new ArrayList<>();
-        zonesOccupees = new ArrayList<>();
+        zonesOccupees = new HashMap<>();
         positionsCoordonnees=carte.getPositionsCoordonnees();
         zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
         addZones();
@@ -77,11 +83,12 @@ public class CartePosee {
         return image;
     }
 
-    public void addZonesOccupees(int numZone) {
+    public void addZonesOccupees(int numZone, Color couleurJoueur) {
+
         for (int i = 0; i < zonesControlleesParLesPoints.length ; i++) {
             if (i==numZone) {
                 for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
-                    zonesOccupees.add(zonesControlleesParLesPoints[i][j]);
+                    zonesOccupees.put(zonesControlleesParLesPoints[i][j], couleurJoueur);
                 }
             }
         }
@@ -99,9 +106,9 @@ public class CartePosee {
 
     public Image getImageCarte() { return imageCarte; }
 
-    public void setZonesOccupees(ArrayList<Integer> zonesOccupees) { this.zonesOccupees = zonesOccupees; }
+    public Map<Integer, Color> getZonesOccupees() { return zonesOccupees; }
 
-    public ArrayList<Integer> getZonesOccupees() { return zonesOccupees; }
+    public void setZonesOccupees(Map<Integer, Color> zonesOccupees) { this.zonesOccupees = zonesOccupees; }
 
     public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
 

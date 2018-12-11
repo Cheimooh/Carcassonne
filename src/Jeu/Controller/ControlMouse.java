@@ -46,6 +46,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                     carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
                     fenetreJeu.placerCarte(carteEnMain);
                     fenetreJeu.getBarreInfos().drawInformationsPartisans();
+                    fenetreJeu.actualiserDebuggageContamination();
                 }
                 // Erreur si les cartes à côté ne coïncident pas
                 else {

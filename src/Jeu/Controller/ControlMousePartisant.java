@@ -40,6 +40,7 @@ public class ControlMousePartisant implements EventHandler<MouseEvent> {
                 fenetreJeu.getCarcassonne().joueurSuivant();
                 fenetreJeu.getBarreInfos().afficherCarteSuivant();
                 fenetreJeu.getCarcassonne().jouer();
+                fenetreJeu.actualiserDebuggageContamination();
             } else {
                 fenetreJeu.afficheErreur("Il y a un partisan dans la même zone que celle que vous avez choisie",
                         "Placement de partisan impossible");
@@ -53,7 +54,7 @@ public class ControlMousePartisant implements EventHandler<MouseEvent> {
         for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
             if (i==numZone){
                 for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
-                    if (c.getZonesOccupees().contains(c.getZonesControlleesParLesPoints()[i][j])){
+                    if (c.getZonesOccupees().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
                         return false;
                     }
                 }

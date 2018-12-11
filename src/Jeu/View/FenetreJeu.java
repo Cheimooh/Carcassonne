@@ -28,6 +28,7 @@ import javafx.scene.paint.Color;
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FenetreJeu extends Parent {
 
@@ -121,7 +122,7 @@ public class FenetreJeu extends Parent {
     public void placerPartisan(int numZone) {
         int numJoueur = (carcassonne.getNumJoueur()-1);
         if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants()>0) {
-            derniereCartePosee.addZonesOccupees(numZone);
+            derniereCartePosee.addZonesOccupees(numZone, carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getColor());
             carcassonne.getTabJoueur()[numJoueur].placePartisan();
             Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
             int xCarte = (int)carte.getPosition().getX();
@@ -149,6 +150,81 @@ public class FenetreJeu extends Parent {
 
         alert.setContentText(erreur);
         alert.showAndWait();
+    }
+
+    /*
+     * Permet de toute les cartes qui sont occuper
+     */
+    public void actualiserDebuggageContamination(){
+        for (int i = 0; i < carcassonne.getListPointOccupe().size(); i++) {
+            CartePosee carteTmp = carcassonne.getPointCarteMap().get(carcassonne.getListPointOccupe().get(i));
+            for(Map.Entry<Integer, Color> mapZone : carteTmp.getZonesOccupees().entrySet()) {
+                peindreZoneOccuperDeCarte(mapZone.getKey(), mapZone.getValue(), carteTmp);
+            }
+        }
+    }
+
+    /*
+     * Permet de prendre toute les zones de la carte
+     */
+
+    private void peindreZoneOccuperDeCarte(int numZone, Color couleurJoueur, CartePosee c) {
+        for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
+            for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
+                if (c.getZonesControlleesParLesPoints()[i][j] == numZone){
+                    graphicsContext.setFill(couleurJoueur);
+                    colorierZones(numZone, c);
+                }
+            }
+        }
+    }
+
+    /*
+     * Permet de colorier la bonne zone de la carte
+     *
+     * Point *50 pour place de la carte puis 50/3 pour chaque zone avec rectangle pour mieux voir
+     */
+
+    private void colorierZones(int numZone, CartePosee c){
+        Point point = c.getPosition();
+        switch(numZone){
+            case 1:
+                graphicsContext.fillRect(point.getX()*50, point.getY()*50, 16, 8);
+                break;
+            case 2:
+                graphicsContext.fillRect(point.getX()*50+16, point.getY()*50, 16, 8);
+                break;
+            case 3:
+                graphicsContext.fillRect(point.getX()*50+32, point.getY()*50, 16, 8);
+                break;
+            case 4:
+                graphicsContext.fillRect(point.getX()*50+42, point.getY()*50, 8, 16);
+                break;
+            case 5:
+                graphicsContext.fillRect(point.getX()*50+42, point.getY()*50+16, 8, 16);
+                break;
+            case 6:
+                graphicsContext.fillRect(point.getX()*50+42, point.getY()*50+32, 8, 16);//OK
+                break;
+            case 7:
+                graphicsContext.fillRect(point.getX()*50+32, point.getY()*50+42, 16, 8);
+                break;
+            case 8:
+                graphicsContext.fillRect(point.getX()*50+16, point.getY()*50+42, 16, 8);
+                break;
+            case 9:
+                graphicsContext.fillRect(point.getX()*50, point.getY()*50+42, 16, 8);
+                break;
+            case 10:
+                graphicsContext.fillRect(point.getX()*50, point.getY()*50+32, 8, 16);
+                break;
+            case 11:
+                graphicsContext.fillRect(point.getX()*50, point.getY()*50+16, 8, 16);
+                break;
+            case 12:
+                graphicsContext.fillRect(point.getX()*50, point.getY()*50, 8, 16);
+                break;
+        }
     }
 
     ControlMouse getControlMouse() { return controlMouse; }
