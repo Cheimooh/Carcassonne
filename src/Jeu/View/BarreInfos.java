@@ -55,15 +55,12 @@ public class BarreInfos {
             s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
 
             String defausse = "Defausser ma carte";
-            String voirPioche = "Pioche";
             String voirDefausse = "Défausse";
 
             graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
 
-            //Affichage du "bouton" pour voir la pioche
-            drawBouton(voirPioche, width/7., 15, 100, 30);
             //Affichage du "bouton" pour voir la défausse
-            drawBouton(voirDefausse, width/7., 55, 100, 30);
+            drawBouton(voirDefausse, width/7., 35, 100, 30);
             //Affichage du "bouton" pour défausser une carte
             drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
         }
@@ -157,7 +154,6 @@ public class BarreInfos {
      * Ajoute la carte "supprimé" à la défausse
      */
     public void defausserCarte(Carte carte) {
-        // A MODIFIER
         carcassonne.getDefausse().add(carte);
         carcassonne.jouer();
         drawInformationsCarte(carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
@@ -182,4 +178,6 @@ public class BarreInfos {
     public Carcassonne getCarcassonne() { return carcassonne; }
 
     public Canvas getInfos() { return infos; }
+
+    public int getWidth() { return width; }
 }

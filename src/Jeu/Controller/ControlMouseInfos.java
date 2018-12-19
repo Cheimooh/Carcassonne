@@ -3,6 +3,7 @@ package Jeu.Controller;
 import Jeu.Model.Carte;
 import Jeu.Model.CoteCarte;
 import Jeu.View.BarreInfos;
+import Jeu.View.FenetreDefausse;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -35,7 +36,6 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
             //si on clique sur l'endroit sur la barre d'info où il y a la carte
             if (mode==0) {
                 if (x > 500 && x < 550 && y > 30 && y < 80) {
-                    System.out.println("test");
                     int nbRotation = controlMouse.getCarteEnMain().getNbRotation();
                     nbRotation++;
                     nbRotation = nbRotation % 4;
@@ -57,6 +57,10 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                     controlMouse.getFenetreJeu().getCarcassonne().jouer();
                     controlMouse.setMode(0);
                 }
+            }
+            if (x>barreInfos.getWidth()/7 && x<barreInfos.getWidth()/7 +100 && y>35 && y<65){
+                FenetreDefausse fenetreDefausse = new FenetreDefausse();
+                fenetreDefausse.afficherDefausse(controlMouse.getFenetreJeu().getCarcassonne().getDefausse());
             }
         }
     }

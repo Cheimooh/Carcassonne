@@ -49,7 +49,6 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                         fenetreJeu.getBarreInfos().drawInformationsPartisans();
                         fenetreJeu.actualiserDebuggageContamination();
                         mode = 1;
-                        System.out.println("changement de mode");
                     }
                     // Erreur si les cartes à côté ne coïncident pas
                     else {
@@ -128,10 +127,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     public Carte getCarteEnMain() { return carteEnMain; }
 
-    public void setMode(int mode) {
-        this.mode = mode;
-        System.out.println("changement de mode");
-    }
+    public void setMode(int mode) { this.mode = mode; }
 
     public FenetreJeu getFenetreJeu() { return fenetreJeu; }
 }
