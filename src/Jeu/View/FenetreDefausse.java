@@ -26,11 +26,20 @@ public class FenetreDefausse {
 
     public void afficherDefausse(ArrayList<Carte> defausse) {
         pane.getChildren().clear();
+        ArrayList<Carte> carteDejaPresenteDansLaDefausse = new ArrayList<>();
+        boolean carteDejaPresente;
         for (int i = 0; i < defausse.size(); i++) {
             for (int j = 0; j < 5; j++) {
+                carteDejaPresente=false;
                 if (defausse.size()>i*5+j) {
                     Carte c = defausse.get(i*5+j);
-                    graphicsContext.drawImage(c.getDraw().getImg(), TAILLE_CARTE*j + 10*(j+1), TAILLE_CARTE*i + 10*(i+1), TAILLE_CARTE, TAILLE_CARTE);
+                    for (int k = 0; k < carteDejaPresenteDansLaDefausse.size() ; k++) {
+                        if (carteDejaPresenteDansLaDefausse.get(k).getTypeCarte()==c.getTypeCarte()){
+                            carteDejaPresente=true;
+                        }
+                    }
+                    if (!carteDejaPresente) graphicsContext.drawImage(c.getDraw().getImg(), TAILLE_CARTE*j + 10*(j+1), TAILLE_CARTE*i + 10*(i+1), TAILLE_CARTE, TAILLE_CARTE);
+                    else carteDejaPresenteDansLaDefausse.add(c);
                 }
             }
         }
