@@ -12,6 +12,7 @@ public class BarreInfos {
     private Carcassonne carcassonne;
     private GraphicsContext graphicsContextInfos;
     private Canvas infos;
+    private ControlMouseInfos controlMouseInfos;
 
     private int width; // largeur de la fenêtre
     private int height; // hauteur de la fenêtre
@@ -25,7 +26,7 @@ public class BarreInfos {
         tabDefausseCarte = new int[]{750, 35, 180, 30};
         carcassonne = f.getCarcassonne();
         infos = new Canvas(width, height);
-        ControlMouseInfos controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
+        controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
         infos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = infos.getGraphicsContext2D();
         graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
@@ -35,6 +36,7 @@ public class BarreInfos {
      * Dessine la barre d'infos lorsque le joueur doit poser une carte
      */
     private void drawInformationsCarte(Image prochaineCarte){
+        controlMouseInfos.setMode(0);
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
         drawLigneSeparatrice();
@@ -77,6 +79,7 @@ public class BarreInfos {
      * Dessine la barre d'infos lorsque le joueur doit poser un partisan
      */
     public void drawInformationsPartisans(){
+        controlMouseInfos.setMode(1);
         graphicsContextInfos.clearRect(0,0,width,100);
         drawLigneSeparatrice();
 
@@ -93,15 +96,18 @@ public class BarreInfos {
             int nbPartisans = carcassonne.getTabJoueur()[numJoueur-1].getNombrePartisansRestants();
             Color color = carcassonne.getTabJoueur()[numJoueur-1].getColor();
 
-            String voirPioche = "Pioche";
             String voirDefausse = "Défausse";
+            String poserPartisan = "Poser un partisan";
+            String passerTour = "Passer son tour";
 
             graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
 
-            //Affichage du "bouton" pour voir la pioche
-            drawBouton(voirPioche, width/7., 15, 100, 30);
             //Affichage du "bouton" pour voir la défausse
-            drawBouton(voirDefausse, width/7., 55, 100, 30);
+            drawBouton(voirDefausse, width/7., 35, 100, 30);
+            //Affichage du "bouton" pour poser un partisan
+            drawBouton(poserPartisan, 750, 15, 180, 30);
+            //Affichage du "bouton" pour passer son tour
+            drawBouton(passerTour, 750, 55, 180, 30);
 
             if (nbPartisans>0){
                 graphicsContextInfos.setFill(color);

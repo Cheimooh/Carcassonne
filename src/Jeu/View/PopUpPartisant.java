@@ -55,7 +55,7 @@ public class PopUpPartisant {
         popup.close();
     }
 
-    public void lierCarteEnMain(Carte carte){
+    public void lierCarteEnMain(CartePosee carte){
         controlMousePartisant.setCarteEnMain(carte);
     }
 }

@@ -97,8 +97,7 @@ public class FenetreJeu extends Parent {
         //Dessine l'image sur la fenêtre de jeu
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
         if(carte!=carcassonne.getCarteDeBase()) {
-            popUpPartisant.lierCarteEnMain(carte);
-            popUpPartisant.afficherCarte(cartePosee);
+            barreInfos.drawInformationsPartisans();
         }
     }
 
@@ -136,6 +135,7 @@ public class FenetreJeu extends Parent {
             Color color = carcassonne.getTabJoueur()[numJoueur].getColor();
             graphicsContext.setFill(color);
             graphicsContext.fillOval(xPartisan+(xCarte*50)-4, yPartisan+(yCarte*50)-4,8,8);
+            controlMouse.setMode(0);
         } else {
             afficheErreur(carcassonne.getTabJoueur()[numJoueur].getNom()+" n'a plus de partisans !","Placement de partisans");
         }
@@ -225,6 +225,11 @@ public class FenetreJeu extends Parent {
                 graphicsContext.fillRect(point.getX()*50, point.getY()*50, 8, 16);
                 break;
         }
+    }
+
+    public void afficherCartePourPoserUnPartisan() {
+        popUpPartisant.lierCarteEnMain(derniereCartePosee);
+        popUpPartisant.afficherCarte(derniereCartePosee);
     }
 
     ControlMouse getControlMouse() { return controlMouse; }
