@@ -58,15 +58,8 @@ public class Carte {
             for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
                 newZonesControlleesParLesPoints[i][j] = (zonesControlleesParLesPoints[i][j]+3)%12;
                 if (newZonesControlleesParLesPoints[i][j]==0) newZonesControlleesParLesPoints[i][j]=12;
-                System.out.println("NEW : "+newZonesControlleesParLesPoints[i][j]+ " OLD : "+zonesControlleesParLesPoints[i][j]);
             }
-            System.out.println();
         }
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
         zonesControlleesParLesPoints=newZonesControlleesParLesPoints;
     }
 
@@ -95,4 +88,6 @@ public class Carte {
     public void setPositionsCoordonnees(ArrayList<Point> positionsCoordonnees) { this.positionsCoordonnees = positionsCoordonnees; }
 
     public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
+
+    public String getType() { return type; }
 }

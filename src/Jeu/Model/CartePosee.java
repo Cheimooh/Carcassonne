@@ -23,8 +23,10 @@ public class CartePosee {
     private Map<Integer, Color> zonesCouleurPartisan;
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
+    private String type;
 
     public CartePosee(Carte carte){
+        type = carte.getType();
         nord = carte.getNord();
         sud = carte.getSud();
         est = carte.getEst();
@@ -115,4 +117,6 @@ public class CartePosee {
     public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
 
     public ArrayList<CoteCarte> getListeZones() { return listeZones; }
+
+    public String getType() { return type; }
 }

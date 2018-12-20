@@ -29,6 +29,7 @@ import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Queue;
 
 public class FenetreJeu extends Parent {
 
@@ -162,6 +163,57 @@ public class FenetreJeu extends Parent {
         }
     }
 
+    private void contaminationDesAutresCarteAvecCouleur(CartePosee carteBase){
+        ArrayDeque<CartePosee> carteNonVerifiee = new ArrayDeque<>();
+        ArrayList<CartePosee> cartesDejaVerifiees = new ArrayList<>();
+        carteNonVerifiee.offer(carteBase);
+        int x;
+        int y;
+        while(!carteNonVerifiee.isEmpty()){
+            CartePosee carteCourante = carteNonVerifiee.poll();
+            System.out.println("Carte courante : " + carteCourante.getType());
+            cartesDejaVerifiees.add(carteCourante);
+            x = (int) carteCourante.getPosition().getX();
+            y = (int) carteCourante.getPosition().getY();
+
+            Point point = new Point(x-1, y);
+            if(carcassonne.getListPointOccupe().contains(point)){
+                CartePosee c = carcassonne.getPointCarteMap().get(point);
+                if(!cartesDejaVerifiees.contains(c)){
+                    carteNonVerifiee.addFirst(c);
+                    contaminationDeLaCarteAvecCouleur(carteCourante);
+                }
+            }
+
+            point = new Point(x+1, y);
+            if(carcassonne.getListPointOccupe().contains(point)){
+                CartePosee c = carcassonne.getPointCarteMap().get(point);
+                if(!cartesDejaVerifiees.contains(c)) {
+                    carteNonVerifiee.addFirst(c);
+                    contaminationDeLaCarteAvecCouleur(carteCourante);
+                }
+            }
+
+            point = new Point(x, y+1);
+            if(carcassonne.getListPointOccupe().contains(point)){
+                CartePosee c = carcassonne.getPointCarteMap().get(point);
+                if(!cartesDejaVerifiees.contains(c)) {
+                    carteNonVerifiee.addFirst(c);
+                    contaminationDeLaCarteAvecCouleur(carteCourante);
+                }
+            }
+
+            point = new Point(x, y-1);
+            if(carcassonne.getListPointOccupe().contains(point)){
+                CartePosee c = carcassonne.getPointCarteMap().get(point);
+                if(!cartesDejaVerifiees.contains(c)) {
+                    carteNonVerifiee.addFirst(c);
+                    contaminationDeLaCarteAvecCouleur(carteCourante);
+                }
+            }
+        }
+    }
+
 
     /*
      * Test si l'on doit ajouter ou non des emplacements disponibles
@@ -198,6 +250,7 @@ public class FenetreJeu extends Parent {
             graphicsContext.setFill(color);
             graphicsContext.fillOval(xPartisan+(xCarte*50)-4, yPartisan+(yCarte*50)-4,8,8);
             controlMouse.setMode(0);
+            contaminationDesAutresCarteAvecCouleur(derniereCartePosee);
         } else {
             afficheErreur(carcassonne.getTabJoueur()[numJoueur].getNom()+" n'a plus de partisans !","Placement de partisans");
         }
@@ -314,3 +367,5 @@ public class FenetreJeu extends Parent {
 
     public PopUpPartisan getPopUpPartisan() { return popUpPartisan; }
 }
+
+
