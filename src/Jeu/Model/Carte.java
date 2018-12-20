@@ -40,10 +40,10 @@ public class Carte {
         ArrayList<Point> newCoordonnees = new ArrayList<>();
         double x;
         double y;
-        for (int i = 0; i < positionsCoordonnees.size(); i++) {
-            x = 50-positionsCoordonnees.get(i).getY();
-            y = positionsCoordonnees.get(i).getX();
-            Point point = new Point((int)x,(int)y);
+        for (Point positionsCoordonnee : positionsCoordonnees) {
+            x = 50 - positionsCoordonnee.getY();
+            y = positionsCoordonnee.getX();
+            Point point = new Point((int) x, (int) y);
             newCoordonnees.add(point);
         }
         positionsCoordonnees=newCoordonnees;
