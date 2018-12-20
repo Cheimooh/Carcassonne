@@ -47,10 +47,8 @@ public class Appli extends Application {
         VBox boutonsMenu = new VBox(10);
         boutonsMenu.setAlignment(Pos.CENTER);
         Button jouer = new Button("Jouer");
-        Button scores = new Button("Scores");
-        Button reglage = new Button("Reglages");
         Button quitter = new Button("Quitter");
-        boutonsMenu.getChildren().addAll(jouer,scores,reglage,quitter);
+        boutonsMenu.getChildren().addAll(jouer,quitter);
         jouer.setOnAction(event -> askNbJoueurs());
         quitter.setOnAction(event -> System.exit(0));
         Scene scene = new Scene(boutonsMenu, 350,300);
