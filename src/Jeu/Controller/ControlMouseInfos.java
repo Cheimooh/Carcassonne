@@ -73,37 +73,8 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
      * pivote egalement les attributs de variable afin de stocker sa position pour la suite
      */
     private void pivoterCoteCarte(Carte carte){
-        CoteCarte nord = carte.getNord();
-        CoteCarte est = carte.getEst();
-        CoteCarte sud = carte.getSud();
-        CoteCarte ouest = carte.getOuest();
+        carte.pivoter();
 
-        carte.setNord(ouest);
-        carte.setEst(nord);
-        carte.setSud(est);
-        carte.setOuest(sud);
-        ArrayList<Point> newCoordonnees = new ArrayList<>();
-        double x;
-        double y;
-        for (int i = 0; i < carte.getPositionsCoordonnees().size(); i++) {
-            x = 50-carte.getPositionsCoordonnees().get(i).getY();
-            y = carte.getPositionsCoordonnees().get(i).getX();
-            Point point = new Point((int)x,(int)y);
-            newCoordonnees.add(point);
-        }
-        carte.setPositionsCoordonnees(newCoordonnees);
-
-        int[][] zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
-
-        for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
-            for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
-                zonesControlleesParLesPoints[i][j] = zonesControlleesParLesPoints[i][j]+3;
-                if (zonesControlleesParLesPoints[i][j]>12) {
-                    zonesControlleesParLesPoints[i][j] = zonesControlleesParLesPoints[i][j] - 12;
-                }
-            }
-        }
-        carte.setZonesControlleesParLesPoints(zonesControlleesParLesPoints);
     }
 
     public void setMode(int mode) { this.mode = mode; }

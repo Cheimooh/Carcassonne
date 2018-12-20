@@ -22,15 +22,49 @@ public class Carte {
         this.ouest = typeCarte.getOuest();
         this.draw = new DrawCard(typeCarte.getImg(), typeCarte.getImg90(), typeCarte.getImg180(), typeCarte.getImg270());
         this.position = new Point();
-        nbRotation=0;
-        positionsCoordonnees=typeCarte.getCoordonneesPartisans();
-        zonesControlleesParLesPoints=typeCarte.getZonesControlleesParLesPoints();
+        this.nbRotation=0;
+        this.positionsCoordonnees=typeCarte.getCoordonneesPartisans();
+        this.zonesControlleesParLesPoints=typeCarte.getZonesControlleesParLesPoints();
     }
 
-    /*
-     * Initialise la position de la carte
-     */
-    public void placerCarte(int x, int y){ position.move(x, y); }
+    public void pivoter() {
+        CoteCarte lastNord = nord;
+        CoteCarte lastEst = est;
+        CoteCarte lastSud = sud;
+        CoteCarte lastOuest = ouest;
+
+        this.nord=lastOuest;
+        this.est=lastNord;
+        this.sud=lastEst;
+        this.ouest=lastSud;
+        ArrayList<Point> newCoordonnees = new ArrayList<>();
+        double x;
+        double y;
+        for (int i = 0; i < positionsCoordonnees.size(); i++) {
+            x = 50-positionsCoordonnees.get(i).getY();
+            y = positionsCoordonnees.get(i).getX();
+            Point point = new Point((int)x,(int)y);
+            newCoordonnees.add(point);
+        }
+        positionsCoordonnees=newCoordonnees;
+
+        int[][] newZonesControlleesParLesPoints = new int[zonesControlleesParLesPoints.length][];
+
+        for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
+            for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
+                newZonesControlleesParLesPoints[i][j] = (zonesControlleesParLesPoints[i][j]+3)%12;
+                if (newZonesControlleesParLesPoints[i][j]==0) newZonesControlleesParLesPoints[i][j]=12;
+                System.out.println("NEW : "+newZonesControlleesParLesPoints[i][j]+ " OLD : "+zonesControlleesParLesPoints[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        zonesControlleesParLesPoints=newZonesControlleesParLesPoints;
+    }
 
     public Point getPosition() { return position; }
 
@@ -40,19 +74,11 @@ public class Carte {
 
     public CoteCarte getNord() { return nord; }
 
-    public void setNord(CoteCarte nord) { this.nord = nord; }
-
     public CoteCarte getSud() { return sud; }
-
-    public void setSud(CoteCarte sud) { this.sud = sud; }
 
     public CoteCarte getEst() { return est; }
 
-    public void setEst(CoteCarte est) { this.est = est; }
-
     public CoteCarte getOuest() { return ouest; }
-
-    public void setOuest(CoteCarte ouest) { this.ouest = ouest; }
 
     public int getNbRotation() { return nbRotation; }
 
@@ -65,10 +91,4 @@ public class Carte {
     public void setPositionsCoordonnees(ArrayList<Point> positionsCoordonnees) { this.positionsCoordonnees = positionsCoordonnees; }
 
     public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
-
-    public void setZonesControlleesParLesPoints(int[][] zonesControlleesParLesPoints) {
-        this.zonesControlleesParLesPoints = zonesControlleesParLesPoints;
-    }
-
-    public String getType() { return type; }
 }
