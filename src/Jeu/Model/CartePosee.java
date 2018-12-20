@@ -20,7 +20,7 @@ public class CartePosee {
     private boolean isAbbaye;
     private Image imageCarte;
     private ArrayList<CoteCarte> listeZones;
-    private Map<Integer, Color> zonesOccupees;
+    private Map<Integer, Color> zonesCouleurPartisan;
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
 
@@ -33,7 +33,7 @@ public class CartePosee {
         imageCarte = setImageCarte(carte);
         position = carte.getPosition();
         listeZones = new ArrayList<>();
-        zonesOccupees = new HashMap<>();
+        zonesCouleurPartisan = new HashMap<>();
         positionsCoordonnees=carte.getPositionsCoordonnees();
         zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
         addZones();
@@ -88,7 +88,7 @@ public class CartePosee {
         for (int i = 0; i < zonesControlleesParLesPoints.length ; i++) {
             if (i==numZone) {
                 for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
-                    zonesOccupees.put(zonesControlleesParLesPoints[i][j], couleurJoueur);
+                    zonesCouleurPartisan.put(zonesControlleesParLesPoints[i][j], couleurJoueur);
                 }
             }
         }
@@ -106,11 +106,13 @@ public class CartePosee {
 
     public Image getImageCarte() { return imageCarte; }
 
-    public Map<Integer, Color> getZonesOccupees() { return zonesOccupees; }
+    public Map<Integer, Color> getZonesCouleurPartisan() { return zonesCouleurPartisan; }
 
-    public void setZonesOccupees(Map<Integer, Color> zonesOccupees) { this.zonesOccupees = zonesOccupees; }
+    public void setZonesCouleurPartisan(Map<Integer, Color> zonesCouleurPartisan) { this.zonesCouleurPartisan = zonesCouleurPartisan; }
 
     public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
 
     public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
+
+    public ArrayList<CoteCarte> getListeZones() { return listeZones; }
 }

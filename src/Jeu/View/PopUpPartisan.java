@@ -1,9 +1,7 @@
 package Jeu.View;
 
-import Jeu.Controller.ControlMousePartisant;
-import Jeu.Model.Carte;
+import Jeu.Controller.ControlMousePartisan;
 import Jeu.Model.CartePosee;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -12,13 +10,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class PopUpPartisant {
+public class PopUpPartisan {
     private Pane pane;
     private Stage primaryStage;
     private Stage popup;
-    private ControlMousePartisant controlMousePartisant;
+    private ControlMousePartisan controlMousePartisan;
 
-    public PopUpPartisant( Stage primaryStage){
+    public PopUpPartisan(Stage primaryStage){
         popup = new Stage();
         this.primaryStage = primaryStage;
         initPopup();
@@ -47,8 +45,8 @@ public class PopUpPartisant {
     }
 
     public void lierControl(FenetreJeu fenetreJeu){
-        controlMousePartisant = new ControlMousePartisant(fenetreJeu);
-        pane.setOnMouseClicked(controlMousePartisant);
+        controlMousePartisan = new ControlMousePartisan(fenetreJeu);
+        pane.setOnMouseClicked(controlMousePartisan);
     }
 
     public void quitter() {
@@ -56,6 +54,6 @@ public class PopUpPartisant {
     }
 
     public void lierCarteEnMain(CartePosee carte){
-        controlMousePartisant.setCarteEnMain(carte);
+        controlMousePartisan.setCarteEnMain(carte);
     }
 }
