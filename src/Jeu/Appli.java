@@ -30,11 +30,8 @@ public class Appli extends Application {
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
-    private RadioButton t_vert = new RadioButton();
-    private RadioButton t_chartreuse = new RadioButton();
     private RadioButton t_bleu = new RadioButton();
     private RadioButton t_rose = new RadioButton();
-    private RadioButton t_violet = new RadioButton();
     private RadioButton t_jaune = new RadioButton();
     private RadioButton t_bleuClaire = new RadioButton();
 
@@ -131,55 +128,41 @@ public class Appli extends Application {
                 if (nomJoueur.equals(tabNomjoueurs[i])) return false;
             }
         }
+        if (nomJoueur.length() > 16)return false;
         return true;
     }
 
     private void afficherFenetreInfosJoueurs() {
         Button b_suivant = new Button("suivant");
-        Label erreurNom = new Label("Le nom doit être:\n- différent des noms déja données\n- non vide");
+        Label erreurNom = new Label("Le nom doit être:\n- différent des noms déja données\n- non vide\n- faire 16 lettres maximum");
         erreurNom.setStyle("-fx-text-fill: RED");
         Label erreurCouleur = new Label("La couleur doit être:\n- différente des couleurs déja sélectionnée\n- non null");
         erreurCouleur.setStyle("-fx-text-fill: RED");
         Rectangle r_rouge = new Rectangle(30,30,Color.RED);
-        Rectangle r_vert = new Rectangle(30,30,Color.GREEN);
-        Rectangle r_chartreuse = new Rectangle(30,30,Color.CHARTREUSE);
         Rectangle r_bleu = new Rectangle(30,30,Color.BLUE);
-        Rectangle r_rose = new Rectangle(30,30,Color.PINK);
-        Rectangle r_violet = new Rectangle(30,30,Color.BLUEVIOLET);
-        Rectangle r_jaune = new Rectangle(30,30,Color.YELLOW);
-        Rectangle r_bleuClaire = new Rectangle(30,30,Color.LIGHTBLUE);
+        Rectangle r_rose = new Rectangle(30,30,Color.HOTPINK);
+        Rectangle r_jaune = new Rectangle(30,30,Color.GOLD);
+        Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
         if (colorJoueursCorrect){
             t_rouge.setSelected(false);
-            t_vert.setSelected(false);
-            t_chartreuse.setSelected(false);
             t_bleu.setSelected(false);
             t_rose.setSelected(false);
-            t_violet.setSelected(false);
             t_jaune.setSelected(false);
             t_bleuClaire.setSelected(false);
         }
         VBox v_rouge = new VBox(5);
         v_rouge.setAlignment(Pos.CENTER);
-        VBox v_vert = new VBox(5);
-        v_vert.setAlignment(Pos.CENTER);
-        VBox v_chartreuse = new VBox(5);
-        v_chartreuse.setAlignment(Pos.CENTER);
         VBox v_bleu = new VBox(5);
         v_bleu.setAlignment(Pos.CENTER);
         VBox v_rose = new VBox(5);
         v_rose.setAlignment(Pos.CENTER);
-        VBox v_violet = new VBox(5);
-        v_violet.setAlignment(Pos.CENTER);
         VBox v_jaune = new VBox(5);
         v_jaune.setAlignment(Pos.CENTER);
         VBox v_bleuClaire = new VBox(5);
         v_bleuClaire.setAlignment(Pos.CENTER);
         v_rouge.getChildren().addAll(t_rouge,r_rouge);
-        v_vert.getChildren().addAll(t_vert,r_vert);
-        v_chartreuse.getChildren().addAll(t_chartreuse,r_chartreuse);
         v_bleu.getChildren().addAll(t_bleu,r_bleu);
         v_rose.getChildren().addAll(t_rose,r_rose);
-        v_violet.getChildren().addAll(t_violet,r_violet);
         v_jaune.getChildren().addAll(t_jaune,r_jaune);
         v_bleuClaire.getChildren().addAll(t_bleuClaire,r_bleuClaire);
         VBox vBox = new VBox(10);
@@ -199,51 +182,36 @@ public class Appli extends Application {
         vBox.getChildren().addAll(l_nomjoueur,t_nomJoueur);
         ToggleGroup toggleGroup = new ToggleGroup();
         t_rouge.setToggleGroup(toggleGroup);
-        t_vert.setToggleGroup(toggleGroup);
-        t_chartreuse.setToggleGroup(toggleGroup);
         t_bleu.setToggleGroup(toggleGroup);
         t_rose.setToggleGroup(toggleGroup);
-        t_violet.setToggleGroup(toggleGroup);
         t_jaune.setToggleGroup(toggleGroup);
         t_bleuClaire.setToggleGroup(toggleGroup);
-        bouttons.getChildren().addAll(v_rouge,v_vert,v_chartreuse,v_bleu,v_rose,v_violet,v_jaune,v_bleuClaire);
+        bouttons.getChildren().addAll(v_rouge,v_bleu,v_rose,v_jaune,v_bleuClaire);
         if (colorJoueursCorrect){
             if (nomJoueursCorrect) {
                 for (Color tabColorJoueur : tabColorJoueurs) {
                     if (tabColorJoueur != null && tabColorJoueur == Color.RED)
                         bouttons.getChildren().remove(v_rouge);
-                    if (tabColorJoueur != null && tabColorJoueur == Color.GREEN)
-                        bouttons.getChildren().remove(v_vert);
-                    if (tabColorJoueur != null && tabColorJoueur == Color.CHARTREUSE)
-                        bouttons.getChildren().remove(v_chartreuse);
                     if (tabColorJoueur != null && tabColorJoueur == Color.BLUE)
                         bouttons.getChildren().remove(v_bleu);
-                    if (tabColorJoueur != null && tabColorJoueur == Color.PINK)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.HOTPINK)
                         bouttons.getChildren().remove(v_rose);
-                    if (tabColorJoueur != null && tabColorJoueur == Color.BLUEVIOLET)
-                        bouttons.getChildren().remove(v_violet);
-                    if (tabColorJoueur != null && tabColorJoueur == Color.YELLOW)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.GOLD)
                         bouttons.getChildren().remove(v_jaune);
-                    if (tabColorJoueur != null && tabColorJoueur == Color.LIGHTBLUE)
+                    if (tabColorJoueur != null && tabColorJoueur == Color.DEEPSKYBLUE)
                         bouttons.getChildren().remove(v_bleuClaire);
                 }
             }else{
                 for (int i = 0; i <= nombreJoueur2-1; i++) {
                     if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.RED)
                         bouttons.getChildren().remove(v_rouge);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.GREEN)
-                        bouttons.getChildren().remove(v_vert);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.CHARTREUSE)
-                        bouttons.getChildren().remove(v_chartreuse);
                     if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUE)
                         bouttons.getChildren().remove(v_bleu);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.PINK)
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.HOTPINK)
                         bouttons.getChildren().remove(v_rose);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUEVIOLET)
-                        bouttons.getChildren().remove(v_violet);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.YELLOW)
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.GOLD)
                         bouttons.getChildren().remove(v_jaune);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.LIGHTBLUE)
+                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.DEEPSKYBLUE)
                         bouttons.getChildren().remove(v_bleuClaire);
                 }
             }
@@ -263,13 +231,10 @@ public class Appli extends Application {
     private Color recupColorsToggle(Toggle toggle) {
         if (toggle != null) {
             if (toggle.equals(t_rouge)) return Color.RED;
-            if (toggle.equals(t_vert)) return Color.GREEN;
-            if (toggle.equals(t_chartreuse)) return Color.CHARTREUSE;
             if (toggle.equals(t_bleu)) return Color.BLUE;
-            if (toggle.equals(t_rose)) return Color.PINK;
-            if (toggle.equals(t_violet)) return Color.BLUEVIOLET;
-            if (toggle.equals(t_jaune)) return Color.YELLOW;
-            if (toggle.equals(t_bleuClaire)) return Color.LIGHTBLUE;
+            if (toggle.equals(t_rose)) return Color.HOTPINK;
+            if (toggle.equals(t_jaune)) return Color.GOLD;
+            if (toggle.equals(t_bleuClaire)) return Color.DEEPSKYBLUE;
         }
         return null;
 
