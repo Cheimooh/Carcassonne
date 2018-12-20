@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ControlMouseInfos implements EventHandler<MouseEvent> {
     private BarreInfos barreInfos;
@@ -46,7 +47,9 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                 //si on clique sur le "bouton" defausser carte
                 if (x > tabDefausseCarte[0] && x < tabDefausseCarte[0] + tabDefausseCarte[2]
                         && y > tabDefausseCarte[1] && y < tabDefausseCarte[1] + tabDefausseCarte[3]) {
-                    barreInfos.defausserCarte(controlMouse.getCarteEnMain());
+                    barreInfos.getCarcassonne().getDefausse().add(controlMouse.getCarteEnMain());
+                    barreInfos.getCarcassonne().jouer();
+                    barreInfos.drawInformationsCarte(barreInfos.getCarcassonne().getTabJoueur()[barreInfos.getCarcassonne().getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
                 }
             } else if (mode==1){
                 if (x > 750 && x < 930 && y > 15 && y < 45) {

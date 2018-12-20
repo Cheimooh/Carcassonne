@@ -35,7 +35,7 @@ public class BarreInfos {
     /*
      * Dessine la barre d'infos lorsque le joueur doit poser une carte
      */
-    private void drawInformationsCarte(Image prochaineCarte){
+    public void drawInformationsCarte(Image prochaineCarte){
         controlMouseInfos.setMode(0);
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
@@ -147,16 +147,6 @@ public class BarreInfos {
                 image=null;
         }
         return image;
-    }
-
-    /*
-     * Supprime la carte courante de l'affichage
-     * Ajoute la carte "supprimé" à la défausse
-     */
-    public void defausserCarte(Carte carte) {
-        carcassonne.getDefausse().add(carte);
-        carcassonne.jouer();
-        drawInformationsCarte(carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
     }
 
     /*
