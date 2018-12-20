@@ -150,15 +150,15 @@ public class Appli extends Application {
             t_jaune.setSelected(false);
             t_bleuClaire.setSelected(false);
         }
-        VBox v_rouge = new VBox(5);
+        VBox v_rouge = new VBox(3);
         v_rouge.setAlignment(Pos.CENTER);
-        VBox v_bleu = new VBox(5);
+        VBox v_bleu = new VBox(3);
         v_bleu.setAlignment(Pos.CENTER);
-        VBox v_rose = new VBox(5);
+        VBox v_rose = new VBox(3);
         v_rose.setAlignment(Pos.CENTER);
-        VBox v_jaune = new VBox(5);
+        VBox v_jaune = new VBox(3);
         v_jaune.setAlignment(Pos.CENTER);
-        VBox v_bleuClaire = new VBox(5);
+        VBox v_bleuClaire = new VBox(3);
         v_bleuClaire.setAlignment(Pos.CENTER);
         v_rouge.getChildren().addAll(t_rouge,r_rouge);
         v_bleu.getChildren().addAll(t_bleu,r_bleu);
@@ -187,7 +187,6 @@ public class Appli extends Application {
         t_jaune.setToggleGroup(toggleGroup);
         t_bleuClaire.setToggleGroup(toggleGroup);
         bouttons.getChildren().addAll(v_rouge,v_bleu,v_rose,v_jaune,v_bleuClaire);
-        if (colorJoueursCorrect){
             if (nomJoueursCorrect) {
                 for (Color tabColorJoueur : tabColorJoueurs) {
                     if (tabColorJoueur != null && tabColorJoueur == Color.RED)
@@ -215,7 +214,7 @@ public class Appli extends Application {
                         bouttons.getChildren().remove(v_bleuClaire);
                 }
             }
-        }
+
         if (!nomJoueursCorrect)vBox.getChildren().add(erreurNom);
         vBox.getChildren().add(l_couleurJoueur);
         if (!colorJoueursCorrect)vBox.getChildren().add(erreurCouleur);
