@@ -133,7 +133,7 @@ public class Carcassonne {
             }
             if (indicePresent!=-1) {
                 for (int j = 0; j < cartePosee.getZonesControlleesParLesPoints()[indicePresent].length; j++) {
-                    zonesDejaOccupees.put(cartePosee.getZonesControlleesParLesPoints()[indicePresent][j], tabJoueur[numJoueur].getColor());
+                    zonesDejaOccupees.put(cartePosee.getZonesControlleesParLesPoints()[indicePresent][j], tabJoueur[numJoueur-1].getColor());
                 }
             }
         }

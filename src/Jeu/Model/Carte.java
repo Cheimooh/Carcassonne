@@ -51,6 +51,10 @@ public class Carte {
         int[][] newZonesControlleesParLesPoints = new int[zonesControlleesParLesPoints.length][];
 
         for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
+            newZonesControlleesParLesPoints[i] = new int[zonesControlleesParLesPoints[i].length];
+        }
+
+        for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
             for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
                 newZonesControlleesParLesPoints[i][j] = (zonesControlleesParLesPoints[i][j]+3)%12;
                 if (newZonesControlleesParLesPoints[i][j]==0) newZonesControlleesParLesPoints[i][j]=12;
