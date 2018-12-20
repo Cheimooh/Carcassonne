@@ -11,6 +11,7 @@ public class Pioche {
      */
     public Pioche(int taille){
         this.taille = taille;
+
         for (int i = 0; i < 9 ; i++) { lCarte.add(new Carte(TypeCarte.cartePPCC)); }
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.carteVCCP)); }
         for (int i = 0; i < 2; i++) { lCarte.add(new Carte(TypeCarte.carteVCCVBlason)); }

@@ -32,7 +32,7 @@ public class Carcassonne {
         defausse = new ArrayList<>();
         p = new Pioche(NB_CARTES);
         // A MODIFIER
-        carteDeBase = new Carte(TypeCarte.cartePPPP);
+        carteDeBase = new Carte(TypeCarte.carteVCPC);
 
         //carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
         //listPointDispo.add(new Point(NB_CASES/2+1,NB_CASES/2));

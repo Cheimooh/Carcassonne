@@ -11,12 +11,11 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     private FenetreJeu fenetreJeu;
     private Carte carteEnMain;
-
-    private int xCartePlacee; // Position x de la dernière carte placée
-    private int yCartePlacee; // Position y de la dernière carte placée
+    private int mode; // 0 placement de carte
 
     public ControlMouse(FenetreJeu fenetreJeu){
         this.fenetreJeu = fenetreJeu;
+        this.mode=0;
     }
 
     /*
@@ -32,30 +31,34 @@ public class ControlMouse implements EventHandler<MouseEvent> {
      */
     private void verifPlacerCarte(MouseEvent event){
         // Si la pioche n'est pas vide
-        if (fenetreJeu.getCarcassonne().getP().getTaille() >= 0) {
-            setCarteEnMain(fenetreJeu.getCarcassonne().getTabJoueur()[fenetreJeu.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
-            xCartePlacee = (int) event.getX() / 50;
-            yCartePlacee = (int) event.getY() / 50;
-            Point point = new Point(xCartePlacee, yCartePlacee);
-            // Erreur s'il y a déjà une carte où l'on a cliqué
-            if (fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) {
-                fenetreJeu.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
-            }
-            else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
-                if (isPlacable(xCartePlacee, yCartePlacee)) {
-                    carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
-                    fenetreJeu.placerCarte(carteEnMain);
-                    fenetreJeu.getBarreInfos().drawInformationsPartisans();
-                    fenetreJeu.actualiserDebuggageContamination();
+        if (mode==0) {
+            if (fenetreJeu.getCarcassonne().getP().getTaille() >= 0) {
+                setCarteEnMain(fenetreJeu.getCarcassonne().getTabJoueur()[fenetreJeu.getCarcassonne().getNumJoueur() - 1].getCarteEnMain());
+                // Position x de la dernière carte placée
+                int xCartePlacee = (int) event.getX() / 50;
+                // Position y de la dernière carte placée
+                int yCartePlacee = (int) event.getY() / 50;
+                Point point = new Point(xCartePlacee, yCartePlacee);
+                // Erreur s'il y a déjà une carte où l'on a cliqué
+                if (fenetreJeu.getCarcassonne().getListPointOccupe().contains(point)) {
+                    fenetreJeu.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
+                } else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
+                    if (isPlacable(xCartePlacee, yCartePlacee)) {
+                        carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
+                        fenetreJeu.placerCarte(carteEnMain);
+                        fenetreJeu.getBarreInfos().drawInformationsPartisans();
+                        fenetreJeu.actualiserDebuggageContamination();
+                        mode = 1;
+                    }
+                    // Erreur si les cartes à côté ne coïncident pas
+                    else {
+                        fenetreJeu.afficheErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
+                    }
                 }
-                // Erreur si les cartes à côté ne coïncident pas
+                // Erreur s'il n'y a pas de carte à côté de l'endroit où l'on clique
                 else {
-                    fenetreJeu.afficheErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
+                    fenetreJeu.afficheErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");
                 }
-            }
-            // Erreur s'il n'y a pas de carte à côté de l'endroit où l'on clique
-            else {
-                fenetreJeu.afficheErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");
             }
         }
     }
@@ -123,4 +126,8 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     protected void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
 
     public Carte getCarteEnMain() { return carteEnMain; }
+
+    public void setMode(int mode) { this.mode = mode; }
+
+    public FenetreJeu getFenetreJeu() { return fenetreJeu; }
 }

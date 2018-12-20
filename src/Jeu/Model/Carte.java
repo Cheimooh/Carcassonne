@@ -12,8 +12,10 @@ public class Carte {
     private int nbRotation;
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
+    private TypeCarte typeCarte;
 
     public Carte(TypeCarte typeCarte){
+        this.typeCarte=typeCarte;
         this.nord = typeCarte.getNord();
         this.sud = typeCarte.getSud();
         this.est = typeCarte.getEst();
@@ -67,4 +69,6 @@ public class Carte {
     public void setZonesControlleesParLesPoints(int[][] zonesControlleesParLesPoints) {
         this.zonesControlleesParLesPoints = zonesControlleesParLesPoints;
     }
+
+    public TypeCarte getTypeCarte() { return typeCarte; }
 }

@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 
 public class ControlMousePartisant implements EventHandler<MouseEvent> {
     private FenetreJeu fenetreJeu;
-    private Carte carteEnMain;
+    private CartePosee carteEnMain;
 
     public ControlMousePartisant(FenetreJeu fenetreJeu){
         this.fenetreJeu = fenetreJeu;
@@ -79,5 +79,5 @@ public class ControlMousePartisant implements EventHandler<MouseEvent> {
         return numZone;
     }
 
-    public void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
+    public void setCarteEnMain(CartePosee carteEnMain) { this.carteEnMain = carteEnMain; }
 }
