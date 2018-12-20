@@ -1,16 +1,15 @@
 package Jeu.Controller;
 
-import Jeu.Model.Carte;
 import Jeu.Model.CartePosee;
 import Jeu.View.FenetreJeu;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-public class ControlMousePartisant implements EventHandler<MouseEvent> {
+public class ControlMousePartisan implements EventHandler<MouseEvent> {
     private FenetreJeu fenetreJeu;
     private CartePosee carteEnMain;
 
-    public ControlMousePartisant(FenetreJeu fenetreJeu){
+    public ControlMousePartisan(FenetreJeu fenetreJeu){
         this.fenetreJeu = fenetreJeu;
     }
 
@@ -36,7 +35,7 @@ public class ControlMousePartisant implements EventHandler<MouseEvent> {
         } else {
             if (zonePasEncoreOccupee(numZone)) {
                 fenetreJeu.placerPartisan(numZone);
-                fenetreJeu.getPopUpPartisant().quitter();
+                fenetreJeu.getPopUpPartisan().quitter();
                 fenetreJeu.getCarcassonne().joueurSuivant();
                 fenetreJeu.getBarreInfos().afficherCarteSuivant();
                 fenetreJeu.getCarcassonne().jouer();
@@ -54,7 +53,7 @@ public class ControlMousePartisant implements EventHandler<MouseEvent> {
         for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
             if (i==numZone){
                 for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
-                    if (c.getZonesOccupees().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
+                    if (c.getZonesCouleurPartisan().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
                         return false;
                     }
                 }

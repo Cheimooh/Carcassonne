@@ -2,7 +2,7 @@ package Jeu;
 //commentaire pour commit les nouvelles images
 import Jeu.Model.Carcassonne;
 import Jeu.View.FenetreJeu;
-import Jeu.View.PopUpPartisant;
+import Jeu.View.PopUpPartisan;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -245,8 +245,8 @@ public class Appli extends Application {
         Group root = new Group();
         int WIDTH = 1000;
         int HEIGHT = 700;
-        PopUpPartisant popUpPartisant = new PopUpPartisant(primaryStage);
-        FenetreJeu fenetreJeu = new FenetreJeu(carcassonne, WIDTH, HEIGHT, popUpPartisant);
+        PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
+        FenetreJeu fenetreJeu = new FenetreJeu(carcassonne, WIDTH, HEIGHT, popUpPartisan);
         root.getChildren().add(fenetreJeu);
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
         primaryStage.show();

@@ -40,14 +40,14 @@ public class FenetreJeu extends Parent {
     private BarreInfos barreInfos;
     private CartePosee derniereCartePosee;
 
-    private PopUpPartisant popUpPartisant;
+    private PopUpPartisan popUpPartisan;
 
     /*
      * Classe qui gère l'affichage de la fenêtre de jeu
      */
-    public FenetreJeu(Carcassonne newCarcassonne, int width, int height, PopUpPartisant popUpPartisant){
-        this.popUpPartisant = popUpPartisant;
-        popUpPartisant.lierControl(this);
+    public FenetreJeu(Carcassonne newCarcassonne, int width, int height, PopUpPartisan popUpPartisan){
+        this.popUpPartisan = popUpPartisan;
+        popUpPartisan.lierControl(this);
         carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
         controlMouse = new ControlMouse(this);
@@ -72,7 +72,6 @@ public class FenetreJeu extends Parent {
     public void placerCarte(Carte carte){
         //Ajout de la carte à la liste des cartes déjà posée
         CartePosee cartePosee = new CartePosee(carte);
-        carcassonne.verifZonesDejaOccupees(cartePosee);
         derniereCartePosee=cartePosee;
         carcassonne.getListPointOccupe().add(cartePosee.getPosition());
         carcassonne.getPointCarteMap().put(carte.getPosition(), cartePosee);
@@ -98,8 +97,71 @@ public class FenetreJeu extends Parent {
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
         if(carte!=carcassonne.getCarteDeBase()) {
             barreInfos.drawInformationsPartisans();
+            contaminationDeLaCarteAvecCouleur(cartePosee);
         }
     }
+
+    private void contaminationDeLaCarteAvecCouleur(CartePosee carte) {
+        int x = (int) carte.getPosition().getX();
+        int y = (int) carte.getPosition().getY();
+
+        Point point = new Point(x-1, y);
+        if(carcassonne.getListPointOccupe().contains(point)){
+            CartePosee c = carcassonne.getPointCarteMap().get(point);
+            if (c.getZonesCouleurPartisan().containsKey(4)) carte.getZonesCouleurPartisan().put(12, c.getZonesCouleurPartisan().get(4));
+            if (c.getZonesCouleurPartisan().containsKey(5)) carte.getZonesCouleurPartisan().put(11, c.getZonesCouleurPartisan().get(5));
+            if (c.getZonesCouleurPartisan().containsKey(6)) carte.getZonesCouleurPartisan().put(10, c.getZonesCouleurPartisan().get(6));
+            ajoutCouleurMap(c, 4, carte, 12);
+            ajoutCouleurMap(c, 5, carte, 11);
+            ajoutCouleurMap(c, 6, carte, 10);
+        }
+
+        point = new Point(x+1, y);
+        if(carcassonne.getListPointOccupe().contains(point)){
+            CartePosee c = carcassonne.getPointCarteMap().get(point);
+            if (c.getZonesCouleurPartisan().containsKey(12)) carte.getZonesCouleurPartisan().put(4, c.getZonesCouleurPartisan().get(12));
+            if (c.getZonesCouleurPartisan().containsKey(11)) carte.getZonesCouleurPartisan().put(5, c.getZonesCouleurPartisan().get(11));
+            if (c.getZonesCouleurPartisan().containsKey(10)) carte.getZonesCouleurPartisan().put(6, c.getZonesCouleurPartisan().get(10));
+            ajoutCouleurMap(c, 12, carte, 4);
+            ajoutCouleurMap(c, 11, carte, 5);
+            ajoutCouleurMap(c, 10, carte, 6);
+        }
+
+        point = new Point(x, y+1);
+        if(carcassonne.getListPointOccupe().contains(point)){
+            CartePosee c = carcassonne.getPointCarteMap().get(point);
+            if (c.getZonesCouleurPartisan().containsKey(1)) carte.getZonesCouleurPartisan().put(9, c.getZonesCouleurPartisan().get(1));
+            if (c.getZonesCouleurPartisan().containsKey(2)) carte.getZonesCouleurPartisan().put(8, c.getZonesCouleurPartisan().get(2));
+            if (c.getZonesCouleurPartisan().containsKey(3)) carte.getZonesCouleurPartisan().put(7, c.getZonesCouleurPartisan().get(3));
+            ajoutCouleurMap(c, 1, carte, 9);
+            ajoutCouleurMap(c, 2, carte, 8);
+            ajoutCouleurMap(c, 3, carte, 7);
+        }
+
+        point = new Point(x, y-1);
+        if(carcassonne.getListPointOccupe().contains(point)){
+            CartePosee c = carcassonne.getPointCarteMap().get(point);
+            if (c.getZonesCouleurPartisan().containsKey(9)) carte.getZonesCouleurPartisan().put(1, c.getZonesCouleurPartisan().get(9));
+            if (c.getZonesCouleurPartisan().containsKey(8)) carte.getZonesCouleurPartisan().put(2, c.getZonesCouleurPartisan().get(8));
+            if (c.getZonesCouleurPartisan().containsKey(7)) carte.getZonesCouleurPartisan().put(3, c.getZonesCouleurPartisan().get(7));
+            ajoutCouleurMap(c, 9, carte, 1);
+            ajoutCouleurMap(c, 8, carte, 2);
+            ajoutCouleurMap(c, 7, carte, 3);
+        }
+    }
+
+    private void ajoutCouleurMap(CartePosee carteAdjacent, int zoneCarteAdjacente, CartePosee carteCourante, int zoneCarteCourante) {
+        for (int i = 0; i < carteCourante.getZonesControlleesParLesPoints().length; i++) {
+            for (int j = 0; j < carteCourante.getZonesControlleesParLesPoints()[i].length; j++) {
+                if(carteCourante.getZonesControlleesParLesPoints()[i][j] == zoneCarteCourante && carteAdjacent.getZonesCouleurPartisan().containsKey(zoneCarteAdjacente)){
+                    for (int k = 0; k < carteCourante.getZonesControlleesParLesPoints()[i].length; k++) {
+                        carteCourante.getZonesCouleurPartisan().putIfAbsent(carteCourante.getZonesControlleesParLesPoints()[i][k], carteAdjacent.getZonesCouleurPartisan().get(zoneCarteAdjacente));
+                    }
+                }
+            }
+        }
+    }
+
 
     /*
      * Test si l'on doit ajouter ou non des emplacements disponibles
@@ -116,7 +178,7 @@ public class FenetreJeu extends Parent {
     }
 
     /*
-     * Permet d'ajouter un partisan sur la zone où l'on clique
+     * Permet d'ajouter un partisan sur la zone où l'on clique et de rajouter la couleur en fonction du joueur
      */
     public void placerPartisan(int numZone) {
         int numJoueur = (carcassonne.getNumJoueur()-1);
@@ -156,10 +218,20 @@ public class FenetreJeu extends Parent {
      * Permet de toute les cartes qui sont occuper
      */
     public void actualiserDebuggageContamination(){
-        for (int i = 0; i < carcassonne.getListPointOccupe().size(); i++) {
+        /*for (int i = 0; i < carcassonne.getListPointOccupe().size(); i++) {
             CartePosee carteTmp = carcassonne.getPointCarteMap().get(carcassonne.getListPointOccupe().get(i));
-            for(Map.Entry<Integer, Color> mapZone : carteTmp.getZonesOccupees().entrySet()) {
-                peindreZoneOccuperDeCarte(mapZone.getKey(), mapZone.getValue(), carteTmp);
+            for(Map.Entry<Integer, Color> mapZone : carteTmp.getZonesCouleurPartisan().entrySet()) {
+                graphicsContext.setFill(mapZone.getValue());
+                colorierZones(mapZone.getKey(), carteTmp);
+                //peindreZoneOccuperDeCarte(mapZone.getKey(), mapZone.getValue(), carteTmp);
+            }
+        }*/
+
+        for (int i = 0; i < carcassonne.getListPointOccupe().size(); i++) { // toute carte posse
+            CartePosee carteTmp = carcassonne.getPointCarteMap().get(carcassonne.getListPointOccupe().get(i));
+            for(Map.Entry<Integer, Color> mapZone : carteTmp.getZonesCouleurPartisan().entrySet()) {
+                graphicsContext.setFill(mapZone.getValue());
+                colorierZones(mapZone.getKey(), carteTmp);
             }
         }
     }
@@ -169,11 +241,9 @@ public class FenetreJeu extends Parent {
      */
 
     private void peindreZoneOccuperDeCarte(int numZone, Color couleurJoueur, CartePosee c) {
-        for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
+        for (int i = 0; i < c.getZonesCouleurPartisan().size() ; i++) {
             for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
                 if (c.getZonesControlleesParLesPoints()[i][j] == numZone){
-                    graphicsContext.setFill(couleurJoueur);
-                    colorierZones(numZone, c);
                 }
             }
         }
@@ -228,8 +298,8 @@ public class FenetreJeu extends Parent {
     }
 
     public void afficherCartePourPoserUnPartisan() {
-        popUpPartisant.lierCarteEnMain(derniereCartePosee);
-        popUpPartisant.afficherCarte(derniereCartePosee);
+        popUpPartisan.lierCarteEnMain(derniereCartePosee);
+        popUpPartisan.afficherCarte(derniereCartePosee);
     }
 
     ControlMouse getControlMouse() { return controlMouse; }
@@ -242,5 +312,5 @@ public class FenetreJeu extends Parent {
 
     public CartePosee getDerniereCartePosee() { return derniereCartePosee; }
 
-    public PopUpPartisant getPopUpPartisant() { return popUpPartisant; }
+    public PopUpPartisan getPopUpPartisan() { return popUpPartisan; }
 }

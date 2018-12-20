@@ -83,63 +83,6 @@ public class Carcassonne {
         }
     }
 
-    public void verifZonesDejaOccupees(CartePosee cartePosee) {
-        Map<Integer, Color> zonesDejaOccupees = new HashMap<>();
-        int x = (int)cartePosee.getPosition().getX();
-        int y = (int)cartePosee.getPosition().getY();
-
-        Point point = new Point(x-1, y);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesOccupees().containsKey(4)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 12);
-            if (c.getZonesOccupees().containsKey(5)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 11);
-            if (c.getZonesOccupees().containsKey(6)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 10);
-        }
-
-        point = new Point(x+1, y);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesOccupees().containsKey(12)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 4);
-            if (c.getZonesOccupees().containsKey(11)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 5);
-            if (c.getZonesOccupees().containsKey(10)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 6);
-        }
-
-        point = new Point(x, y+1);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesOccupees().containsKey(1)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 9);
-            if (c.getZonesOccupees().containsKey(2)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 8);
-            if (c.getZonesOccupees().containsKey(3)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 7);
-        }
-
-        point = new Point(x, y-1);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesOccupees().containsKey(9)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 1);
-            if (c.getZonesOccupees().containsKey(8)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 2);
-            if (c.getZonesOccupees().containsKey(7)) zonesDejaOccupees = contamination(zonesDejaOccupees, cartePosee, 3);
-        }
-
-        cartePosee.setZonesOccupees(zonesDejaOccupees);
-    }
-
-    private Map<Integer, Color> contamination(Map<Integer, Color> zonesDejaOccupees, CartePosee cartePosee, int caseContaminee) {
-        int indicePresent = -1;
-        for (int i = 0; i < cartePosee.getZonesControlleesParLesPoints().length; i++) {
-            for (int j = 0; j < cartePosee.getZonesControlleesParLesPoints()[i].length; j++) {
-                if (cartePosee.getZonesControlleesParLesPoints()[i][j] == caseContaminee){
-                    indicePresent = i;
-                }
-            }
-            if (indicePresent!=-1) {
-                for (int j = 0; j < cartePosee.getZonesControlleesParLesPoints()[indicePresent].length; j++) {
-                    zonesDejaOccupees.put(cartePosee.getZonesControlleesParLesPoints()[indicePresent][j], tabJoueur[numJoueur-1].getColor());
-                }
-            }
-        }
-        return zonesDejaOccupees;
-    }
-
     public Carte getCarteDeBase() { return carteDeBase; }
 
     public int getNB_CASES() { return NB_CARTES * 2 - 1; }
