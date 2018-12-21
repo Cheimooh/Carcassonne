@@ -68,7 +68,7 @@ public class Appli extends Application {
             comboBox.getItems().add(option);
         }
         Button b_suivant = new Button("Suivant");
-        b_suivant.setOnAction(event -> initialiseNbjoueurs(comboBox.getSelectionModel().getSelectedItem()));
+        b_suivant.setOnAction(event -> {if (comboBox.getSelectionModel().getSelectedItem() != null)initialiseNbjoueurs(comboBox.getSelectionModel().getSelectedItem());});
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(l_NombreJoueurs,comboBox,b_suivant);
@@ -132,6 +132,7 @@ public class Appli extends Application {
 
     private void afficherFenetreInfosJoueurs() {
         Button b_suivant = new Button("suivant");
+        Button b_precedent = new Button("precedent");
         Label erreurNom = new Label("Le nom doit être:\n- différent des noms déja données\n- non vide\n- faire 16 lettres maximum");
         erreurNom.setStyle("-fx-text-fill: RED");
         Label erreurCouleur = new Label("La couleur doit être:\n- différente des couleurs déja sélectionnée\n- non null");
@@ -216,7 +217,16 @@ public class Appli extends Application {
         if (!nomJoueursCorrect)vBox.getChildren().add(erreurNom);
         vBox.getChildren().add(l_couleurJoueur);
         if (!colorJoueursCorrect)vBox.getChildren().add(erreurCouleur);
-        vBox.getChildren().addAll(bouttons,b_suivant);
+        if (nombreJoueur2 == 0){
+            HBox boutons = new HBox(3);
+            boutons.getChildren().addAll(b_precedent,b_suivant);
+            boutons.setAlignment(Pos.CENTER);
+            vBox.getChildren().addAll(bouttons,boutons);
+            b_precedent.setOnAction(event -> askNbJoueurs());
+        }else{
+            vBox.getChildren().addAll(bouttons,b_suivant);
+        }
+
         b_suivant.setOnAction(event -> askInfosJoueurs(nombreJoueur2+1, t_nomJoueur.getText(), recupColorsToggle(toggleGroup.getSelectedToggle())));
         nomJoueursCorrect= true;
         colorJoueursCorrect=true;
