@@ -54,7 +54,10 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
             if (i==numZone){
                 for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
                     if (c.getZonesCouleurPartisan().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
-                        return false;
+                        if(c.getZonesCouleurPartisan().get(c.getZonesControlleesParLesPoints()[i][j]) != fenetreJeu.getCarcassonne().getTabJoueur()[fenetreJeu.getCarcassonne().getNumJoueur()-1].getColor()) {
+                            return false;
+                        }
+                        else return true;
                     }
                 }
             }
