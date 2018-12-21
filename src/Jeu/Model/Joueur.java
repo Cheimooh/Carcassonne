@@ -3,6 +3,8 @@ package Jeu.Model;
 
 import javafx.scene.paint.Color;
 
+import java.awt.*;
+
 public class Joueur {
     private String nom;
     private int idJoueur;
@@ -15,12 +17,17 @@ public class Joueur {
     private static Pioche p;
     private Color color;
     private int nombrePartisansRestants;
+    private Partisan[] tabPartisans;
 
     public Joueur (int newId, Pioche newP, Color newColor){
+        nombrePartisansRestants=8;
+        tabPartisans = new Partisan[nombrePartisansRestants];
         this.idJoueur = newId;
         p = newP;
         this.color = newColor;
-        nombrePartisansRestants=8;
+        for (int i = 0; i < nombrePartisansRestants; i++) {
+            tabPartisans[i] = new Partisan(color);
+        }
     }
 
     public void joue(){
@@ -35,7 +42,16 @@ public class Joueur {
     /*
      * Décrémente le nombre de partisans "non posés" du joueur
      */
-    public void placePartisan() { if (nombrePartisansRestants>0) nombrePartisansRestants--; }
+    public void placePartisan(CartePosee cartePosee, int numZone) {
+        if(nombrePartisansRestants>0) nombrePartisansRestants--;
+        tabPartisans[nombrePartisansRestants-8].setPosition(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
+    }
+
+    public void retirerPartisan(Point p){
+        for (int i = 0; i < tabPartisans.length; i++) {
+            if(tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirer();
+        }
+    }
 
     public void setNom(String nom) { this.nom=nom; }
 
