@@ -47,9 +47,13 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                 //si on clique sur le "bouton" defausser carte
                 if (x > tabDefausseCarte[0] && x < tabDefausseCarte[0] + tabDefausseCarte[2]
                         && y > tabDefausseCarte[1] && y < tabDefausseCarte[1] + tabDefausseCarte[3]) {
-                    barreInfos.getCarcassonne().getDefausse().add(controlMouse.getCarteEnMain());
-                    barreInfos.getCarcassonne().jouer();
-                    barreInfos.drawInformationsCarte(barreInfos.getCarcassonne().getTabJoueur()[barreInfos.getCarcassonne().getNumJoueur()-1].getCarteEnMain().getDraw().getImg());
+                    if(controlMouse.getFenetreJeu().getCarcassonne().isDefaussable(controlMouse.getCarteEnMain())) {
+                        barreInfos.getCarcassonne().getDefausse().add(controlMouse.getCarteEnMain());
+                        barreInfos.getCarcassonne().jouer();
+                        barreInfos.drawInformationsCarte(barreInfos.getCarcassonne().getTabJoueur()[barreInfos.getCarcassonne().getNumJoueur() - 1].getCarteEnMain().getDraw().getImg());
+                    } else {
+                        controlMouse.getFenetreJeu().afficheErreur("Vous pouvez poser cette carte à un endroit ","Carte non défaussable");
+                    }
                 }
             } else if (mode==1){
                 if (x > 750 && x < 930 && y > 15 && y < 45) {

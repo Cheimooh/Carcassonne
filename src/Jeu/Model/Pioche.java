@@ -13,6 +13,7 @@ public class Pioche {
         this.taille = taille;
 
         for (int i = 0; i < 9 ; i++) { lCarte.add(new Carte(TypeCarte.cartePPCC)); }
+        for (int i = 0; i < 4; i++) { lCarte.add(new Carte(TypeCarte.cartePCCC)); }
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.carteVCCP)); }
         for (int i = 0; i < 2; i++) { lCarte.add(new Carte(TypeCarte.carteVCCVBlason)); }
         lCarte.add(new Carte(TypeCarte.carteVVCV));
@@ -20,7 +21,6 @@ public class Pioche {
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.carteVCCV)); }
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.carteVCCC)); }
         for (int i = 0; i < 8; i++) { lCarte.add(new Carte(TypeCarte.carteCPCP)); }
-        for (int i = 0; i < 4; i++) { lCarte.add(new Carte(TypeCarte.cartePCCC)); }
         for (int i = 0; i < 5; i++) { lCarte.add(new Carte(TypeCarte.carteVPPP)); }
         for (int i = 0; i < 2; i++) { lCarte.add(new Carte(TypeCarte.carteVVPP)); }
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.carteVVPV)); }
