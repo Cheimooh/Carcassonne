@@ -32,7 +32,7 @@ public class Carcassonne {
         defausse = new ArrayList<>();
         p = new Pioche(NB_CARTES);
         // A MODIFIER
-        carteDeBase = new Carte(TypeCarte.carteVVVVBlason);
+        carteDeBase = new Carte(TypeCarte.carteVCPC);
 
         //carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
         //listPointDispo.add(new Point(NB_CASES/2+1,NB_CASES/2));
@@ -83,7 +83,7 @@ public class Carcassonne {
     }
 
     public boolean isDefaussable(Carte carteAPosee){
-        boolean isDefau;
+        boolean isDefau = true;
         int x;
         int y;
         for (int i = 0; i < listPointDispo.size(); i++) {
@@ -91,9 +91,9 @@ public class Carcassonne {
             y = listPointDispo.get(i).y;
             for (int j = 0; j <4; j++) {
                 isDefau = isPlacable(x, y, carteAPosee);
-                if(isDefau) return false;
                 carteAPosee.pivoter();
             }
+            if(isDefau) return false;
         }
         return true;
     }

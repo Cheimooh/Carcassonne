@@ -171,7 +171,6 @@ public class FenetreJeu extends Parent {
         int y;
         while(!carteNonVerifiee.isEmpty()){
             CartePosee carteCourante = carteNonVerifiee.poll();
-            System.out.println("Carte courante : " + carteCourante.getType());
             cartesDejaVerifiees.add(carteCourante);
             x = (int) carteCourante.getPosition().getX();
             y = (int) carteCourante.getPosition().getY();
