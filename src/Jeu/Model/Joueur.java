@@ -44,7 +44,7 @@ public class Joueur {
      */
     public void placePartisan(CartePosee cartePosee, int numZone) {
         if(nombrePartisansRestants>0) nombrePartisansRestants--;
-        tabPartisans[nombrePartisansRestants-8].setPosition(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
+        tabPartisans[8-nombrePartisansRestants].setPosition(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
     }
 
     public void retirerPartisan(Point p){
