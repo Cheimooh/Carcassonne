@@ -41,8 +41,7 @@ public class Carcassonne {
         //listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2-1));
         //pointCarteMap.put(new Point(NB_CASES/2,NB_CASES/2), carteDeBase);
 
-        carteDeBase.setPosition(new Point(10,10));
-        listPointDispo.add(carteDeBase.getPosition());
+        carteDeBase.setPosition(new Point(8,8));
 
         // Attributs à modifier en fonction du menu permettant de sélectionner le nombre de joueur et leur nom
     }

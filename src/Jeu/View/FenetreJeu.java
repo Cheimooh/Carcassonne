@@ -175,13 +175,13 @@ public class FenetreJeu extends Parent {
             cartesDejaVerifiees.add(carteCourante);
             x = (int) carteCourante.getPosition().getX();
             y = (int) carteCourante.getPosition().getY();
+            contaminationDeLaCarteAvecCouleur(carteCourante);
 
             Point point = new Point(x-1, y);
             if(carcassonne.getListPointOccupe().contains(point)){
                 CartePosee c = carcassonne.getPointCarteMap().get(point);
                 if(!cartesDejaVerifiees.contains(c)){
                     carteNonVerifiee.addFirst(c);
-                    contaminationDeLaCarteAvecCouleur(carteCourante);
                 }
             }
 
@@ -190,7 +190,6 @@ public class FenetreJeu extends Parent {
                 CartePosee c = carcassonne.getPointCarteMap().get(point);
                 if(!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
-                    contaminationDeLaCarteAvecCouleur(carteCourante);
                 }
             }
 
@@ -199,7 +198,6 @@ public class FenetreJeu extends Parent {
                 CartePosee c = carcassonne.getPointCarteMap().get(point);
                 if(!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
-                    contaminationDeLaCarteAvecCouleur(carteCourante);
                 }
             }
 
@@ -208,7 +206,6 @@ public class FenetreJeu extends Parent {
                 CartePosee c = carcassonne.getPointCarteMap().get(point);
                 if(!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
-                    contaminationDeLaCarteAvecCouleur(carteCourante);
                 }
             }
         }
