@@ -286,19 +286,6 @@ public class FenetreJeu extends Parent {
     }
 
     /*
-     * Permet de prendre toute les zones de la carte
-     */
-
-    private void peindreZoneOccuperDeCarte(int numZone, Color couleurJoueur, CartePosee c) {
-        for (int i = 0; i < c.getZonesCouleurPartisan().size() ; i++) {
-            for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
-                if (c.getZonesControlleesParLesPoints()[i][j] == numZone){
-                }
-            }
-        }
-    }
-
-    /*
      * Permet de colorier la bonne zone de la carte
      *
      * Point *50 pour place de la carte puis 50/3 pour chaque zone avec rectangle pour mieux voir

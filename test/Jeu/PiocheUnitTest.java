@@ -1,7 +1,6 @@
 package Jeu;
 
-
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class PiocheUnitTest {
 

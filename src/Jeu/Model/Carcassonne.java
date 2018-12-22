@@ -86,14 +86,14 @@ public class Carcassonne {
         boolean isDefau = true;
         int x;
         int y;
-        for (int i = 0; i < listPointDispo.size(); i++) {
-            x = listPointDispo.get(i).x;
-            y = listPointDispo.get(i).y;
-            for (int j = 0; j <4; j++) {
+        for (Point pointDispo : listPointDispo) {
+            x = pointDispo.x;
+            y = pointDispo.y;
+            for (int j = 0; j < 4; j++) {
                 isDefau = isPlacable(x, y, carteAPosee);
                 carteAPosee.pivoter();
             }
-            if(isDefau) return false;
+            if (isDefau) return false;
         }
         return true;
     }
@@ -102,36 +102,36 @@ public class Carcassonne {
      * Permet de savoir si la carte courante peut etre posée où non en fonction de si elle coincide avec les cartes
      * adjacentes ou non
      */
-    private boolean isPlacable(int x, int y, Carte carteEnMain) {
+    public boolean isPlacable(int x, int y, Carte carteEnMain) {
         boolean isPlacable = true;
         // creer un point temporaire pour faire les verifications
         Point point = new Point(x-1, y);
-        if(getListPointOccupe().contains(point)){
-            CartePosee c = getPointCarteMap().get(point);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
             if (c.getEst() != carteEnMain.getOuest()){
                 isPlacable=false;
             }
         }
 
         point = new Point(x+1, y);
-        if(getListPointOccupe().contains(point)){
-            CartePosee c = getPointCarteMap().get(point);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
             if (c.getOuest() != carteEnMain.getEst()){
                 isPlacable=false;
             }
         }
 
         point = new Point(x, y-1);
-        if(getListPointOccupe().contains(point)){
-            CartePosee c = getPointCarteMap().get(point);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
             if (c.getSud() != carteEnMain.getNord()){
                 isPlacable=false;
             }
         }
 
         point = new Point(x, y+1);
-        if(getListPointOccupe().contains(point)){
-            CartePosee c = getPointCarteMap().get(point);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
             if (c.getNord() != carteEnMain.getSud()){
                 isPlacable=false;
             }
