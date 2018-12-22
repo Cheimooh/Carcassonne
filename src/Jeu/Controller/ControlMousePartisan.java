@@ -37,7 +37,7 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
                 fenetreJeu.placerPartisan(numZone);
                 fenetreJeu.getPopUpPartisan().quitter();
                 fenetreJeu.getCarcassonne().joueurSuivant();
-                fenetreJeu.getBarreInfos().afficherCarteSuivant();
+                fenetreJeu.getBarreInfos().afficherCarteSuivante();
                 fenetreJeu.getCarcassonne().jouer();
                 fenetreJeu.actualiserDebuggageContamination();
             } else {

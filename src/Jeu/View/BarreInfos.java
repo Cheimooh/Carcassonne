@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 public class BarreInfos {
     private Carcassonne carcassonne;
     private GraphicsContext graphicsContextInfos;
-    private Canvas infos;
+    private Canvas canvasInfos;
     private ControlMouseInfos controlMouseInfos;
 
     private int width; // largeur de la fenêtre
@@ -25,15 +25,15 @@ public class BarreInfos {
         this.height=height;
         tabDefausseCarte = new int[]{750, 35, 180, 30};
         carcassonne = f.getCarcassonne();
-        infos = new Canvas(width, height);
+        canvasInfos = new Canvas(width, height);
         controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
-        infos.setOnMouseClicked(controlMouseInfos);
-        graphicsContextInfos = infos.getGraphicsContext2D();
+        canvasInfos.setOnMouseClicked(controlMouseInfos);
+        graphicsContextInfos = canvasInfos.getGraphicsContext2D();
         graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
     }
 
     /*
-     * Dessine la barre d'infos lorsque le joueur doit poser une carte
+     * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
      */
     public void drawInformationsCarte(Image prochaineCarte){
         controlMouseInfos.setMode(0);
@@ -73,7 +73,7 @@ public class BarreInfos {
     }
 
     /*
-     * Dessine la barre d'infos lorsque le joueur doit poser un partisan
+     * Dessine la barre d'canvasInfos lorsque le joueur doit poser un partisan
      */
     public void drawInformationsPartisans(){
         controlMouseInfos.setMode(1);
@@ -117,7 +117,7 @@ public class BarreInfos {
     }
 
     /*
-     * Permet de tourner la carte sur l'affichage dans la barre d'infos
+     * Permet de tourner la carte sur l'affichage dans la barre d'canvasInfos
      */
     public void rotateCarteSuivante(Carte carte){
         Image image = getImage(carte);
@@ -152,12 +152,12 @@ public class BarreInfos {
     /*
      * Permet d'afficher la carte suivante
      */
-    public void afficherCarteSuivant() {
+    public void afficherCarteSuivante() {
         drawInformationsCarte(getImage(carcassonne.getP().getProchaineCarte()));
     }
 
     /*
-     * Dessine la ligne séparatrice entre la fenêtre de jeu et la barre d'infos
+     * Dessine la ligne séparatrice entre la fenêtre de jeu et la barre d'canvasInfos
      */
     private void drawLigneSeparatrice() {
         graphicsContextInfos.moveTo(0,height);
@@ -167,7 +167,7 @@ public class BarreInfos {
 
     public Carcassonne getCarcassonne() { return carcassonne; }
 
-    public Canvas getInfos() { return infos; }
+    public Canvas getCanvasInfos() { return canvasInfos; }
 
     public int getWidth() { return width; }
 }

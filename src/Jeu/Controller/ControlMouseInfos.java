@@ -1,15 +1,10 @@
 package Jeu.Controller;
 
 import Jeu.Model.Carte;
-import Jeu.Model.CoteCarte;
 import Jeu.View.BarreInfos;
 import Jeu.View.FenetreDefausse;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class ControlMouseInfos implements EventHandler<MouseEvent> {
     private BarreInfos barreInfos;
@@ -60,7 +55,7 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                     controlMouse.getFenetreJeu().afficherCartePourPoserUnPartisan();
                 } else if (x>750 && x<930 && y>55 && y<85){
                     controlMouse.getFenetreJeu().getCarcassonne().joueurSuivant();
-                    controlMouse.getFenetreJeu().getBarreInfos().afficherCarteSuivant();
+                    controlMouse.getFenetreJeu().getBarreInfos().afficherCarteSuivante();
                     controlMouse.getFenetreJeu().getCarcassonne().jouer();
                     controlMouse.setMode(0);
                 }
