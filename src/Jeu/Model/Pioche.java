@@ -1,5 +1,7 @@
 package Jeu.Model;
 
+import Jeu.Exception.PiocheVideException;
+
 import java.util.*;
 
 public class Pioche {
@@ -52,15 +54,21 @@ public class Pioche {
     /*
      * Retire une carte de la pioche et la renvoie
      */
-    public Carte piocher(){
-        taille--;
-        return lCarte.poll();
+    public Carte piocher() throws PiocheVideException {
+        if (taille>0) {
+            taille--;
+            return lCarte.poll();
+        } else throw new PiocheVideException();
     }
 
     /*
      * Retourne la prochaine carte sans la supprimer de la pioche
      */
-    public Carte getProchaineCarte(){ return lCarte.peek(); }
+    public Carte getProchaineCarte() throws PiocheVideException{
+        if (taille>0) {
+            return lCarte.peek();
+        } else throw new PiocheVideException();
+    }
 
     public int getTaille() { return taille; }
 }

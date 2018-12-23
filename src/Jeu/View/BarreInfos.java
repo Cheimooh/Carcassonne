@@ -1,6 +1,7 @@
 package Jeu.View;
 
 import Jeu.Controller.ControlMouseInfos;
+import Jeu.Exception.PiocheVideException;
 import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
 import javafx.scene.canvas.Canvas;
@@ -43,28 +44,39 @@ public class BarreInfos {
 
         String s;
 
-        //Pioche vide
-        if(carcassonne.getP().getTaille()<=0){
-            s = "Fin de partie";
-        }
-        else {
-            graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 30, 50, 50);
 
-            int numJoueur = carcassonne.getNumJoueur();
-            s = "Joueur " + numJoueur;
-            s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
+        graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 30, 50, 50);
 
-            String defausse = "Defausser ma carte";
-            String voirDefausse = "Défausse";
+        int numJoueur = carcassonne.getNumJoueur();
+        s = "Joueur " + numJoueur;
+        s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
 
-            graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+        String defausse = "Defausser ma carte";
+        String voirDefausse = "Défausse";
 
-            //Affichage du "bouton" pour voir la défausse
-            drawBouton(voirDefausse, width/7., 35, 100, 30);
-            //Affichage du "bouton" pour défausser une carte
-            drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
-        }
+        graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width/7., 35, 100, 30);
+        //Affichage du "bouton" pour défausser une carte
+        drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
+
         graphicsContextInfos.strokeText(s, (width/2.), 15);
+    }
+
+    public void afficherFinDuJeu() {
+        graphicsContextInfos.clearRect(0,0,width,100);
+        graphicsContextInfos.setFill(Color.BLACK);
+        drawLigneSeparatrice();
+        String s="Fin de partie";
+
+        String voirDefausse = "Défausse";
+        graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width/7., 35, 100, 30);
+
+        graphicsContextInfos.strokeText(s, (width/2.), 15);
+        controlMouseInfos.setMode(2);
     }
 
     private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {
@@ -82,37 +94,33 @@ public class BarreInfos {
 
         String s;
 
-        if(carcassonne.getP().getTaille()<=0){
-            s = "Fin de partie";
+        int numJoueur = carcassonne.getNumJoueur();
+        s = "Joueur " + numJoueur;
+        s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
+
+        int nbPartisans = carcassonne.getTabJoueur()[numJoueur-1].getNombrePartisansRestants();
+        Color color = carcassonne.getTabJoueur()[numJoueur-1].getColor();
+
+        String voirDefausse = "Défausse";
+        String poserPartisan = "Poser un partisan";
+        String passerTour = "Passer son tour";
+
+        graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width/7., 35, 100, 30);
+        //Affichage du "bouton" pour poser un partisan
+        drawBouton(poserPartisan, 750, 15, 180, 30);
+        //Affichage du "bouton" pour passer son tour
+        drawBouton(passerTour, 750, 55, 180, 30);
+
+        if (nbPartisans>0){
+            graphicsContextInfos.setFill(color);
+            graphicsContextInfos.fillOval(width/2., 25, 50, 50);
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.strokeText("x "+nbPartisans, width/2.+50, 35);
         }
-        else {
-            int numJoueur = carcassonne.getNumJoueur();
-            s = "Joueur " + numJoueur;
-            s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
 
-            int nbPartisans = carcassonne.getTabJoueur()[numJoueur-1].getNombrePartisansRestants();
-            Color color = carcassonne.getTabJoueur()[numJoueur-1].getColor();
-
-            String voirDefausse = "Défausse";
-            String poserPartisan = "Poser un partisan";
-            String passerTour = "Passer son tour";
-
-            graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
-
-            //Affichage du "bouton" pour voir la défausse
-            drawBouton(voirDefausse, width/7., 35, 100, 30);
-            //Affichage du "bouton" pour poser un partisan
-            drawBouton(poserPartisan, 750, 15, 180, 30);
-            //Affichage du "bouton" pour passer son tour
-            drawBouton(passerTour, 750, 55, 180, 30);
-
-            if (nbPartisans>0){
-                graphicsContextInfos.setFill(color);
-                graphicsContextInfos.fillOval(width/2., 25, 50, 50);
-                graphicsContextInfos.setFill(Color.BLACK);
-                graphicsContextInfos.strokeText("x "+nbPartisans, width/2.+50, 35);
-            }
-        }
         graphicsContextInfos.strokeText(s, (width/2.), 15);
     }
 
@@ -153,7 +161,11 @@ public class BarreInfos {
      * Permet d'afficher la carte suivante
      */
     public void afficherCarteSuivante() {
-        drawInformationsCarte(getImage(carcassonne.getP().getProchaineCarte()));
+        try {
+            drawInformationsCarte(getImage(carcassonne.getPioche().getProchaineCarte()));
+        } catch (PiocheVideException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*

@@ -1,6 +1,7 @@
 package Jeu.Model;
 
 
+import Jeu.Exception.PiocheVideException;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
@@ -31,13 +32,19 @@ public class Joueur {
     }
 
     public void joue(){
-        carteEnMain = piocherCarte();
+        try {
+            carteEnMain = piocherCarte();
+        } catch (PiocheVideException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*
      * Permet de piocher une carte dans la pioche
      */
-    private Carte piocherCarte(){ return p.piocher(); }
+    private Carte piocherCarte() throws PiocheVideException {
+        return p.piocher();
+    }
 
     /*
      * Décrémente le nombre de partisans "non posés" du joueur

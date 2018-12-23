@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Carcassonne {
 
-    private static Pioche p;
+    private static Pioche pioche;
 
     private int nbJoueur; // Nombre de joueur
     private int numJoueur; // Numéro du joueur courant
@@ -29,7 +29,7 @@ public class Carcassonne {
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
 
-        p = new Pioche();
+        pioche = new Pioche();
         carteDeBase = new Carte(TypeCarte.carteVCPC);
 
         carteDeBase.setPosition(new Point(8,8));
@@ -42,7 +42,7 @@ public class Carcassonne {
         this.nbJoueur=nomJoueur.length;
         tabJoueur = new Joueur[nbJoueur];
         for (int i = 0; i < nbJoueur ; i++) {
-            tabJoueur[i]= new Joueur(i+1, p, couleursJoueurs[i]);
+            tabJoueur[i]= new Joueur(i+1, pioche, couleursJoueurs[i]);
             tabJoueur[i].setNom(nomJoueur[i]);
         }
         numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
@@ -276,7 +276,7 @@ public class Carcassonne {
 
     public int getNumJoueur() { return numJoueur; }
 
-    public Pioche getP() { return p; }
+    public Pioche getPioche() { return pioche; }
 
     public Map<Point, CartePosee> getPointCarteMap() { return pointCarteMap; }
 

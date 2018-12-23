@@ -35,7 +35,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         // Si on attend du joueur qu'il pose une carte
         if (mode==0) {
             // Si la pioche n'est pas vide
-            if (carcassonne.getP().getTaille() >= 0) {
+            if (carcassonne.getPioche().getTaille() >= 0) {
                 carteEnMain = carcassonne.getTabJoueur()[carcassonne.getNumJoueur() - 1].getCarteEnMain();
                 // Position x de la dernière carte placée
                 int xCartePlacee = (int) event.getX() / 50;

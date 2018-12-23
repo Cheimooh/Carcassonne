@@ -39,10 +39,15 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
             if (zonePasEncoreOccupee(numZone)) {
                 fenetreJeu.placerPartisan(numZone);
                 fenetreJeu.getPopUpPartisan().quitter();
-                carcassonne.joueurSuivant();
-                fenetreJeu.getBarreInfos().afficherCarteSuivante();
-                carcassonne.jouer();
-                fenetreJeu.actualiserDebuggageContamination();
+                if (carcassonne.getPioche().getTaille()>0) {
+                    carcassonne.joueurSuivant();
+                    fenetreJeu.getBarreInfos().afficherCarteSuivante();
+                    carcassonne.jouer();
+                    fenetreJeu.actualiserDebuggageContamination();
+                } else {
+                    fenetreJeu.getBarreInfos().afficherFinDuJeu();
+                    fenetreJeu.actualiserDebuggageContamination();
+                }
             } else {
                 fenetreJeu.afficheErreur("Il y a un partisan dans la même zone que celle que vous avez choisie",
                         "Placement de partisan impossible");
