@@ -9,9 +9,7 @@ public class Pioche {
     /*
      * Ajout de toutes les cartes dans la pioche
      */
-    public Pioche(int taille){
-        this.taille = taille;
-
+    public Pioche(){
         for (int i = 0; i < 9 ; i++) { lCarte.add(new Carte(TypeCarte.cartePPCC)); }
         for (int i = 0; i < 4; i++) { lCarte.add(new Carte(TypeCarte.cartePCCC)); }
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.carteVCCP)); }
@@ -36,6 +34,9 @@ public class Pioche {
         lCarte.add(new Carte(TypeCarte.carteCCCC));
         for (int i = 0; i < 2; i++) { lCarte.add(new Carte(TypeCarte.carteVPPVBlason)); }
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.cartePVPVNonReliees)); }
+
+        taille=lCarte.size();
+
         melanger(lCarte);
     }
 
@@ -62,6 +63,4 @@ public class Pioche {
     public Carte getProchaineCarte(){ return lCarte.peek(); }
 
     public int getTaille() { return taille; }
-
-    public Queue<Carte> getlCarte() { return lCarte; }
 }

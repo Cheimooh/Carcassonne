@@ -9,8 +9,6 @@ import java.util.Map;
 
 public class Carcassonne {
 
-    private final int NB_CARTES = 72;
-
     private static Pioche p;
 
     private int nbJoueur; // Nombre de joueur
@@ -31,7 +29,7 @@ public class Carcassonne {
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
-        p = new Pioche(NB_CARTES);
+        p = new Pioche();
         // A MODIFIER
         carteDeBase = new Carte(TypeCarte.carteVCPC);
 
@@ -251,7 +249,9 @@ public class Carcassonne {
 
     public Carte getCarteDeBase() { return carteDeBase; }
 
-    public int getNB_CASES() { return NB_CARTES * 2 - 1; }
+    public int getNB_CASES() {
+        int NB_CARTES = 72;
+        return NB_CARTES * 2 - 1; }
 
     public Joueur[] getTabJoueur() { return tabJoueur; }
 
