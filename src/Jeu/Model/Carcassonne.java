@@ -24,25 +24,15 @@ public class Carcassonne {
 
     public Carcassonne(){
         // Initialisation des listes et maps
-
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
+
         p = new Pioche();
-        // A MODIFIER
         carteDeBase = new Carte(TypeCarte.carteVCPC);
 
-        //carteDeBase.setPosition(new Point(NB_CASES/2,NB_CASES/2));
-        //listPointDispo.add(new Point(NB_CASES/2+1,NB_CASES/2));
-        //listPointDispo.add(new Point(NB_CASES/2-1,NB_CASES/2));
-        //listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2+1));
-        //listPointDispo.add(new Point(NB_CASES/2,NB_CASES/2-1));
-        //pointCarteMap.put(new Point(NB_CASES/2,NB_CASES/2), carteDeBase);
-
         carteDeBase.setPosition(new Point(8,8));
-
-        // Attributs à modifier en fonction du menu permettant de sélectionner le nombre de joueur et leur nom
     }
 
     /*
@@ -81,6 +71,27 @@ public class Carcassonne {
         }
     }
 
+    /*
+     * Permet de savoir si une carte est adjacente a l'endroit où l'on clique
+     * return true si c'est le cas, false sinon
+     */
+    public boolean isCarteAdjacente(int x, int y){
+        Point point = new Point(x+1, y);
+        if(listPointOccupe.contains(point)) return true;
+
+        point = new Point(x-1, y);
+        if(listPointOccupe.contains(point)) return true;
+
+        point = new Point(x, y+1);
+        if(listPointOccupe.contains(point)) return true;
+
+        point = new Point(x, y-1);
+        return listPointOccupe.contains(point);
+    }
+
+    /*
+     * Permet de savoir si la carte donnée en paramètre est défaussable ou non
+     */
     public boolean isDefaussable(Carte carteAPosee){
         boolean isDefau = true;
         int x;
@@ -139,6 +150,9 @@ public class Carcassonne {
         return isPlacable;
     }
 
+    /*
+     * Permet de contaminer la carte donnée en paramètre avec les couleurs correspondantes
+     */
     public void contaminationDeLaCarteAvecCouleur(CartePosee carte) {
         int x = (int) carte.getPosition().getX();
         int y = (int) carte.getPosition().getY();
@@ -188,6 +202,9 @@ public class Carcassonne {
         }
     }
 
+    /*
+     * Permet d'ajouter une couleur à la map qui contient la couleur en fonction de la zone contaminée
+     */
     private void ajoutCouleurMap(CartePosee carteAdjacent, int zoneCarteAdjacente, CartePosee carteCourante, int zoneCarteCourante) {
         for (int i = 0; i < carteCourante.getZonesControlleesParLesPoints().length; i++) {
             for (int j = 0; j < carteCourante.getZonesControlleesParLesPoints()[i].length; j++) {
@@ -200,6 +217,9 @@ public class Carcassonne {
         }
     }
 
+    /*
+     * Permet de contaminer les cartes déjà posées grâce à la carte donnée en paramètre
+     */
     public void contaminationDesAutresCarteAvecCouleur(CartePosee carteBase){
         ArrayDeque<CartePosee> carteNonVerifiee = new ArrayDeque<>();
         ArrayList<CartePosee> cartesDejaVerifiees = new ArrayList<>();
@@ -250,8 +270,7 @@ public class Carcassonne {
     public Carte getCarteDeBase() { return carteDeBase; }
 
     public int getNB_CASES() {
-        int NB_CARTES = 72;
-        return NB_CARTES * 2 - 1; }
+        return 143; }
 
     public Joueur[] getTabJoueur() { return tabJoueur; }
 

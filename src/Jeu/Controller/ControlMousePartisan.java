@@ -1,5 +1,6 @@
 package Jeu.Controller;
 
+import Jeu.Model.Carcassonne;
 import Jeu.Model.CartePosee;
 import Jeu.View.FenetreJeu;
 import javafx.event.EventHandler;
@@ -8,9 +9,11 @@ import javafx.scene.input.MouseEvent;
 public class ControlMousePartisan implements EventHandler<MouseEvent> {
     private FenetreJeu fenetreJeu;
     private CartePosee carteEnMain;
+    private Carcassonne carcassonne;
 
     public ControlMousePartisan(FenetreJeu fenetreJeu){
         this.fenetreJeu = fenetreJeu;
+        carcassonne = fenetreJeu.getCarcassonne();
     }
 
     /*
@@ -36,9 +39,9 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
             if (zonePasEncoreOccupee(numZone)) {
                 fenetreJeu.placerPartisan(numZone);
                 fenetreJeu.getPopUpPartisan().quitter();
-                fenetreJeu.getCarcassonne().joueurSuivant();
+                carcassonne.joueurSuivant();
                 fenetreJeu.getBarreInfos().afficherCarteSuivante();
-                fenetreJeu.getCarcassonne().jouer();
+                carcassonne.jouer();
                 fenetreJeu.actualiserDebuggageContamination();
             } else {
                 fenetreJeu.afficheErreur("Il y a un partisan dans la même zone que celle que vous avez choisie",

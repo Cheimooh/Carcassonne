@@ -26,13 +26,16 @@ public class Carte {
         this.zonesControlleesParLesPoints=typeCarte.getZonesControlleesParLesPoints();
     }
 
+    /*
+     * permet de pivoter la carte dans la barre d'info
+     * pivote egalement les attributs de variable afin de stocker sa position pour la suite
+     */
     public void pivoter() {
         CoteCarte lastNord = nord;
         CoteCarte lastEst = est;
         CoteCarte lastSud = sud;
-        CoteCarte lastOuest = ouest;
 
-        this.nord=lastOuest;
+        this.nord=ouest;
         this.est=lastNord;
         this.sud=lastEst;
         this.ouest=lastSud;

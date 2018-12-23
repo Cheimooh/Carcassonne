@@ -45,7 +45,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 // Erreur s'il y a déjà une carte où l'on a cliqué
                 if (carcassonne.getListPointOccupe().contains(point)) {
                     fenetreJeu.afficheErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
-                } else if (carteAdjacent(xCartePlacee, yCartePlacee)) {
+                } else if (carcassonne.isCarteAdjacente(xCartePlacee, yCartePlacee)) {
                     if (carcassonne.isPlacable(xCartePlacee, yCartePlacee, carteEnMain)) {
                         carteEnMain.setPosition(new Point(xCartePlacee, yCartePlacee));
                         fenetreJeu.placerCarte(carteEnMain);
@@ -64,24 +64,6 @@ public class ControlMouse implements EventHandler<MouseEvent> {
                 }
             }
         }
-    }
-
-    /*
-     * Permet de savoir si une carte est adjacente a l'endroit où l'on clique
-     * return true si c'est le cas, false sinon
-     */
-    private boolean carteAdjacent(int x, int y){
-        Point point = new Point(x+1, y);
-        if(carcassonne.getListPointOccupe().contains(point)) return true;
-
-        point = new Point(x-1, y);
-        if(carcassonne.getListPointOccupe().contains(point)) return true;
-
-        point = new Point(x, y+1);
-        if(carcassonne.getListPointOccupe().contains(point)) return true;
-
-        point = new Point(x, y-1);
-        return carcassonne.getListPointOccupe().contains(point);
     }
 
     protected void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }

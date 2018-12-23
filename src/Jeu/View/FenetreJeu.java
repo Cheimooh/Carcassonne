@@ -45,9 +45,9 @@ public class FenetreJeu extends Parent {
      * Classe qui gère l'affichage de la fenêtre de jeu
      */
     public FenetreJeu(Carcassonne newCarcassonne, int width, int height, PopUpPartisan popUpPartisan){
+        carcassonne = newCarcassonne;
         this.popUpPartisan = popUpPartisan;
         popUpPartisan.lierControl(this);
-        carcassonne = newCarcassonne;
         Canvas canvas = new Canvas(carcassonne.getNB_CASES()*50, carcassonne.getNB_CASES()*50);
         controlMouse = new ControlMouse(this);
         canvas.setOnMouseClicked(controlMouse);
