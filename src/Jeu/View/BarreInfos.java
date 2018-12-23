@@ -132,16 +132,16 @@ public class BarreInfos {
         Image image;
         switch (nbRotation){
             case 0:
-                image= carte.getDraw().img;
+                image= new Image(carte.getDraw().getPath());
                 break;
             case 1:
-                image = carte.getDraw().img90;
+                image = new Image(carte.getDraw().getPath90());
                 break;
             case 2:
-                image = carte.getDraw().img180;
+                image = new Image(carte.getDraw().getPath180());
                 break;
             case 3:
-                image = carte.getDraw().img270;
+                image = new Image(carte.getDraw().getPath270());
                 break;
             default:
                 image=null;

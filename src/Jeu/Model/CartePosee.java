@@ -68,16 +68,16 @@ public class CartePosee {
         Image image;
         switch (carte.getNbRotation()){
             case 0:
-                image= carte.getDraw().getImg();
+                image= new Image(carte.getDraw().getPath());
                 break;
             case 1:
-                image = carte.getDraw().getImg90();
+                image = new Image(carte.getDraw().getPath90());
                 break;
             case 2:
-                image = carte.getDraw().getImg180();
+                image = new Image(carte.getDraw().getPath180());
                 break;
             case 3:
-                image = carte.getDraw().getImg270();
+                image = new Image(carte.getDraw().getPath270());
                 break;
             default:
                 image=null;

@@ -4,6 +4,7 @@ import Jeu.Model.Carte;
 import Jeu.View.BarreInfos;
 import Jeu.View.FenetreDefausse;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
 public class ControlMouseInfos implements EventHandler<MouseEvent> {
@@ -45,7 +46,7 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                     if(controlMouse.getFenetreJeu().getCarcassonne().isDefaussable(controlMouse.getCarteEnMain())) {
                         barreInfos.getCarcassonne().getDefausse().add(controlMouse.getCarteEnMain());
                         barreInfos.getCarcassonne().jouer();
-                        barreInfos.drawInformationsCarte(barreInfos.getCarcassonne().getTabJoueur()[barreInfos.getCarcassonne().getNumJoueur() - 1].getCarteEnMain().getDraw().getImg());
+                        barreInfos.drawInformationsCarte(new Image(barreInfos.getCarcassonne().getTabJoueur()[barreInfos.getCarcassonne().getNumJoueur() - 1].getCarteEnMain().getDraw().getPath()));
                     } else {
                         controlMouse.getFenetreJeu().afficheErreur("Vous pouvez poser cette carte à un endroit ","Carte non défaussable");
                     }

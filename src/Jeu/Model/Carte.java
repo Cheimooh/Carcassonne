@@ -1,6 +1,5 @@
 package Jeu.Model;
 
-import Jeu.View.DrawCard;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ public class Carte {
         this.sud = typeCarte.getSud();
         this.est = typeCarte.getEst();
         this.ouest = typeCarte.getOuest();
-        this.draw = new DrawCard(typeCarte.getImg(), typeCarte.getImg90(), typeCarte.getImg180(), typeCarte.getImg270());
+        this.draw = new DrawCard(typeCarte.getPath(), typeCarte.getPath90(), typeCarte.getPath180(), typeCarte.getPath270());
         this.position = new Point();
         this.nbRotation=0;
         this.positionsCoordonnees=typeCarte.getCoordonneesPartisans();

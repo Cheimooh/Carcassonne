@@ -4,6 +4,7 @@ import Jeu.Model.Carte;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
@@ -30,7 +31,8 @@ public class FenetreDefausse {
             for (int j = 0; j < 5; j++) {
                 if (defausse.size()>i*5+j) {
                     Carte c = defausse.get(i*5+j);
-                    graphicsContext.drawImage(c.getDraw().getImg(), TAILLE_CARTE*j + 10*(j+1), TAILLE_CARTE*i + 10*(i+1), TAILLE_CARTE, TAILLE_CARTE);
+                    Image image = new Image(c.getDraw().getPath());
+                    graphicsContext.drawImage(image, TAILLE_CARTE*j + 10*(j+1), TAILLE_CARTE*i + 10*(i+1), TAILLE_CARTE, TAILLE_CARTE);
                 }
             }
         }

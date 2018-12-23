@@ -62,4 +62,6 @@ public class Pioche {
     public Carte getProchaineCarte(){ return lCarte.peek(); }
 
     public int getTaille() { return taille; }
+
+    public Queue<Carte> getlCarte() { return lCarte; }
 }
