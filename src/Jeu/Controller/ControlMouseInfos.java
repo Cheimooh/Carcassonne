@@ -29,7 +29,7 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
      */
     @Override
     public void handle(MouseEvent event) {
-        if (barreInfos.getCarcassonne().getPioche().getTaille() >= 0) {
+        if (carcassonne.getPioche().getTaille() >= 0) {
             Carte carteEnMain = carcassonne.getTabJoueur()[carcassonne.getNumJoueur() - 1].getCarteEnMain();
             controlMouse.setCarteEnMain(carteEnMain);
             int x = (int) event.getX();
