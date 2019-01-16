@@ -1,5 +1,5 @@
 package Jeu;
-//commentaire pour commit les nouvelles images
+
 import Jeu.Model.Carcassonne;
 import Jeu.View.FenetreJeu;
 import Jeu.View.PopUpPartisan;
@@ -15,7 +15,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Appli extends Application {
-
     private Carcassonne carcassonne;
     private Stage primaryStage;
     private int nombreJoueur;
