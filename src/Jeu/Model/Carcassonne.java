@@ -2,6 +2,11 @@ package Jeu.Model;
 
 import javafx.scene.paint.Color;
 import java.awt.Point;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +15,13 @@ import java.util.Map;
 public class Carcassonne {
 
     private static Pioche pioche;
+
+    private boolean isMultiJoueur;
+    private boolean isServeur;
+
+    private Socket[] tabSocket;
+    private ServerSocket serverSocket;
+    private String ipServeur;
 
     private int nbJoueur; // Nombre de joueur
     private int numJoueur; // Numéro du joueur courant
@@ -46,6 +58,11 @@ public class Carcassonne {
             tabJoueur[i].setNom(nomJoueur[i]);
         }
         numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
+    }
+
+    public void initialisationJeuMultiJoueur() throws Exception {
+        serverSocket = new ServerSocket(3333);
+        ipServeur = InetAddress.getLocalHost().getHostAddress();
     }
 
     /*
@@ -285,4 +302,12 @@ public class Carcassonne {
     public ArrayList<Point> getListPointOccupe() { return listPointOccupe; }
 
     public ArrayList<Carte> getDefausse() { return defausse; }
+
+    public boolean isMultiJoueur() { return isMultiJoueur; }
+
+    public void setMultiJoueur(boolean multiJoueur) { isMultiJoueur = multiJoueur; }
+
+    public Socket[] getTabSocket() { return tabSocket; }
+
+    public void setTabSocket(Socket[] tabSocket) { this.tabSocket = tabSocket; }
 }
