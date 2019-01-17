@@ -52,13 +52,13 @@ public class Joueur {
     public void placePartisan(CartePosee cartePosee, int numZone) {
         if(nombrePartisansRestants>0) {
             nombrePartisansRestants--;
-            tabPartisans[8 - nombrePartisansRestants].setPosition(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
+            tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
         }
     }
 
     public void retirerPartisan(Point p){
         for (int i = 0; i < tabPartisans.length; i++) {
-            if(tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirer();
+            if(tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirerPartisan();
         }
     }
 
