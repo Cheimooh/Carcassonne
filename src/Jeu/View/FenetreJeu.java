@@ -159,17 +159,8 @@ public class FenetreJeu extends Parent {
 
     /*
      * Permet de toute les cartes qui sont occuper
-     */
-    public void actualiserDebuggageContamination(){
-        /*for (int i = 0; i < carcassonne.getListPointOccupe().size(); i++) {
-            CartePosee carteTmp = carcassonne.getPointCarteMap().get(carcassonne.getListPointOccupe().get(i));
-            for(Map.Entry<Integer, Color> mapZone : carteTmp.getZonesCouleurPartisan().entrySet()) {
-                graphicsContext.setFill(mapZone.getValue());
-                colorierZones(mapZone.getKey(), carteTmp);
-                //peindreZoneOccuperDeCarte(mapZone.getKey(), mapZone.getValue(), carteTmp);
-            }
-        }*/
 
+    public void actualiserDebuggageContamination(){
         for (int i = 0; i < carcassonne.getListPointOccupe().size(); i++) { // toute carte posse
             CartePosee carteTmp = carcassonne.getPointCarteMap().get(carcassonne.getListPointOccupe().get(i));
             for(Map.Entry<Integer, Color> mapZone : carteTmp.getZonesCouleurPartisan().entrySet()) {
@@ -177,13 +168,13 @@ public class FenetreJeu extends Parent {
                 colorierZones(mapZone.getKey(), carteTmp);
             }
         }
-    }
+    }*/
 
     /*
      * Permet de colorier la bonne zone de la carte
      *
      * Point *50 pour place de la carte puis 50/3 pour chaque zone avec rectangle pour mieux voir
-     */
+
 
     private void colorierZones(int numZone, CartePosee c){
         Point point = c.getPosition();
@@ -225,7 +216,7 @@ public class FenetreJeu extends Parent {
                 graphicsContext.fillRect(point.getX()*50, point.getY()*50, 8, 16);
                 break;
         }
-    }
+    }*/
 
     public void afficherCartePourPoserUnPartisan() {
         popUpPartisan.lierCarteEnMain(derniereCartePosee);
