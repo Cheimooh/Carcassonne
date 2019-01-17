@@ -127,7 +127,7 @@ public class FenetreJeu extends Parent {
         if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants()>0) {
             derniereCartePosee.addZonesOccupees(numZone, carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getColor());
             Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
-            carcassonne.getTabJoueur()[numJoueur].placePartisan(derniereCartePosee ,numZone);
+            carcassonne.getTabJoueur()[numJoueur].placerPartisan(derniereCartePosee ,numZone);
             int xCarte = (int)carte.getPosition().getX();
             int yCarte = (int)carte.getPosition().getY();
 

@@ -49,7 +49,7 @@ public class Joueur {
     /*
      * Décrémente le nombre de partisans "non posés" du joueur
      */
-    public void placePartisan(CartePosee cartePosee, int numZone) {
+    public void placerPartisan(CartePosee cartePosee, int numZone) {
         if(nombrePartisansRestants>0) {
             nombrePartisansRestants--;
             tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
@@ -57,8 +57,11 @@ public class Joueur {
     }
 
     public void retirerPartisan(Point p){
-        for (int i = 0; i < tabPartisans.length; i++) {
-            if(tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirerPartisan();
+        if (nombrePartisansRestants<8) {
+            for (int i = 0; i < tabPartisans.length; i++) {
+                if (tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirerPartisan();
+                nombrePartisansRestants++;
+            }
         }
     }
 
