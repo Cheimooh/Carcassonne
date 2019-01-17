@@ -63,7 +63,6 @@ public class Carcassonne {
      * Permet de passer au joueur suivant
      */
     public void joueurSuivant(){
-        // C'est très mal fait
         numJoueur++;
         numJoueur = numJoueur %(nbJoueur+1);
         if(numJoueur == 0){
@@ -265,6 +264,10 @@ public class Carcassonne {
                 }
             }
         }
+    }
+
+    public void verificationZoneFermee(CartePosee carteEnMain) {
+
     }
 
     public Carte getCarteDeBase() { return carteDeBase; }

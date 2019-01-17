@@ -40,13 +40,14 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
                 fenetreJeu.placerPartisan(numZone);
                 fenetreJeu.getPopUpPartisan().quitter();
                 if (carcassonne.getPioche().getTaille()>0) {
+                    carcassonne.verificationZoneFermee(carteEnMain);
                     carcassonne.joueurSuivant();
                     fenetreJeu.getBarreInfos().afficherCarteSuivante();
                     carcassonne.jouer();
-                    fenetreJeu.actualiserDebuggageContamination();
+                    //fenetreJeu.actualiserDebuggageContamination();
                 } else {
                     fenetreJeu.getBarreInfos().afficherFinDuJeu();
-                    fenetreJeu.actualiserDebuggageContamination();
+                    //fenetreJeu.actualiserDebuggageContamination();
                 }
             } else {
                 fenetreJeu.afficheErreur("Il y a un partisan dans la même zone que celle que vous avez choisie",
@@ -62,7 +63,7 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
             if (i==numZone){
                 for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
                     if (c.getZonesCouleurPartisan().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
-                        if(c.getZonesCouleurPartisan().get(c.getZonesControlleesParLesPoints()[i][j]) != fenetreJeu.getCarcassonne().getTabJoueur()[fenetreJeu.getCarcassonne().getNumJoueur()-1].getColor()) {
+                        if(c.getZonesCouleurPartisan().get(c.getZonesControlleesParLesPoints()[i][j]) != carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getColor()) {
                             return false;
                         }
                         else return true;
