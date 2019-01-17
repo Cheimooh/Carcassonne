@@ -50,8 +50,6 @@ public class Appli extends Application {
         Scene scene = new Scene(boutonsMenu, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
     }
 
     private void askNbJoueurs(){

@@ -35,4 +35,13 @@ public class PiocheUnitTest {
             p.piocher();
         }
     }
+
+    @Test (expected = PiocheVideException.class)
+    public void testGetProchaineCarteAvecPiocheVide() throws PiocheVideException {
+        Pioche p = new Pioche();
+        for (int i = 0; i < 72; i++) {
+            p.piocher();
+        }
+        p.getProchaineCarte();
+    }
 }
