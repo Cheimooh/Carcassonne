@@ -158,6 +158,7 @@ public class FenetreJeu extends Parent {
     }
 
     /*
+     * Permet de mettre la couleurs des zones contaminers
      * Permet de toute les cartes qui sont occuper
 
     public void actualiserDebuggageContamination(){

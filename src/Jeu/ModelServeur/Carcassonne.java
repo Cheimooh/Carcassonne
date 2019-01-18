@@ -1,7 +1,8 @@
-package Jeu.Model;
+package Jeu.ModelServeur;
 
 import javafx.scene.paint.Color;
-import java.awt.Point;
+
+import java.awt.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
