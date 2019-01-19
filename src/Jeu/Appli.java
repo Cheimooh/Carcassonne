@@ -238,7 +238,6 @@ public class Appli extends Application {
             if (toggle.equals(t_bleuClaire)) return Color.DEEPSKYBLUE;
         }
         return null;
-
     }
 
 
