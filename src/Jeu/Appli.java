@@ -51,11 +51,27 @@ public class Appli extends Application {
         Button jouer = new Button("Jouer");
         Button quitter = new Button("Quitter");
         boutonsMenu.getChildren().addAll(jouer,quitter);
-        jouer.setOnAction(event -> askNbJoueurs());
+        jouer.setOnAction(event -> choixTypeJeu());
         quitter.setOnAction(event -> System.exit(0));
         Scene scene = new Scene(boutonsMenu, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void choixTypeJeu() {
+        VBox boutonsMenu = new VBox(10);
+        boutonsMenu.setAlignment(Pos.CENTER);
+        Button internet = new Button("Internet");
+        Button local = new Button("Local");
+        boutonsMenu.getChildren().addAll(internet,local);
+        internet.setOnAction(event -> jeuInternet());
+        local.setOnAction(event -> askNbJoueurs());
+        Scene scene = new Scene(boutonsMenu, 350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void jeuInternet() {
     }
 
     private void askNbJoueurs(){
