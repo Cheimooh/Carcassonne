@@ -266,8 +266,79 @@ public class Carcassonne {
         }
     }
 
-    public void verificationZoneFermee(CartePosee carteEnMain) {
+    private boolean isCheminFerme(int i, CartePosee carte) {
+        int x = (int)carte.getPosition().getX();
+        int y = (int)carte.getPosition().getY();
+        int numListe = 0;
+        for (int j = 0; j < carte.getZonesControlleesParLesPoints().length; j++) {
+            for (int k = 0; k < carte.getZonesControlleesParLesPoints()[j].length; k++) {
+                if (carte.getZonesControlleesParLesPoints()[j][k]==i){
+                    numListe=j;
+                }
+            }
+        }
+        int longueurListe = carte.getZonesControlleesParLesPoints()[numListe].length;
+        if (longueurListe==2){
+            int newI = 0;
+            for (int j = 0; j < longueurListe; j++) {
+                if (carte.getZonesControlleesParLesPoints()[numListe][j]!=i) newI=carte.getZonesControlleesParLesPoints()[numListe][j];
+            }
+            if (newI==2){
+                Point p = new Point(x,y-1);
+                if (listPointOccupe.contains(p)) {
+                    return isCheminFerme(8, pointCarteMap.get(p));
+                } else return false;
+            } else if (newI==5){
+                Point p = new Point(x+1,y);
+                if (listPointOccupe.contains(p)) {
+                    return isCheminFerme(11, pointCarteMap.get(p));
+                } else return false;
+            } else if (newI==8){
+                Point p = new Point(x,y+1);
+                if (listPointOccupe.contains(p)) {
+                    return isCheminFerme(2, pointCarteMap.get(p));
+                } else return false;
+            } else if (newI==11){
+                Point p = new Point(x-1,y);
+                if (listPointOccupe.contains(p)) {
+                    return isCheminFerme(5, pointCarteMap.get(p));
+                } else return false;
+            }
+        }
+        return true;
+    }
 
+    public void verificationZoneFermee(CartePosee carteEnMain) {
+        int x = (int)carteEnMain.getPosition().getX();
+        int y = (int)carteEnMain.getPosition().getY();
+        Point p = new Point(x,y-1);
+        if (listPointOccupe.contains(p)) {
+            if (carteEnMain.getNord().equals(CoteCarte.chemin)) {
+                if (isCheminFerme(8, pointCarteMap.get(p))) System.out.println("fermé !");
+                else System.out.println("ouvert");
+            }
+        }
+        p = new Point(x,y+1);
+        if (listPointOccupe.contains(p)) {
+            if (carteEnMain.getSud().equals(CoteCarte.chemin)) {
+                if (isCheminFerme(2, pointCarteMap.get(p))) System.out.println("fermé !");
+                else System.out.println("ouvert");
+            }
+        }
+        p = new Point(x-1,y);
+        if (listPointOccupe.contains(p)) {
+            if (carteEnMain.getOuest().equals(CoteCarte.chemin)) {
+                if (isCheminFerme(5, pointCarteMap.get(p))) System.out.println("fermé !");
+                else System.out.println("ouvert");
+            }
+        }
+        p = new Point(x-1,y);
+        if (listPointOccupe.contains(p)) {
+            if (carteEnMain.getEst().equals(CoteCarte.chemin)) {
+                if (isCheminFerme(11, pointCarteMap.get(p))) System.out.println("fermé !");
+                else System.out.println("ouvert");
+            }
+        }
     }
 
     public Carte getCarteDeBase() { return carteDeBase; }
