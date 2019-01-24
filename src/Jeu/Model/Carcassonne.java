@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Carcassonne {
+public class  Carcassonne {
 
     private static Pioche pioche;
 

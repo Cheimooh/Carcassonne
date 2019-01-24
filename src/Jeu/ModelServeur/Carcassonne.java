@@ -2,13 +2,16 @@ package Jeu.ModelServeur;
 
 import Jeu.ModelServeur.Serizable.ListJoueur;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class Carcassonne {
 
-    private ArrayList<Socket> listSocket;
+    private ArrayList<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
 
     private int nbJoueur; // Nombre de joueur
@@ -39,6 +42,22 @@ public class Carcassonne {
         nbJoueur++;
         tabJoueur.add(new Joueur(nomJoueur));
 
+    }
+
+    public void miseAJourJoueur(){
+        Socket sock = null;
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectInputStream oi = listSocket.get(i).getOi();
+                ObjectOutputStream oo = listSocket.get(i).getOo();
+
+                oo.writeObject("j'envoie");
+
+                oo.writeObject(tabJoueur);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initJeu(){
@@ -113,7 +132,7 @@ public class Carcassonne {
 
     public ListJoueur getTabJoueur() { return tabJoueur; }
 
-    public ArrayList<Socket> getTabSocket() { return listSocket; }
+    public ArrayList<SocketJoueur> getTabSocket() { return listSocket; }
 
-    public void setTabSocket(ArrayList<Socket> listSocket) { this.listSocket = listSocket; }
+    public void setTabSocket(ArrayList<SocketJoueur> listSocket) { this.listSocket = listSocket; }
 }

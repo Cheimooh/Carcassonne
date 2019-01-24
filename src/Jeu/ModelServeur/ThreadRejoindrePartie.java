@@ -1,7 +1,5 @@
 package Jeu.ModelServeur;
 
-import Jeu.ModelServeur.Serizable.ListJoueur;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,52 +20,32 @@ public class ThreadRejoindrePartie {
 
     private class TraitementRejoindre implements Runnable{
         public void run(){
-            System.out.println("peuvent rejoindre");
             Socket sock = null;
             do try {
                 sock = serverSocket.accept();
                 if (!isArreter) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-                    PrintStream ps = new PrintStream(sock.getOutputStream());
-
-                    DataInputStream di = new DataInputStream(sock.getInputStream());
-                    DataOutputStream dO = new DataOutputStream(sock.getOutputStream());
-
                     ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
                     ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
 
-                    System.out.println("initialisation des flux");
-
-                    System.out.println("Reception du nom ...");
-                    String nomJoueur = br.readLine();
-                    System.out.println("Fait");
+                    String nomJoueur = (String) oi.readObject();
 
                     carcassonne.ajouterJoueurDansPartie(nomJoueur);
-                    carcassonne.getTabSocket().add(sock);
+                    carcassonne.getTabSocket().add(new SocketJoueur(sock, oi, oo));
 
-                    System.out.println("Envoie du nombre de joueur ...");
                     int nbJoueur = carcassonne.getTabJoueur().size();
-                    dO.write(nbJoueur);
-                    System.out.println("Fait");
+                    oo.writeInt(nbJoueur);
 
                     for (int i = 0; i < nbJoueur; i++) {
                         Joueur joueurTmp = carcassonne.getTabJoueur().get(i);
                         oo.writeObject(joueurTmp);
                     }
-
-                    oo.close();
-                    oi.close();
-                    dO.close();
-                    di.close();
-                    ps.close();
-                    br.close();
-
-                    System.out.println("Fin");
                 } else {
                     sock.close();
                     continue;
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } while(!isArreter);
         }

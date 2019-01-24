@@ -15,53 +15,43 @@ import java.net.Socket;
 
 public class Test {
 
+    String nom;
+    ListJoueur listJoueur;
 
     public static void main(String[] args) {
 
-        String nom = "Michele";
-        ListJoueur listJoueur = new ListJoueur();
+        Test test = new Test();
+        test.nom = "theo";
+        test.listJoueur = new ListJoueur();
 
         Socket sock = null;
         try {
-            sock = new Socket("62.39.234.71", 3333);
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-            PrintStream ps = new PrintStream(sock.getOutputStream());
-
-            DataInputStream di = new DataInputStream(sock.getInputStream());
-            DataOutputStream dO = new DataOutputStream(sock.getOutputStream());
+            sock = new Socket("localhost", 3333);
 
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
 
-            System.out.println("initialisation des flux");
+            oo.writeObject(test.nom);
 
-            System.out.println("envoie du nom ... ");
-            ps.print(nom);
-            System.out.println("Fait");
-
-            System.out.println("Reception du nombre de joueur ...");
-            int nbJoueur = di.readInt();
-            System.out.println("Fait");
+            int nbJoueur = oi.readInt();
 
             for (int i = 0; i < nbJoueur; i++) {
                 Joueur joueurTmp = (Joueur) oi.readObject();
-                listJoueur.add(joueurTmp);
+                test.listJoueur.add(joueurTmp);
             }
 
-            oo.close();
-            oi.close();
-            dO.close();
-            di.close();
-            ps.close();
-            br.close();
-
-            System.out.println("Fin");
+            new ThreadJoueurClient(oi, oo, test);
 
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void afficher(){
+        for (int i = 0; i < listJoueur.size(); i++) {
+            System.out.println(listJoueur.get(i).getNom());
         }
     }
 }
