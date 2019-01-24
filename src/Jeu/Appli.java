@@ -22,7 +22,13 @@ public class Appli extends Application {
     private String[] tabNomjoueurs;
     private Color[] tabColorJoueurs;
     private boolean nomJoueursCorrect = true;
+    private boolean changementCorrect = true;
     private boolean colorJoueursCorrect = true;
+    Rectangle r_rouge = new Rectangle(30,30,Color.RED);
+    Rectangle r_bleu = new Rectangle(30,30,Color.BLUE);
+    Rectangle r_rose = new Rectangle(30,30,Color.HOTPINK);
+    Rectangle r_jaune = new Rectangle(30,30,Color.GOLD);
+    Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -45,11 +51,27 @@ public class Appli extends Application {
         Button jouer = new Button("Jouer");
         Button quitter = new Button("Quitter");
         boutonsMenu.getChildren().addAll(jouer,quitter);
-        jouer.setOnAction(event -> askNbJoueurs());
+        jouer.setOnAction(event -> choixTypeJeu());
         quitter.setOnAction(event -> System.exit(0));
         Scene scene = new Scene(boutonsMenu, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void choixTypeJeu() {
+        VBox boutonsMenu = new VBox(10);
+        boutonsMenu.setAlignment(Pos.CENTER);
+        Button internet = new Button("Internet");
+        Button local = new Button("Local");
+        boutonsMenu.getChildren().addAll(internet,local);
+        internet.setOnAction(event -> jeuInternet());
+        local.setOnAction(event -> askNbJoueurs());
+        Scene scene = new Scene(boutonsMenu, 350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void jeuInternet() {
     }
 
     private void askNbJoueurs(){
@@ -78,8 +100,8 @@ public class Appli extends Application {
         askInfosJoueurs(nombreJoueur2, "", Color.GRAY);
     }
 
-    private void askInfosJoueurs(int nombreJoueur22, String nomJoueur, Color color) {
-        nombreJoueur2=nombreJoueur22;
+    private void askInfosJoueurs(int nombreJoueur2, String nomJoueur, Color color) {
+        this.nombreJoueur2=nombreJoueur2;
         if (nombreJoueur2>0) {
                 if (!verifNom(nomJoueur)) {
                     nomJoueursCorrect = false;
@@ -100,7 +122,126 @@ public class Appli extends Application {
         }
         if (nombreJoueur2<nombreJoueur)afficherFenetreInfosJoueurs();
         else {
-            afficherFenetreJeu();
+            afficheInfosJoueurs();
+        }
+    }
+
+    private void afficheInfosJoueurs() {
+        Button[] bouttonsModif = new Button[nombreJoueur];
+        Button b_suivant = new Button("Suivant");
+        HBox[] tabHBox = new HBox[nombreJoueur];
+        Label[] labelNoms = new Label[nombreJoueur];
+        for (int i = 0; i < nombreJoueur; i++) {
+            labelNoms[i]= new Label(tabNomjoueurs[i]);
+            tabHBox[i] = new HBox(10);
+            tabHBox[i].setAlignment(Pos.CENTER);
+            tabHBox[i].getChildren().add(labelNoms[i]);
+            bouttonsModif[i] = new Button("modifier");
+        }
+        Rectangle[] tabRectColors = new Rectangle[nombreJoueur];
+        for (int i = 0; i < nombreJoueur; i++) {
+            tabRectColors[i] = new Rectangle(10,10);
+            tabRectColors[i].setFill(tabColorJoueurs[i]);
+            tabHBox[i].getChildren().addAll(tabRectColors[i],bouttonsModif[i]);
+            final int y = i;
+            bouttonsModif[i].setOnAction(event -> {modifInfo(y);});
+        }
+
+        b_suivant.setOnAction(event -> {afficherFenetreJeu();
+        });
+
+        VBox vBox = new VBox(10);
+        vBox.setAlignment(Pos.CENTER);
+        for (int i = 0; i < nombreJoueur; i++) {
+            vBox.getChildren().add(tabHBox[i]);
+        }
+        vBox.getChildren().add(b_suivant);
+        Scene scene = new Scene(vBox,350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void modifInfo(int y) {
+        HBox hBoxNow = new HBox(10);
+        hBoxNow.setAlignment(Pos.CENTER);
+        HBox hBoxNew = new HBox(10);
+        hBoxNew.setAlignment(Pos.CENTER);
+        HBox hBoxNewColors = new HBox(10);
+        hBoxNewColors.setAlignment(Pos.CENTER);
+        Label nom = new Label("nom actuel: "+ tabNomjoueurs[y]);
+        Label couleurs = new Label("couleur actuel: ");
+        Rectangle rectCouleur = new Rectangle(10,10);
+        rectCouleur.setFill(tabColorJoueurs[y]);
+        Label newNom = new Label("Nouveau nom:");
+        TextField newName = new TextField(tabNomjoueurs[y]);
+        tabNomjoueurs[y] = "";
+        hBoxNew.getChildren().addAll(newNom,newName);
+
+
+        ComboBox<Rectangle> cmb = new ComboBox<Rectangle>();
+        cmb.getItems().addAll(
+                r_rouge,r_bleu,r_rose,r_jaune,r_bleuClaire);
+        Label newColor = new Label("Nouvel couleurs : ");
+        Button b_suivant = new Button("Suivant");
+        if (changementCorrect == false){
+            Label erreur = new Label("Le nouveau nom doit être non null et différent des autres joueurs\nLa nouvelle couleur doit être différente des autres couleurs et non null");
+        }
+        changementCorrect = true;
+        b_suivant.setOnAction(event -> {
+            nombreJoueur2 = y;
+            final Color selectedColor = selectedColor(cmb);
+            if (verifNomModif(newName.getText())&&verifColorModif(selectedColor) ){
+                tabNomjoueurs[y] = newName.getText();
+                tabColorJoueurs[y] = selectedColor;
+                afficheInfosJoueurs();
+            }else{
+                changementCorrect = false;
+                modifInfo(y);
+            }
+        });
+        hBoxNewColors.getChildren().addAll(newColor,cmb);
+        hBoxNow.getChildren().addAll(couleurs,rectCouleur);
+        VBox vBox = new VBox(10);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(nom,hBoxNew,hBoxNow,hBoxNewColors,b_suivant);
+        Scene scene = new Scene(vBox,350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private boolean verifNomModif(String text) {
+        if (text==null || text.equals(""))return false;
+            for (int i = 0; i < nombreJoueur; i++) {
+                if (i != nombreJoueur2){
+                    if (text.equals(tabNomjoueurs[i])) return false;
+                }
+            }
+        if (text.length() > 16)return false;
+        return true;
+    }
+
+    private boolean verifColorModif(Color selectedColor) {
+        for (int i = 0; i < nombreJoueur; i++) {
+            if (i != nombreJoueur2){
+                if (selectedColor.equals(tabColorJoueurs[i])) return false;
+            }
+        }
+        return true;
+    }
+
+    private Color selectedColor(ComboBox<Rectangle> cmb) {
+        if (cmb.getSelectionModel().getSelectedItem() == r_bleu){
+            return Color.BLUE;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_rouge){
+            return Color.RED;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_rose){
+            return Color.HOTPINK;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_jaune){
+            return Color.GOLD;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_bleuClaire){
+            return Color.DEEPSKYBLUE;
+        }else{
+            return tabColorJoueurs[nombreJoueur2];
         }
     }
 
@@ -131,11 +272,6 @@ public class Appli extends Application {
         erreurNom.setStyle("-fx-text-fill: RED");
         Label erreurCouleur = new Label("La couleur doit être:\n- différente des couleurs déja sélectionnée\n- non null");
         erreurCouleur.setStyle("-fx-text-fill: RED");
-        Rectangle r_rouge = new Rectangle(30,30,Color.RED);
-        Rectangle r_bleu = new Rectangle(30,30,Color.BLUE);
-        Rectangle r_rose = new Rectangle(30,30,Color.HOTPINK);
-        Rectangle r_jaune = new Rectangle(30,30,Color.GOLD);
-        Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
         if (colorJoueursCorrect){
             t_rouge.setSelected(false);
             t_bleu.setSelected(false);
