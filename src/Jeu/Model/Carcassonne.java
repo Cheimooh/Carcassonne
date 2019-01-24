@@ -308,6 +308,11 @@ public class Carcassonne {
         return true;
     }
 
+    /**
+     * Verficication d'une zone fermée
+     *
+     * @param carteEnMain
+     */
     public void verificationZoneFermee(CartePosee carteEnMain) {
         int x = (int)carteEnMain.getPosition().getX();
         int y = (int)carteEnMain.getPosition().getY();
