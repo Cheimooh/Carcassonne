@@ -23,4 +23,8 @@ public class ListJoueur implements Serializable {
     public Joueur get(int i) {
         return listJoueur.get(i);
     }
+
+    public void clear() {
+        listJoueur.clear();
+    }
 }

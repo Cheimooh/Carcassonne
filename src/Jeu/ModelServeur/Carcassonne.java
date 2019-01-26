@@ -31,8 +31,8 @@ public class Carcassonne {
     }
 
     private void testList(){
-        ajouterJoueurDansPartie("lucas");
-        ajouterJoueurDansPartie("Alix");
+        ajouterJoueurDansPartie("Lucas");
+        ajouterJoueurDansPartie("Maeva");
     }
 
     /*
@@ -41,7 +41,14 @@ public class Carcassonne {
     public void ajouterJoueurDansPartie(String nomJoueur){
         nbJoueur++;
         tabJoueur.add(new Joueur(nomJoueur));
+        afficher();
+        miseAJourJoueur();
+    }
 
+    public void afficher(){
+        for (int i = 0; i < tabJoueur.size(); i++) {
+            System.out.println(tabJoueur.get(i).getNom());
+        }
     }
 
     public void miseAJourJoueur(){
@@ -53,7 +60,13 @@ public class Carcassonne {
 
                 oo.writeObject("j'envoie");
 
-                oo.writeObject(tabJoueur);
+                int nbJoueur = tabJoueur.size();
+                oo.writeInt(nbJoueur);
+
+                for (int j = 0; j < nbJoueur; j++) {
+                    Joueur joueurTmp = tabJoueur.get(j);
+                    oo.writeObject(joueurTmp);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

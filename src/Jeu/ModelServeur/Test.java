@@ -1,14 +1,6 @@
 package Jeu.ModelServeur;
 
 import Jeu.ModelServeur.Serizable.ListJoueur;
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
@@ -39,6 +31,8 @@ public class Test {
                 Joueur joueurTmp = (Joueur) oi.readObject();
                 test.listJoueur.add(joueurTmp);
             }
+
+            test.afficher();
 
             new ThreadJoueurClient(oi, oo, test);
 

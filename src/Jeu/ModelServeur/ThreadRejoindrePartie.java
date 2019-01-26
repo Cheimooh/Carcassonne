@@ -39,6 +39,7 @@ public class ThreadRejoindrePartie {
                         Joueur joueurTmp = carcassonne.getTabJoueur().get(i);
                         oo.writeObject(joueurTmp);
                     }
+
                 } else {
                     sock.close();
                     continue;
