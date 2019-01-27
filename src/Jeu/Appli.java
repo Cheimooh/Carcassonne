@@ -1,6 +1,7 @@
 package Jeu;
 
 import Jeu.Model.Carcassonne;
+import Jeu.ModelServeur.SocketJoueur;
 import Jeu.View.FenetreJeu;
 import Jeu.View.PopUpPartisan;
 import javafx.application.Application;
@@ -13,6 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class Appli extends Application {
     private Carcassonne carcassonne;
@@ -66,7 +72,32 @@ public class Appli extends Application {
     }
 
     private void jeuInternet() {
-        instancierJoueur();
+        try {
+            Socket sock = new Socket("62.39.234.71", 3333);
+            ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
+            ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
+
+            SocketJoueur socketJoeuur = new SocketJoueur(sock, oi, oo);
+
+            int nbJoueur = oi.readInt();
+            String[] tabJoueurs = new String[nbJoueur];
+            for (int i = 0; i < nbJoueur; i++) {
+                tabJoueurs[i] = (String) oi.readObject();
+            }
+
+            int nbColor = oi.readInt();
+            Jeu.ModelServeur.Serizable.Color[] tabColor = new Jeu.ModelServeur.Serizable.Color[nbJoueur];
+            for (int i = 0; i < nbJoueur; i++) {
+                tabColor[i] = (Jeu.ModelServeur.Serizable.Color) oi.readObject();
+            }
+
+            instancierJoueur();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void instancierJoueur() {
