@@ -45,11 +45,86 @@ public class Appli extends Application {
         Button jouer = new Button("Jouer");
         Button quitter = new Button("Quitter");
         boutonsMenu.getChildren().addAll(jouer,quitter);
-        jouer.setOnAction(event -> askNbJoueurs());
+        jouer.setOnAction(event -> choixTypeJeu());
         quitter.setOnAction(event -> System.exit(0));
         Scene scene = new Scene(boutonsMenu, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void choixTypeJeu() {
+        VBox boutonsMenu = new VBox(10);
+        boutonsMenu.setAlignment(Pos.CENTER);
+        Button internet = new Button("Internet");
+        Button local = new Button("Local");
+        boutonsMenu.getChildren().addAll(internet,local);
+        internet.setOnAction(event -> jeuInternet());
+        local.setOnAction(event -> askNbJoueurs());
+        Scene scene = new Scene(boutonsMenu, 350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void jeuInternet() {
+        instancierJoueur();
+    }
+
+    private void instancierJoueur() {
+        VBox generalBox = new VBox(10);
+        generalBox.setAlignment(Pos.CENTER);
+        HBox HBname = new HBox(10);
+        HBname.setAlignment(Pos.CENTER);
+        Label lNom = new Label("Nom: ");
+        TextField tNom = new TextField("Entrez votre nom");
+        HBname.getChildren().addAll(lNom,tNom);
+        Label lcolor = new Label("Couleur:");
+
+        Button b_suivant = new Button("Suivant");
+        b_suivant.setOnAction(event -> {transmitInfoServeur();});
+        generalBox.getChildren().addAll(HBname,lcolor,b_suivant);
+        Scene scene = new Scene(generalBox, 350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+    }
+
+    private void transmitInfoServeur() {
+        salonAttente();
+    }
+
+    private void salonAttente() {
+        VBox generals = new VBox(10);
+        generals.setAlignment(Pos.CENTER);
+        HBox hBoxElements = new HBox(15);
+        hBoxElements.setAlignment(Pos.CENTER);
+        VBox vBoxNoms = new VBox(10);
+        vBoxNoms.setAlignment(Pos.CENTER);
+        Label noms = new Label("Noms: ");
+        vBoxNoms.getChildren().add(noms);
+
+        VBox vBoxCouleurs = new VBox(10);
+        vBoxCouleurs.setAlignment(Pos.CENTER);
+        Label couleurs = new Label("Couleurs: ");
+        vBoxCouleurs.getChildren().add(couleurs);
+
+        VBox vBoxPrets = new VBox(10);
+        vBoxPrets.setAlignment(Pos.CENTER);
+        Label prets = new Label("Prêt: ");
+        vBoxPrets.getChildren().add(prets);
+
+        HBox hBoxButtons = new HBox(10);
+        hBoxButtons.setAlignment(Pos.CENTER);
+        Button b_quitter = new Button("Quitter");
+        Button b_pret = new Button("Prêt !");
+        hBoxButtons.getChildren().addAll(b_quitter,b_pret);
+
+        hBoxElements.getChildren().addAll(vBoxNoms,vBoxCouleurs,vBoxPrets,hBoxButtons);
+        generals.getChildren().addAll(hBoxElements,hBoxButtons);
+        Scene scene = new Scene(generals, 500,500);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+
     }
 
     private void askNbJoueurs(){
