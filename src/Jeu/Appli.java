@@ -1,6 +1,7 @@
 package Jeu;
 
 import Jeu.Model.Carcassonne;
+import Jeu.ModelServeur.Joueur;
 import Jeu.ModelServeur.SocketJoueur;
 import Jeu.View.FenetreJeu;
 import Jeu.View.PopUpPartisan;
@@ -15,10 +16,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import javax.tools.JavaFileManager;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Appli extends Application {
     private Carcassonne carcassonne;
@@ -27,6 +30,7 @@ public class Appli extends Application {
     private int nombreJoueur2 = 0;
     private String[] tabNomjoueurs;
     private Color[] tabColorJoueurs;
+    private String[] tabColorJoueurString;
     private boolean nomJoueursCorrect = true;
     private boolean colorJoueursCorrect = true;
 
@@ -36,6 +40,13 @@ public class Appli extends Application {
     private RadioButton t_rose = new RadioButton();
     private RadioButton t_jaune = new RadioButton();
     private RadioButton t_bleuClaire = new RadioButton();
+
+    //les rectangles de la fenetre de selection des couleurs
+    private Rectangle r_rouge = new Rectangle(30,30,Color.RED);
+    private Rectangle r_bleu = new Rectangle(30,30,Color.BLUE);
+    private Rectangle r_rose = new Rectangle(30,30,Color.HOTPINK);
+    private Rectangle r_jaune = new Rectangle(30,30,Color.GOLD);
+    private Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
 
     @Override
     public void start(Stage primaryStage){
@@ -73,24 +84,41 @@ public class Appli extends Application {
 
     private void jeuInternet() {
         try {
-            Socket sock = new Socket("62.39.234.71", 3333);
+            System.out.println("beforeSocket");
+            Socket sock = new Socket("localhost"/*"62.39.234.71"*/, 3333);
+            System.out.println("Socket créer");
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
 
-            SocketJoueur socketJoeuur = new SocketJoueur(sock, oi, oo);
+            SocketJoueur socketJoueur = new SocketJoueur(sock, oi, oo);
 
-            int nbJoueur = oi.readInt();
-            String[] tabJoueurs = new String[nbJoueur];
-            for (int i = 0; i < nbJoueur; i++) {
-                tabJoueurs[i] = (String) oi.readObject();
+            nombreJoueur = oi.readInt();
+            System.out.println(nombreJoueur);
+            ArrayList<Joueur> listJoueur = new ArrayList<>();
+            for (int i = 0; i < nombreJoueur; i++) {
+                listJoueur.add((Joueur) oi.readObject());
+                System.out.println(listJoueur.get(i).getCouleur());
             }
-
-            int nbColor = oi.readInt();
-            Jeu.ModelServeur.Serizable.Color[] tabColor = new Jeu.ModelServeur.Serizable.Color[nbJoueur];
-            for (int i = 0; i < nbJoueur; i++) {
-                tabColor[i] = (Jeu.ModelServeur.Serizable.Color) oi.readObject();
+            tabNomjoueurs = new String[nombreJoueur];
+            tabColorJoueurs = new Color[nombreJoueur];
+            tabColorJoueurString = new String[nombreJoueur];
+            for (int i = 0; i < nombreJoueur; i++) {
+                tabNomjoueurs[i] = listJoueur.get(i).getNom();
+                tabColorJoueurString[i] = listJoueur.get(i).getCouleur();
             }
-
+            for (int i = 0; i < nombreJoueur; i++) {
+                if ((listJoueur.get(i).getCouleur()).equals("red")){
+                    tabColorJoueurs[i] = Color.RED;
+                }else if ((listJoueur.get(i).getCouleur()).equals("blue")){
+                    tabColorJoueurs[i] = Color.BLUE;
+                }else if (tabColorJoueurString.equals("rose")){
+                    tabColorJoueurs[i] = Color.HOTPINK;
+                }else if (tabColorJoueurString.equals("jaune")){
+                    tabColorJoueurs[i] = Color.GOLD;
+                }else if (tabColorJoueurString.equals("bleuClair")){
+                    tabColorJoueurs[i] = Color.DEEPSKYBLUE;
+                }
+            }
             instancierJoueur();
 
         } catch (IOException e) {
@@ -109,10 +137,43 @@ public class Appli extends Application {
         TextField tNom = new TextField("Entrez votre nom");
         HBname.getChildren().addAll(lNom,tNom);
         Label lcolor = new Label("Couleur:");
+        VBox v_rouge = new VBox(3);
+        v_rouge.setAlignment(Pos.CENTER);
+        VBox v_bleu = new VBox(3);
+        v_bleu.setAlignment(Pos.CENTER);
+        VBox v_rose = new VBox(3);
+        v_rose.setAlignment(Pos.CENTER);
+        VBox v_jaune = new VBox(3);
+        v_jaune.setAlignment(Pos.CENTER);
+        VBox v_bleuClaire = new VBox(3);
+        v_bleuClaire.setAlignment(Pos.CENTER);
+
+        v_rouge.getChildren().addAll(t_rouge,r_rouge);
+        v_bleu.getChildren().addAll(t_bleu,r_bleu);
+        v_rose.getChildren().addAll(t_rose,r_rose);
+        v_jaune.getChildren().addAll(t_jaune,r_jaune);
+        v_bleuClaire.getChildren().addAll(t_bleuClaire,r_bleuClaire);
+
+        HBox bouttons = new HBox(10);
+        bouttons.setAlignment(Pos.CENTER);
+        bouttons.getChildren().addAll(v_rouge,v_bleu,v_rose,v_jaune,v_bleuClaire);
+
+        for (Color tabColorJoueur : tabColorJoueurs) {
+            if (tabColorJoueur != null && tabColorJoueur == Color.RED)
+                bouttons.getChildren().remove(v_rouge);
+            if (tabColorJoueur != null && tabColorJoueur == Color.BLUE)
+                bouttons.getChildren().remove(v_bleu);
+            if (tabColorJoueur != null && tabColorJoueur == Color.HOTPINK)
+                bouttons.getChildren().remove(v_rose);
+            if (tabColorJoueur != null && tabColorJoueur == Color.GOLD)
+                bouttons.getChildren().remove(v_jaune);
+            if (tabColorJoueur != null && tabColorJoueur == Color.DEEPSKYBLUE)
+                bouttons.getChildren().remove(v_bleuClaire);
+        }
 
         Button b_suivant = new Button("Suivant");
         b_suivant.setOnAction(event -> {transmitInfoServeur();});
-        generalBox.getChildren().addAll(HBname,lcolor,b_suivant);
+        generalBox.getChildren().addAll(HBname,lcolor,bouttons,b_suivant);
         Scene scene = new Scene(generalBox, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -237,11 +298,6 @@ public class Appli extends Application {
         erreurNom.setStyle("-fx-text-fill: RED");
         Label erreurCouleur = new Label("La couleur doit être:\n- différente des couleurs déja sélectionnée\n- non null");
         erreurCouleur.setStyle("-fx-text-fill: RED");
-        Rectangle r_rouge = new Rectangle(30,30,Color.RED);
-        Rectangle r_bleu = new Rectangle(30,30,Color.BLUE);
-        Rectangle r_rose = new Rectangle(30,30,Color.HOTPINK);
-        Rectangle r_jaune = new Rectangle(30,30,Color.GOLD);
-        Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
         if (colorJoueursCorrect){
             t_rouge.setSelected(false);
             t_bleu.setSelected(false);

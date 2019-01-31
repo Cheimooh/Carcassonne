@@ -23,7 +23,7 @@ public class Carcassonne {
         // Initialisation des listes et maps
         listSocket = new ArrayList<>();
         tabJoueur = new ArrayList<Joueur>();
-        listColorNonUtiliser = new ArrayList<>(){{
+        listColorNonUtiliser = new ArrayList<String>(){{
             add("red"); add("blue"); add("rose"); add("jaune"); add("bleuClair");
         }};
 
