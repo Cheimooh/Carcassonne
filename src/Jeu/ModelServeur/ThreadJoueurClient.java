@@ -1,7 +1,5 @@
 package Jeu.ModelServeur;
 
-import Jeu.ModelServeur.Serizable.ListJoueur;
-
 import java.io.*;
 
 public class ThreadJoueurClient{
@@ -24,13 +22,7 @@ public class ThreadJoueurClient{
         public void run(){
             do try {
                 if(((String) oi.readObject()).equals("j'envoie")){
-                    test.listJoueur.clear();
-                    int nbJoueur = oi.readInt();
-
-                    for (int i = 0; i < nbJoueur; i++) {
-                        Joueur joueurTmp = (Joueur) oi.readObject();
-                        test.listJoueur.add(joueurTmp);
-                    }
+                    test.listJoueur.add((Joueur) oi.readObject());
                     test.afficher();
                 }
             } catch (IOException e) {

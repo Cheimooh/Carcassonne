@@ -9,13 +9,15 @@ import java.io.Serializable;
 
 public class Joueur implements Serializable {
     private String nom;
+    private String couleur;
     private int nombrePartisansRestants;
     private Partisan[] tabPartisans;
 
-    public Joueur(String nom){
+    public Joueur(String nom, String couleur){
         nombrePartisansRestants=8;
         tabPartisans = new Partisan[nombrePartisansRestants];
         this.nom = nom;
+        this.couleur = couleur;
     }
 
     public void joue(){
@@ -54,5 +56,5 @@ public class Joueur implements Serializable {
 
     public int getNombrePartisansRestants(){ return nombrePartisansRestants; }
 
-   // public Color getColor(){return color;}
+    public String getCouleur() { return couleur; }
 }

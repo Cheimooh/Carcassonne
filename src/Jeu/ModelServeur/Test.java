@@ -1,20 +1,20 @@
 package Jeu.ModelServeur;
 
-import Jeu.ModelServeur.Serizable.ListJoueur;
-
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test {
 
     String nom;
-    ListJoueur listJoueur;
+    List<Joueur> listJoueur;
 
     public static void main(String[] args) {
 
         Test test = new Test();
         test.nom = "theo";
-        test.listJoueur = new ListJoueur();
+        test.listJoueur = new ArrayList<>();
 
         Socket sock = null;
         try {
@@ -31,8 +31,6 @@ public class Test {
                 Joueur joueurTmp = (Joueur) oi.readObject();
                 test.listJoueur.add(joueurTmp);
             }
-
-            test.afficher();
 
             new ThreadJoueurClient(oi, oo, test);
 

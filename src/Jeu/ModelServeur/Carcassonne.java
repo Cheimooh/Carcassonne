@@ -1,28 +1,31 @@
 package Jeu.ModelServeur;
 
-import Jeu.ModelServeur.Serizable.ListJoueur;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Carcassonne {
 
-    private ArrayList<SocketJoueur> listSocket;
+    private List<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
+    private List<String> listColorNonUtiliser;
 
     private int nbJoueur; // Nombre de joueur
-    private ListJoueur tabJoueur; // List de joueurs
+    private List<Joueur> tabJoueur; // List de joueurs
 
     public Carcassonne(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
 
         // Initialisation des listes et maps
         listSocket = new ArrayList<>();
-        tabJoueur = new ListJoueur();
+        tabJoueur = new ArrayList<Joueur>();
+        listColorNonUtiliser = new ArrayList<>(){{
+            add("red"); add("blue"); add("rose"); add("jaune"); add("bleuClair");
+        }};
 
         nbJoueur = 0;
         testList();
@@ -31,24 +34,16 @@ public class Carcassonne {
     }
 
     private void testList(){
-        ajouterJoueurDansPartie("Lucas");
-        ajouterJoueurDansPartie("Maeva");
+        ajouterJoueurDansPartie("lucas", "red");
+        ajouterJoueurDansPartie("Maeva", "blue");
     }
 
     /*
      * Fonction qui permet d'initialiser les joueurs
      */
-    public void ajouterJoueurDansPartie(String nomJoueur){
+    public void ajouterJoueurDansPartie(String nomJoueur, String couleurJoueur){
         nbJoueur++;
-        tabJoueur.add(new Joueur(nomJoueur));
-        afficher();
-        miseAJourJoueur();
-    }
-
-    public void afficher(){
-        for (int i = 0; i < tabJoueur.size(); i++) {
-            System.out.println(tabJoueur.get(i).getNom());
-        }
+        tabJoueur.add(new Joueur(nomJoueur, couleurJoueur));
     }
 
     public void miseAJourJoueur(){
@@ -60,13 +55,7 @@ public class Carcassonne {
 
                 oo.writeObject("j'envoie");
 
-                int nbJoueur = tabJoueur.size();
-                oo.writeInt(nbJoueur);
-
-                for (int j = 0; j < nbJoueur; j++) {
-                    Joueur joueurTmp = tabJoueur.get(j);
-                    oo.writeObject(joueurTmp);
-                }
+                oo.writeObject(tabJoueur);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,9 +132,11 @@ public class Carcassonne {
         return 143;
     }
 
-    public ListJoueur getTabJoueur() { return tabJoueur; }
+    public List<Joueur> getTabJoueur() { return tabJoueur; }
 
-    public ArrayList<SocketJoueur> getTabSocket() { return listSocket; }
+    public List<SocketJoueur> getTabSocket() { return listSocket; }
 
     public void setTabSocket(ArrayList<SocketJoueur> listSocket) { this.listSocket = listSocket; }
+
+    public List<String> getListColorNonUtiliser() { return listColorNonUtiliser; }
 }
