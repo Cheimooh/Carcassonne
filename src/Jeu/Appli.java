@@ -21,14 +21,11 @@ public class Appli extends Application {
     private int nombreJoueur2 = 0;
     private String[] tabNomjoueurs;
     private Color[] tabColorJoueurs;
+    private String[] tabColorJoueurString;
     private boolean nomJoueursCorrect = true;
     private boolean changementCorrect = true;
     private boolean colorJoueursCorrect = true;
-    Rectangle r_rouge = new Rectangle(30,30,Color.RED);
-    Rectangle r_bleu = new Rectangle(30,30,Color.BLUE);
-    Rectangle r_rose = new Rectangle(30,30,Color.HOTPINK);
-    Rectangle r_jaune = new Rectangle(30,30,Color.GOLD);
-    Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
+    private boolean isReseau = false;
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -36,6 +33,13 @@ public class Appli extends Application {
     private RadioButton t_rose = new RadioButton();
     private RadioButton t_jaune = new RadioButton();
     private RadioButton t_bleuClaire = new RadioButton();
+
+    //les rectangles de la fenetre de selection des couleurs
+    private Rectangle r_rouge = new Rectangle(30,30,Color.RED);
+    private Rectangle r_bleu = new Rectangle(30,30,Color.BLUE);
+    private Rectangle r_rose = new Rectangle(30,30,Color.HOTPINK);
+    private Rectangle r_jaune = new Rectangle(30,30,Color.GOLD);
+    private Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
 
     @Override
     public void start(Stage primaryStage){
@@ -100,8 +104,8 @@ public class Appli extends Application {
         askInfosJoueurs(nombreJoueur2, "", Color.GRAY);
     }
 
-    private void askInfosJoueurs(int nombreJoueur2, String nomJoueur, Color color) {
-        this.nombreJoueur2=nombreJoueur2;
+    private void askInfosJoueurs(int nombreJoueur22, String nomJoueur, Color color) {
+        nombreJoueur2 = nombreJoueur22;
         if (nombreJoueur2>0) {
                 if (!verifNom(nomJoueur)) {
                     nomJoueursCorrect = false;
@@ -169,7 +173,7 @@ public class Appli extends Application {
         HBox hBoxNewColors = new HBox(10);
         hBoxNewColors.setAlignment(Pos.CENTER);
         Label nom = new Label("nom actuel: "+ tabNomjoueurs[y]);
-        Label couleurs = new Label("couleur actuel: ");
+        Label couleurs = new Label("couleur actuelle: ");
         Rectangle rectCouleur = new Rectangle(10,10);
         rectCouleur.setFill(tabColorJoueurs[y]);
         Label newNom = new Label("Nouveau nom:");
@@ -181,10 +185,12 @@ public class Appli extends Application {
         ComboBox<Rectangle> cmb = new ComboBox<Rectangle>();
         cmb.getItems().addAll(
                 r_rouge,r_bleu,r_rose,r_jaune,r_bleuClaire);
-        Label newColor = new Label("Nouvel couleurs : ");
+        Label newColor = new Label("Nouvelle couleur : ");
         Button b_suivant = new Button("Suivant");
+        Label erreur = new Label();
         if (changementCorrect == false){
-            Label erreur = new Label("Le nouveau nom doit être non null et différent des autres joueurs\nLa nouvelle couleur doit être différente des autres couleurs et non null");
+            erreur.setText("Le nouveau nom doit être:\nnon null et différent des autres joueurs\nLa nouvelle couleur doit être:\ndifférente des autres couleurs et non null");
+            erreur.setStyle("-fx-text-fill: RED");
         }
         changementCorrect = true;
         b_suivant.setOnAction(event -> {
@@ -203,7 +209,7 @@ public class Appli extends Application {
         hBoxNow.getChildren().addAll(couleurs,rectCouleur);
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(nom,hBoxNew,hBoxNow,hBoxNewColors,b_suivant);
+        vBox.getChildren().addAll(nom,hBoxNew,erreur,hBoxNow,hBoxNewColors,b_suivant);
         Scene scene = new Scene(vBox,350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -308,6 +314,8 @@ public class Appli extends Application {
         }else {
             t_nomJoueur = new TextField();
         }
+
+
         vBox.getChildren().addAll(l_nomjoueur,t_nomJoueur);
         ToggleGroup toggleGroup = new ToggleGroup();
         t_rouge.setToggleGroup(toggleGroup);
@@ -330,19 +338,19 @@ public class Appli extends Application {
                         bouttons.getChildren().remove(v_bleuClaire);
                 }
             }else{
-                for (int i = 0; i <= nombreJoueur2-1; i++) {
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.RED)
-                        bouttons.getChildren().remove(v_rouge);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUE)
-                        bouttons.getChildren().remove(v_bleu);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.HOTPINK)
-                        bouttons.getChildren().remove(v_rose);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.GOLD)
-                        bouttons.getChildren().remove(v_jaune);
-                    if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.DEEPSKYBLUE)
-                        bouttons.getChildren().remove(v_bleuClaire);
-                }
+            for (int i = 0; i <= nombreJoueur2-1; i++) {
+                if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.RED)
+                    bouttons.getChildren().remove(v_rouge);
+                if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.BLUE)
+                    bouttons.getChildren().remove(v_bleu);
+                if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.HOTPINK)
+                    bouttons.getChildren().remove(v_rose);
+                if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.GOLD)
+                    bouttons.getChildren().remove(v_jaune);
+                if (tabColorJoueurs[i] != null && tabColorJoueurs[i] == Color.DEEPSKYBLUE)
+                    bouttons.getChildren().remove(v_bleuClaire);
             }
+        }
 
         if (!nomJoueursCorrect)vBox.getChildren().add(erreurNom);
         vBox.getChildren().add(l_couleurJoueur);
