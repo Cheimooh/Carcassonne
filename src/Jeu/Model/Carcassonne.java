@@ -22,12 +22,17 @@ public class Carcassonne {
 
     private Carte carteDeBase; // Carte posée au départ (à modifier)
 
+    private int tailleCheminPourLaVerification;
+    private ArrayList<CartePosee> listeCartesPourLaVerification;
+
     public Carcassonne(){
         // Initialisation des listes et maps
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
+        tailleCheminPourLaVerification=0;
+        listeCartesPourLaVerification=new ArrayList<>();
 
         pioche = new Pioche();
         carteDeBase = new Carte(TypeCarte.carteVCPC);
@@ -266,22 +271,18 @@ public class Carcassonne {
         }
     }
 
-    private boolean isCheminFerme(int i, CartePosee carte) {
+    private boolean isCheminFerme(int numCote, CartePosee carte) {
         int x = (int)carte.getPosition().getX();
         int y = (int)carte.getPosition().getY();
-        int numListe = 0;
-        for (int j = 0; j < carte.getZonesControlleesParLesPoints().length; j++) {
-            for (int k = 0; k < carte.getZonesControlleesParLesPoints()[j].length; k++) {
-                if (carte.getZonesControlleesParLesPoints()[j][k]==i){
-                    numListe=j;
-                }
-            }
-        }
-        int longueurListe = carte.getZonesControlleesParLesPoints()[numListe].length;
+        int numListe = getNombreChemin(carte,numCote)[0];
+        int longueurListe = getNombreChemin(carte,numCote)[1];
+
         if (longueurListe==2){
             int newI = 0;
             for (int j = 0; j < longueurListe; j++) {
-                if (carte.getZonesControlleesParLesPoints()[numListe][j]!=i) newI=carte.getZonesControlleesParLesPoints()[numListe][j];
+                if (carte.getZonesControlleesParLesPoints()[numListe][j]!=numCote) {
+                    newI=carte.getZonesControlleesParLesPoints()[numListe][j];
+                }
             }
             if (newI==2){
                 Point p = new Point(x,y-1);
@@ -313,43 +314,89 @@ public class Carcassonne {
      *
      * @param carteEnMain
      */
-    public void verificationZoneFermee(CartePosee carteEnMain) {
+    public void verificationCheminFerme(CartePosee carteEnMain) {
         int x = (int)carteEnMain.getPosition().getX();
         int y = (int)carteEnMain.getPosition().getY();
+
         Point p = new Point(x,y-1);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getNord().equals(CoteCarte.chemin)) {
-                if (isCheminFerme(8, pointCarteMap.get(p))) System.out.println("fermé !");
-                else System.out.println("ouvert");
+                listeCartesPourLaVerification.clear();
+                tailleCheminPourLaVerification=0;
+                boolean cheminFermeSurLaCarteCourante = false;
+                int longueurListe = getNombreChemin(carteEnMain,2)[1];
+                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                if (isCheminFerme(8, pointCarteMap.get(p))) {
+                    if (cheminFermeSurLaCarteCourante){
+
+                    }
+                }
             }
         }
         p = new Point(x,y+1);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getSud().equals(CoteCarte.chemin)) {
-                if (isCheminFerme(2, pointCarteMap.get(p))) System.out.println("fermé !");
-                else System.out.println("ouvert");
+                listeCartesPourLaVerification.clear();
+                tailleCheminPourLaVerification=0;
+                boolean cheminFermeSurLaCarteCourante = false;
+                int longueurListe = getNombreChemin(carteEnMain,8)[1];
+                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                if (isCheminFerme(2, pointCarteMap.get(p))) {
+                    if (cheminFermeSurLaCarteCourante){
+
+                    }
+                }
             }
         }
         p = new Point(x-1,y);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getOuest().equals(CoteCarte.chemin)) {
-                if (isCheminFerme(5, pointCarteMap.get(p))) System.out.println("fermé !");
-                else System.out.println("ouvert");
+                listeCartesPourLaVerification.clear();
+                tailleCheminPourLaVerification=0;
+                boolean cheminFermeSurLaCarteCourante = false;
+                int longueurListe = getNombreChemin(carteEnMain,11)[1];
+                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                if (isCheminFerme(5, pointCarteMap.get(p))) {
+                    if (cheminFermeSurLaCarteCourante){
+                    }
+                }
             }
         }
-        p = new Point(x-1,y);
+        p = new Point(x+1,y);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getEst().equals(CoteCarte.chemin)) {
-                if (isCheminFerme(11, pointCarteMap.get(p))) System.out.println("fermé !");
-                else System.out.println("ouvert");
+                listeCartesPourLaVerification.clear();
+                tailleCheminPourLaVerification=0;
+                boolean cheminFermeSurLaCarteCourante = false;
+                int longueurListe = getNombreChemin(carteEnMain,5)[1];
+                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                if (isCheminFerme(11, pointCarteMap.get(p))) {
+                    if (cheminFermeSurLaCarteCourante){
+                    }
+                }
             }
         }
     }
 
+    /*
+     * Permet de récupérer le numéro et la longueur de la listeControlleesParLesPoints de la carte contenant numCote
+     */
+    private int[] getNombreChemin(CartePosee carte, int numCote){
+        int numListe = 0;
+        for (int j = 0; j < carte.getZonesControlleesParLesPoints().length; j++) {
+            for (int k = 0; k < carte.getZonesControlleesParLesPoints()[j].length; k++) {
+                if (carte.getZonesControlleesParLesPoints()[j][k]==numCote){
+                    numListe=j;
+                }
+            }
+        }
+        int longueurListe = carte.getZonesControlleesParLesPoints()[numListe].length;
+        return new int[]{numListe, longueurListe};
+    }
+
     public Carte getCarteDeBase() { return carteDeBase; }
 
-    public int getNB_CASES() {
-        return 143; }
+    public int getNB_CASES() { return 143; }
 
     public Joueur[] getTabJoueur() { return tabJoueur; }
 

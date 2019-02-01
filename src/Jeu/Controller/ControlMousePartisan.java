@@ -40,7 +40,7 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
                 fenetreJeu.placerPartisan(numZone);
                 fenetreJeu.getPopUpPartisan().quitter();
                 if (carcassonne.getPioche().getTaille()>0) {
-                    carcassonne.verificationZoneFermee(carteEnMain);
+                    carcassonne.verificationCheminFerme(carteEnMain);
                     carcassonne.joueurSuivant();
                     fenetreJeu.getBarreInfos().afficherCarteSuivante();
                     carcassonne.jouer();

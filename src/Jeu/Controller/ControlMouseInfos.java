@@ -64,7 +64,7 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                 if (x > 750 && x < 930 && y > 15 && y < 45) {
                     fenetreJeu.afficherCartePourPoserUnPartisan();
                 } else if (x>750 && x<930 && y>55 && y<85){
-                    carcassonne.verificationZoneFermee(fenetreJeu.getDerniereCartePosee());
+                    carcassonne.verificationCheminFerme(fenetreJeu.getDerniereCartePosee());
                     carcassonne.joueurSuivant();
                     barreInfos.afficherCarteSuivante();
                     carcassonne.jouer();
