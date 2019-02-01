@@ -17,20 +17,26 @@ public class Partisan {
         numZone = -1;
     }
 
-    public void placerPartisan(int x, int y, int numZone){
+    public void placerPartisan(int x, int y, int numZone) {
         this.numZone = numZone;
         pointPlacementCarte.setLocation(x, y);
         isPlacer = true;
     }
 
-    public void retirerPartisan(){
+    public void retirerPartisan() {
         numZone = -1;
         isPlacer = false;
     }
 
-    public Point getPointPlacementCarte() { return pointPlacementCarte; }
+    public Point getPointPlacementCarte() {
+        return pointPlacementCarte;
+    }
 
-    public boolean isPlacer() { return isPlacer; }
+    public boolean isPlacer() {
+        return isPlacer;
+    }
 
-    public int getNumZone() { return numZone; }
+    public int getNumZone() {
+        return numZone;
+    }
 }

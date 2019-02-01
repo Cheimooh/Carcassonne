@@ -16,13 +16,13 @@ public class PopUpPartisan {
     private Stage popup;
     private ControlMousePartisan controlMousePartisan;
 
-    public PopUpPartisan(Stage primaryStage){
+    public PopUpPartisan(Stage primaryStage) {
         popup = new Stage();
         this.primaryStage = primaryStage;
         initPopup();
     }
 
-    private void initPopup(){
+    private void initPopup() {
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.initOwner(primaryStage);
         pane = new Pane();
@@ -30,7 +30,7 @@ public class PopUpPartisan {
         popup.setScene(scene);
     }
 
-    public void afficherCarte(CartePosee cartePosee){
+    public void afficherCarte(CartePosee cartePosee) {
         ImageView image = new ImageView(cartePosee.getImageCarte());
         image.setFitWidth(500);
         image.setFitHeight(500);
@@ -38,13 +38,13 @@ public class PopUpPartisan {
         for (int i = 0; i < cartePosee.getPositionsCoordonnees().size(); i++) {
             double xPartisan = cartePosee.getPositionsCoordonnees().get(i).getX();
             double yPartisan = cartePosee.getPositionsCoordonnees().get(i).getY();
-            Circle circle = new Circle(xPartisan*10, yPartisan*10, 10);
+            Circle circle = new Circle(xPartisan * 10, yPartisan * 10, 10);
             pane.getChildren().add(circle);
         }
         popup.show();
     }
 
-    public void lierControl(FenetreJeu fenetreJeu){
+    public void lierControl(FenetreJeu fenetreJeu) {
         controlMousePartisan = new ControlMousePartisan(fenetreJeu);
         pane.setOnMouseClicked(controlMousePartisan);
     }
@@ -53,7 +53,7 @@ public class PopUpPartisan {
         popup.close();
     }
 
-    public void lierCarteEnMain(CartePosee carte){
+    public void lierCarteEnMain(CartePosee carte) {
         controlMousePartisan.setCarteEnMain(carte);
     }
 }

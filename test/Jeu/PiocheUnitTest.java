@@ -9,7 +9,7 @@ import org.junit.Test;
 public class PiocheUnitTest {
 
     @Test
-    public void testBonNombreDeCartesDansLaPioche(){
+    public void testBonNombreDeCartesDansLaPioche() {
         Pioche p = new Pioche();
         Assert.assertEquals(p.getTaille(), 72);
     }
@@ -18,7 +18,7 @@ public class PiocheUnitTest {
     public void testPiocherDecrementeLaTailleDeLaPioche() throws PiocheVideException {
         Pioche p = new Pioche();
         p.piocher();
-        Assert.assertEquals(p.getTaille(),71);
+        Assert.assertEquals(p.getTaille(), 71);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class PiocheUnitTest {
         Assert.assertEquals(p.piocher(), c);
     }
 
-    @Test (expected = PiocheVideException.class)
+    @Test(expected = PiocheVideException.class)
     public void testPiocherPlusDeCartesQuePossible() throws PiocheVideException {
         Pioche p = new Pioche();
         for (int i = 0; i < 73; i++) {
@@ -36,7 +36,7 @@ public class PiocheUnitTest {
         }
     }
 
-    @Test (expected = PiocheVideException.class)
+    @Test(expected = PiocheVideException.class)
     public void testGetProchaineCarteAvecPiocheVide() throws PiocheVideException {
         Pioche p = new Pioche();
         for (int i = 0; i < 72; i++) {

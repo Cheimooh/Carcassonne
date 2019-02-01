@@ -5,6 +5,7 @@ import Jeu.Model.Carte;
 import Jeu.View.FenetreJeu;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+
 import java.awt.*;
 
 public class ControlMouse implements EventHandler<MouseEvent> {
@@ -14,10 +15,10 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     private Carte carteEnMain;
     private int mode; // 0 placement de carte
 
-    public ControlMouse(FenetreJeu fenetreJeu){
+    public ControlMouse(FenetreJeu fenetreJeu) {
         this.fenetreJeu = fenetreJeu;
         carcassonne = fenetreJeu.getCarcassonne();
-        this.mode=0;
+        this.mode = 0;
     }
 
     /*
@@ -31,9 +32,9 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     /*
      * Si l'on doit placer une carte sur la fenêtre, on appelle cette fonction
      */
-    private void verifPlacerCarte(MouseEvent event){
+    private void verifPlacerCarte(MouseEvent event) {
         // Si on attend du joueur qu'il pose une carte
-        if (mode==0) {
+        if (mode == 0) {
             // Si la pioche n'est pas vide
             if (carcassonne.getPioche().getTaille() >= 0) {
                 carteEnMain = carcassonne.getTabJoueur()[carcassonne.getNumJoueur() - 1].getCarteEnMain();
@@ -66,11 +67,19 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         }
     }
 
-    protected void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
+    protected void setCarteEnMain(Carte carteEnMain) {
+        this.carteEnMain = carteEnMain;
+    }
 
-    public Carte getCarteEnMain() { return carteEnMain; }
+    public Carte getCarteEnMain() {
+        return carteEnMain;
+    }
 
-    public void setMode(int mode) { this.mode = mode; }
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
 
-    public FenetreJeu getFenetreJeu() { return fenetreJeu; }
+    public FenetreJeu getFenetreJeu() {
+        return fenetreJeu;
+    }
 }

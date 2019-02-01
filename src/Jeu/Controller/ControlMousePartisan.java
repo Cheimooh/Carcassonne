@@ -11,7 +11,7 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
     private CartePosee carteEnMain;
     private Carcassonne carcassonne;
 
-    public ControlMousePartisan(FenetreJeu fenetreJeu){
+    public ControlMousePartisan(FenetreJeu fenetreJeu) {
         this.fenetreJeu = fenetreJeu;
         carcassonne = fenetreJeu.getCarcassonne();
     }
@@ -31,15 +31,15 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
         int x = (int) event.getX();
         int y = (int) event.getY();
         // Si l'on clique pas sur une zone indiquée
-        int numZone = getZonePlacementPartisan(x,y);
-        if (numZone==-1){
+        int numZone = getZonePlacementPartisan(x, y);
+        if (numZone == -1) {
             fenetreJeu.afficheErreur("Votre partisan doit être placé sur une des positions affichées",
                     "Placement de partisan impossible");
         } else {
             if (zonePasEncoreOccupee(numZone)) {
                 fenetreJeu.placerPartisan(numZone);
                 fenetreJeu.getPopUpPartisan().quitter();
-                if (carcassonne.getPioche().getTaille()>0) {
+                if (carcassonne.getPioche().getTaille() > 0) {
                     carcassonne.verificationCheminFerme(carteEnMain);
                     carcassonne.joueurSuivant();
                     fenetreJeu.getBarreInfos().afficherCarteSuivante();
@@ -52,21 +52,20 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
             } else {
                 fenetreJeu.afficheErreur("Il y a un partisan dans la même zone que celle que vous avez choisie",
                         "Placement de partisan impossible");
-                }
             }
+        }
 
     }
 
     private boolean zonePasEncoreOccupee(int numZone) {
         CartePosee c = fenetreJeu.getDerniereCartePosee();
-        for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
-            if (i==numZone){
-                for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
-                    if (c.getZonesCouleurPartisan().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
-                        if(c.getZonesCouleurPartisan().get(c.getZonesControlleesParLesPoints()[i][j]) != carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getColor()) {
+        for (int i = 0; i < c.getZonesControlleesParLesPoints().length; i++) {
+            if (i == numZone) {
+                for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length; j++) {
+                    if (c.getZonesCouleurPartisan().containsKey(c.getZonesControlleesParLesPoints()[i][j])) {
+                        if (c.getZonesCouleurPartisan().get(c.getZonesControlleesParLesPoints()[i][j]) != carcassonne.getTabJoueur()[carcassonne.getNumJoueur() - 1].getColor()) {
                             return false;
-                        }
-                        else return true;
+                        } else return true;
                     }
                 }
             }
@@ -78,17 +77,19 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
      * Récupère la zone où l'on clique
      */
     private int getZonePlacementPartisan(int x, int y) {
-        int numZone=-1;
-        for (int i = 0; i < carteEnMain.getPositionsCoordonnees().size() ; i++) {
-            double xPartisan = carteEnMain.getPositionsCoordonnees().get(i).getX()*10;
-            double yPartisan = carteEnMain.getPositionsCoordonnees().get(i).getY()*10;
+        int numZone = -1;
+        for (int i = 0; i < carteEnMain.getPositionsCoordonnees().size(); i++) {
+            double xPartisan = carteEnMain.getPositionsCoordonnees().get(i).getX() * 10;
+            double yPartisan = carteEnMain.getPositionsCoordonnees().get(i).getY() * 10;
             // Si l'on clique dans les cercles
-            if(x>xPartisan-10 && x<xPartisan+10 && y>yPartisan-10 && y<yPartisan+10){
-                numZone=i;
+            if (x > xPartisan - 10 && x < xPartisan + 10 && y > yPartisan - 10 && y < yPartisan + 10) {
+                numZone = i;
             }
         }
         return numZone;
     }
 
-    public void setCarteEnMain(CartePosee carteEnMain) { this.carteEnMain = carteEnMain; }
+    public void setCarteEnMain(CartePosee carteEnMain) {
+        this.carteEnMain = carteEnMain;
+    }
 }

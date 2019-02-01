@@ -1,6 +1,7 @@
 package Jeu.Model;
 
 import javafx.scene.paint.Color;
+
 import java.awt.Point;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -23,40 +24,40 @@ public class Carcassonne {
     private Carte carteDeBase; // Carte posée au départ (à modifier)
 
     private int tailleCheminPourLaVerification;
-    private ArrayList<CartePosee> listeCartesPourLaVerification;
+    private int[] nbPartisansSurLeChemin;
 
-    public Carcassonne(){
+    public Carcassonne() {
         // Initialisation des listes et maps
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
-        tailleCheminPourLaVerification=0;
-        listeCartesPourLaVerification=new ArrayList<>();
+        tailleCheminPourLaVerification = 0;
 
         pioche = new Pioche();
         carteDeBase = new Carte(TypeCarte.carteVCPC);
 
-        carteDeBase.setPosition(new Point(8,8));
+        carteDeBase.setPosition(new Point(8, 8));
     }
 
     /*
      * Fonction qui permet d'initialiser les joueurs
      */
-    public void initialisationJoueurs(String[] nomJoueur, Color[] couleursJoueurs){
-        this.nbJoueur=nomJoueur.length;
+    public void initialisationJoueurs(String[] nomJoueur, Color[] couleursJoueurs) {
+        this.nbJoueur = nomJoueur.length;
         tabJoueur = new Joueur[nbJoueur];
-        for (int i = 0; i < nbJoueur ; i++) {
-            tabJoueur[i]= new Joueur(i+1, pioche, couleursJoueurs[i]);
+        for (int i = 0; i < nbJoueur; i++) {
+            tabJoueur[i] = new Joueur(i + 1, pioche, couleursJoueurs[i]);
             tabJoueur[i].setNom(nomJoueur[i]);
         }
-        numJoueur = (int) (Math.random()*(nbJoueur-1))+1;
+        numJoueur = (int) (Math.random() * (nbJoueur - 1)) + 1;
+        nbPartisansSurLeChemin = new int[nbJoueur];
     }
 
     /*
      * Demande au joueur suivant de jouer
      */
-    public void jouer(){
+    public void jouer() {
         for (Joueur aTabJoueur : tabJoueur) {
             if (aTabJoueur.getIdJoueur() == numJoueur) {
                 aTabJoueur.joue();
@@ -67,10 +68,10 @@ public class Carcassonne {
     /*
      * Permet de passer au joueur suivant
      */
-    public void joueurSuivant(){
+    public void joueurSuivant() {
         numJoueur++;
-        numJoueur = numJoueur %(nbJoueur+1);
-        if(numJoueur == 0){
+        numJoueur = numJoueur % (nbJoueur + 1);
+        if (numJoueur == 0) {
             numJoueur++;
         }
     }
@@ -79,24 +80,24 @@ public class Carcassonne {
      * Permet de savoir si une carte est adjacente a l'endroit où l'on clique
      * return true si c'est le cas, false sinon
      */
-    public boolean isCarteAdjacente(int x, int y){
-        Point point = new Point(x+1, y);
-        if(listPointOccupe.contains(point)) return true;
+    public boolean isCarteAdjacente(int x, int y) {
+        Point point = new Point(x + 1, y);
+        if (listPointOccupe.contains(point)) return true;
 
-        point = new Point(x-1, y);
-        if(listPointOccupe.contains(point)) return true;
+        point = new Point(x - 1, y);
+        if (listPointOccupe.contains(point)) return true;
 
-        point = new Point(x, y+1);
-        if(listPointOccupe.contains(point)) return true;
+        point = new Point(x, y + 1);
+        if (listPointOccupe.contains(point)) return true;
 
-        point = new Point(x, y-1);
+        point = new Point(x, y - 1);
         return listPointOccupe.contains(point);
     }
 
     /*
      * Permet de savoir si la carte donnée en paramètre est défaussable ou non
      */
-    public boolean isDefaussable(Carte carteAPosee){
+    public boolean isDefaussable(Carte carteAPosee) {
         boolean isDefau = true;
         int x;
         int y;
@@ -119,35 +120,35 @@ public class Carcassonne {
     public boolean isPlacable(int x, int y, Carte carteEnMain) {
         boolean isPlacable = true;
         // creer un point temporaire pour faire les verifications
-        Point point = new Point(x-1, y);
-        if(listPointOccupe.contains(point)){
+        Point point = new Point(x - 1, y);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getEst() != carteEnMain.getOuest()){
-                isPlacable=false;
+            if (c.getEst() != carteEnMain.getOuest()) {
+                isPlacable = false;
             }
         }
 
-        point = new Point(x+1, y);
-        if(listPointOccupe.contains(point)){
+        point = new Point(x + 1, y);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getOuest() != carteEnMain.getEst()){
-                isPlacable=false;
+            if (c.getOuest() != carteEnMain.getEst()) {
+                isPlacable = false;
             }
         }
 
-        point = new Point(x, y-1);
-        if(listPointOccupe.contains(point)){
+        point = new Point(x, y - 1);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getSud() != carteEnMain.getNord()){
-                isPlacable=false;
+            if (c.getSud() != carteEnMain.getNord()) {
+                isPlacable = false;
             }
         }
 
-        point = new Point(x, y+1);
-        if(listPointOccupe.contains(point)){
+        point = new Point(x, y + 1);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getNord() != carteEnMain.getSud()){
-                isPlacable=false;
+            if (c.getNord() != carteEnMain.getSud()) {
+                isPlacable = false;
             }
         }
 
@@ -161,45 +162,57 @@ public class Carcassonne {
         int x = (int) carte.getPosition().getX();
         int y = (int) carte.getPosition().getY();
 
-        Point point = new Point(x-1, y);
-        if(listPointOccupe.contains(point)){
+        Point point = new Point(x - 1, y);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesCouleurPartisan().containsKey(4)) carte.getZonesCouleurPartisan().put(12, c.getZonesCouleurPartisan().get(4));
-            if (c.getZonesCouleurPartisan().containsKey(5)) carte.getZonesCouleurPartisan().put(11, c.getZonesCouleurPartisan().get(5));
-            if (c.getZonesCouleurPartisan().containsKey(6)) carte.getZonesCouleurPartisan().put(10, c.getZonesCouleurPartisan().get(6));
+            if (c.getZonesCouleurPartisan().containsKey(4))
+                carte.getZonesCouleurPartisan().put(12, c.getZonesCouleurPartisan().get(4));
+            if (c.getZonesCouleurPartisan().containsKey(5))
+                carte.getZonesCouleurPartisan().put(11, c.getZonesCouleurPartisan().get(5));
+            if (c.getZonesCouleurPartisan().containsKey(6))
+                carte.getZonesCouleurPartisan().put(10, c.getZonesCouleurPartisan().get(6));
             ajoutCouleurMap(c, 4, carte, 12);
             ajoutCouleurMap(c, 5, carte, 11);
             ajoutCouleurMap(c, 6, carte, 10);
         }
 
-        point = new Point(x+1, y);
-        if(listPointOccupe.contains(point)){
+        point = new Point(x + 1, y);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesCouleurPartisan().containsKey(12)) carte.getZonesCouleurPartisan().put(4, c.getZonesCouleurPartisan().get(12));
-            if (c.getZonesCouleurPartisan().containsKey(11)) carte.getZonesCouleurPartisan().put(5, c.getZonesCouleurPartisan().get(11));
-            if (c.getZonesCouleurPartisan().containsKey(10)) carte.getZonesCouleurPartisan().put(6, c.getZonesCouleurPartisan().get(10));
+            if (c.getZonesCouleurPartisan().containsKey(12))
+                carte.getZonesCouleurPartisan().put(4, c.getZonesCouleurPartisan().get(12));
+            if (c.getZonesCouleurPartisan().containsKey(11))
+                carte.getZonesCouleurPartisan().put(5, c.getZonesCouleurPartisan().get(11));
+            if (c.getZonesCouleurPartisan().containsKey(10))
+                carte.getZonesCouleurPartisan().put(6, c.getZonesCouleurPartisan().get(10));
             ajoutCouleurMap(c, 12, carte, 4);
             ajoutCouleurMap(c, 11, carte, 5);
             ajoutCouleurMap(c, 10, carte, 6);
         }
 
-        point = new Point(x, y+1);
-        if(listPointOccupe.contains(point)){
+        point = new Point(x, y + 1);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesCouleurPartisan().containsKey(1)) carte.getZonesCouleurPartisan().put(9, c.getZonesCouleurPartisan().get(1));
-            if (c.getZonesCouleurPartisan().containsKey(2)) carte.getZonesCouleurPartisan().put(8, c.getZonesCouleurPartisan().get(2));
-            if (c.getZonesCouleurPartisan().containsKey(3)) carte.getZonesCouleurPartisan().put(7, c.getZonesCouleurPartisan().get(3));
+            if (c.getZonesCouleurPartisan().containsKey(1))
+                carte.getZonesCouleurPartisan().put(9, c.getZonesCouleurPartisan().get(1));
+            if (c.getZonesCouleurPartisan().containsKey(2))
+                carte.getZonesCouleurPartisan().put(8, c.getZonesCouleurPartisan().get(2));
+            if (c.getZonesCouleurPartisan().containsKey(3))
+                carte.getZonesCouleurPartisan().put(7, c.getZonesCouleurPartisan().get(3));
             ajoutCouleurMap(c, 1, carte, 9);
             ajoutCouleurMap(c, 2, carte, 8);
             ajoutCouleurMap(c, 3, carte, 7);
         }
 
-        point = new Point(x, y-1);
-        if(listPointOccupe.contains(point)){
+        point = new Point(x, y - 1);
+        if (listPointOccupe.contains(point)) {
             CartePosee c = pointCarteMap.get(point);
-            if (c.getZonesCouleurPartisan().containsKey(9)) carte.getZonesCouleurPartisan().put(1, c.getZonesCouleurPartisan().get(9));
-            if (c.getZonesCouleurPartisan().containsKey(8)) carte.getZonesCouleurPartisan().put(2, c.getZonesCouleurPartisan().get(8));
-            if (c.getZonesCouleurPartisan().containsKey(7)) carte.getZonesCouleurPartisan().put(3, c.getZonesCouleurPartisan().get(7));
+            if (c.getZonesCouleurPartisan().containsKey(9))
+                carte.getZonesCouleurPartisan().put(1, c.getZonesCouleurPartisan().get(9));
+            if (c.getZonesCouleurPartisan().containsKey(8))
+                carte.getZonesCouleurPartisan().put(2, c.getZonesCouleurPartisan().get(8));
+            if (c.getZonesCouleurPartisan().containsKey(7))
+                carte.getZonesCouleurPartisan().put(3, c.getZonesCouleurPartisan().get(7));
             ajoutCouleurMap(c, 9, carte, 1);
             ajoutCouleurMap(c, 8, carte, 2);
             ajoutCouleurMap(c, 7, carte, 3);
@@ -212,7 +225,7 @@ public class Carcassonne {
     private void ajoutCouleurMap(CartePosee carteAdjacent, int zoneCarteAdjacente, CartePosee carteCourante, int zoneCarteCourante) {
         for (int i = 0; i < carteCourante.getZonesControlleesParLesPoints().length; i++) {
             for (int j = 0; j < carteCourante.getZonesControlleesParLesPoints()[i].length; j++) {
-                if(carteCourante.getZonesControlleesParLesPoints()[i][j] == zoneCarteCourante && carteAdjacent.getZonesCouleurPartisan().containsKey(zoneCarteAdjacente)){
+                if (carteCourante.getZonesControlleesParLesPoints()[i][j] == zoneCarteCourante && carteAdjacent.getZonesCouleurPartisan().containsKey(zoneCarteAdjacente)) {
                     for (int k = 0; k < carteCourante.getZonesControlleesParLesPoints()[i].length; k++) {
                         carteCourante.getZonesCouleurPartisan().putIfAbsent(carteCourante.getZonesControlleesParLesPoints()[i][k], carteAdjacent.getZonesCouleurPartisan().get(zoneCarteAdjacente));
                     }
@@ -224,47 +237,47 @@ public class Carcassonne {
     /*
      * Permet de contaminer les cartes déjà posées grâce à la carte donnée en paramètre
      */
-    public void contaminationDesAutresCarteAvecCouleur(CartePosee carteBase){
+    public void contaminationDesAutresCarteAvecCouleur(CartePosee carteBase) {
         ArrayDeque<CartePosee> carteNonVerifiee = new ArrayDeque<>();
         ArrayList<CartePosee> cartesDejaVerifiees = new ArrayList<>();
         carteNonVerifiee.offer(carteBase);
         int x;
         int y;
-        while(!carteNonVerifiee.isEmpty()){
+        while (!carteNonVerifiee.isEmpty()) {
             CartePosee carteCourante = carteNonVerifiee.poll();
             cartesDejaVerifiees.add(carteCourante);
             x = (int) carteCourante.getPosition().getX();
             y = (int) carteCourante.getPosition().getY();
             contaminationDeLaCarteAvecCouleur(carteCourante);
 
-            Point point = new Point(x-1, y);
-            if(listPointOccupe.contains(point)){
+            Point point = new Point(x - 1, y);
+            if (listPointOccupe.contains(point)) {
                 CartePosee c = pointCarteMap.get(point);
-                if(!cartesDejaVerifiees.contains(c)){
+                if (!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
                 }
             }
 
-            point = new Point(x+1, y);
-            if(listPointOccupe.contains(point)){
+            point = new Point(x + 1, y);
+            if (listPointOccupe.contains(point)) {
                 CartePosee c = pointCarteMap.get(point);
-                if(!cartesDejaVerifiees.contains(c)) {
+                if (!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
                 }
             }
 
-            point = new Point(x, y+1);
-            if(listPointOccupe.contains(point)){
+            point = new Point(x, y + 1);
+            if (listPointOccupe.contains(point)) {
                 CartePosee c = pointCarteMap.get(point);
-                if(!cartesDejaVerifiees.contains(c)) {
+                if (!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
                 }
             }
 
-            point = new Point(x, y-1);
-            if(listPointOccupe.contains(point)){
+            point = new Point(x, y - 1);
+            if (listPointOccupe.contains(point)) {
                 CartePosee c = pointCarteMap.get(point);
-                if(!cartesDejaVerifiees.contains(c)) {
+                if (!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
                 }
             }
@@ -272,35 +285,35 @@ public class Carcassonne {
     }
 
     private boolean isCheminFerme(int numCote, CartePosee carte) {
-        int x = (int)carte.getPosition().getX();
-        int y = (int)carte.getPosition().getY();
-        int numListe = getNombreChemin(carte,numCote)[0];
-        int longueurListe = getNombreChemin(carte,numCote)[1];
+        int x = (int) carte.getPosition().getX();
+        int y = (int) carte.getPosition().getY();
+        int numListe = getNombreChemin(carte, numCote)[0];
+        int longueurListe = getNombreChemin(carte, numCote)[1];
 
-        if (longueurListe==2){
+        if (longueurListe == 2) {
             int newI = 0;
             for (int j = 0; j < longueurListe; j++) {
-                if (carte.getZonesControlleesParLesPoints()[numListe][j]!=numCote) {
-                    newI=carte.getZonesControlleesParLesPoints()[numListe][j];
+                if (carte.getZonesControlleesParLesPoints()[numListe][j] != numCote) {
+                    newI = carte.getZonesControlleesParLesPoints()[numListe][j];
                 }
             }
-            if (newI==2){
-                Point p = new Point(x,y-1);
+            if (newI == 2) {
+                Point p = new Point(x, y - 1);
                 if (listPointOccupe.contains(p)) {
                     return isCheminFerme(8, pointCarteMap.get(p));
                 } else return false;
-            } else if (newI==5){
-                Point p = new Point(x+1,y);
+            } else if (newI == 5) {
+                Point p = new Point(x + 1, y);
                 if (listPointOccupe.contains(p)) {
                     return isCheminFerme(11, pointCarteMap.get(p));
                 } else return false;
-            } else if (newI==8){
-                Point p = new Point(x,y+1);
+            } else if (newI == 8) {
+                Point p = new Point(x, y + 1);
                 if (listPointOccupe.contains(p)) {
                     return isCheminFerme(2, pointCarteMap.get(p));
                 } else return false;
-            } else if (newI==11){
-                Point p = new Point(x-1,y);
+            } else if (newI == 11) {
+                Point p = new Point(x - 1, y);
                 if (listPointOccupe.contains(p)) {
                     return isCheminFerme(5, pointCarteMap.get(p));
                 } else return false;
@@ -315,78 +328,92 @@ public class Carcassonne {
      * @param carteEnMain
      */
     public void verificationCheminFerme(CartePosee carteEnMain) {
-        int x = (int)carteEnMain.getPosition().getX();
-        int y = (int)carteEnMain.getPosition().getY();
+        int x = (int) carteEnMain.getPosition().getX();
+        int y = (int) carteEnMain.getPosition().getY();
 
-        Point p = new Point(x,y-1);
+        Point p = new Point(x, y - 1);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getNord().equals(CoteCarte.chemin)) {
-                listeCartesPourLaVerification.clear();
-                tailleCheminPourLaVerification=0;
+                tailleCheminPourLaVerification = 0;
+                for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
+                    nbPartisansSurLeChemin[i] = 0;
+                }
                 boolean cheminFermeSurLaCarteCourante = false;
-                int longueurListe = getNombreChemin(carteEnMain,2)[1];
-                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                int longueurListe = getNombreChemin(carteEnMain, 2)[1];
+                if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(8, pointCarteMap.get(p))) {
-                    if (cheminFermeSurLaCarteCourante){
-
+                    if (cheminFermeSurLaCarteCourante) {
+                        attributionPointsChemin();
                     }
                 }
             }
         }
-        p = new Point(x,y+1);
+        p = new Point(x, y + 1);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getSud().equals(CoteCarte.chemin)) {
-                listeCartesPourLaVerification.clear();
-                tailleCheminPourLaVerification=0;
+                tailleCheminPourLaVerification = 0;
+                for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
+                    nbPartisansSurLeChemin[i] = 0;
+                }
                 boolean cheminFermeSurLaCarteCourante = false;
-                int longueurListe = getNombreChemin(carteEnMain,8)[1];
-                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                int longueurListe = getNombreChemin(carteEnMain, 8)[1];
+                if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(2, pointCarteMap.get(p))) {
-                    if (cheminFermeSurLaCarteCourante){
-
+                    if (cheminFermeSurLaCarteCourante) {
+                        attributionPointsChemin();
                     }
                 }
             }
         }
-        p = new Point(x-1,y);
+        p = new Point(x - 1, y);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getOuest().equals(CoteCarte.chemin)) {
-                listeCartesPourLaVerification.clear();
-                tailleCheminPourLaVerification=0;
+                tailleCheminPourLaVerification = 0;
+                for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
+                    nbPartisansSurLeChemin[i] = 0;
+                }
                 boolean cheminFermeSurLaCarteCourante = false;
-                int longueurListe = getNombreChemin(carteEnMain,11)[1];
-                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                int longueurListe = getNombreChemin(carteEnMain, 11)[1];
+                if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(5, pointCarteMap.get(p))) {
-                    if (cheminFermeSurLaCarteCourante){
+                    if (cheminFermeSurLaCarteCourante) {
+                        attributionPointsChemin();
                     }
                 }
             }
         }
-        p = new Point(x+1,y);
+        p = new Point(x + 1, y);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getEst().equals(CoteCarte.chemin)) {
-                listeCartesPourLaVerification.clear();
-                tailleCheminPourLaVerification=0;
+                tailleCheminPourLaVerification = 0;
+                for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
+                    nbPartisansSurLeChemin[i] = 0;
+                }
                 boolean cheminFermeSurLaCarteCourante = false;
-                int longueurListe = getNombreChemin(carteEnMain,5)[1];
-                if (longueurListe==1) cheminFermeSurLaCarteCourante=true;
+                int longueurListe = getNombreChemin(carteEnMain, 5)[1];
+                if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(11, pointCarteMap.get(p))) {
-                    if (cheminFermeSurLaCarteCourante){
+                    if (cheminFermeSurLaCarteCourante) {
+                        attributionPointsChemin();
                     }
                 }
             }
         }
     }
 
+    private void attributionPointsChemin() {
+
+    }
+
     /*
      * Permet de récupérer le numéro et la longueur de la listeControlleesParLesPoints de la carte contenant numCote
      */
-    private int[] getNombreChemin(CartePosee carte, int numCote){
+    private int[] getNombreChemin(CartePosee carte, int numCote) {
         int numListe = 0;
         for (int j = 0; j < carte.getZonesControlleesParLesPoints().length; j++) {
             for (int k = 0; k < carte.getZonesControlleesParLesPoints()[j].length; k++) {
-                if (carte.getZonesControlleesParLesPoints()[j][k]==numCote){
-                    numListe=j;
+                if (carte.getZonesControlleesParLesPoints()[j][k] == numCote) {
+                    numListe = j;
                 }
             }
         }
@@ -394,21 +421,39 @@ public class Carcassonne {
         return new int[]{numListe, longueurListe};
     }
 
-    public Carte getCarteDeBase() { return carteDeBase; }
+    public Carte getCarteDeBase() {
+        return carteDeBase;
+    }
 
-    public int getNB_CASES() { return 143; }
+    public int getNB_CASES() {
+        return 143;
+    }
 
-    public Joueur[] getTabJoueur() { return tabJoueur; }
+    public Joueur[] getTabJoueur() {
+        return tabJoueur;
+    }
 
-    public int getNumJoueur() { return numJoueur; }
+    public int getNumJoueur() {
+        return numJoueur;
+    }
 
-    public Pioche getPioche() { return pioche; }
+    public Pioche getPioche() {
+        return pioche;
+    }
 
-    public Map<Point, CartePosee> getPointCarteMap() { return pointCarteMap; }
+    public Map<Point, CartePosee> getPointCarteMap() {
+        return pointCarteMap;
+    }
 
-    public ArrayList<Point> getListPointDispo() { return listPointDispo; }
+    public ArrayList<Point> getListPointDispo() {
+        return listPointDispo;
+    }
 
-    public ArrayList<Point> getListPointOccupe() { return listPointOccupe; }
+    public ArrayList<Point> getListPointOccupe() {
+        return listPointOccupe;
+    }
 
-    public ArrayList<Carte> getDefausse() { return defausse; }
+    public ArrayList<Carte> getDefausse() {
+        return defausse;
+    }
 }

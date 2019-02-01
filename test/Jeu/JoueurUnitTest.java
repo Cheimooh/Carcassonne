@@ -11,9 +11,9 @@ public class JoueurUnitTest {
     @Test
     public void testPiocherCarte() throws PiocheVideException {
         Pioche p = new Pioche();
-        Joueur j = new Joueur(0,p,Color.BLUE);
+        Joueur j = new Joueur(0, p, Color.BLUE);
 
-        Carte carte=p.getProchaineCarte();
+        Carte carte = p.getProchaineCarte();
         j.joue();
         Assert.assertEquals(carte, j.getCarteEnMain());
     }
@@ -25,7 +25,7 @@ public class JoueurUnitTest {
             p.piocher();
         }
 
-        Joueur j = new Joueur(0,p,Color.BLUE);
+        Joueur j = new Joueur(0, p, Color.BLUE);
         j.joue();
         Assert.assertNull(j.getCarteEnMain());
     }

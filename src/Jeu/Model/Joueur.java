@@ -20,8 +20,8 @@ public class Joueur {
     private int nombrePartisansRestants;
     private Partisan[] tabPartisans;
 
-    public Joueur (int newId, Pioche newP, Color newColor){
-        nombrePartisansRestants=8;
+    public Joueur(int newId, Pioche newP, Color newColor) {
+        nombrePartisansRestants = 8;
         tabPartisans = new Partisan[nombrePartisansRestants];
         this.idJoueur = newId;
         p = newP;
@@ -31,7 +31,7 @@ public class Joueur {
         }
     }
 
-    public void joue(){
+    public void joue() {
         try {
             carteEnMain = piocherCarte();
         } catch (PiocheVideException e) {
@@ -50,14 +50,14 @@ public class Joueur {
      * Décrémente le nombre de partisans "non posés" du joueur
      */
     public void placerPartisan(CartePosee cartePosee, int numZone) {
-        if(nombrePartisansRestants>0) {
+        if (nombrePartisansRestants > 0) {
             nombrePartisansRestants--;
             tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
         }
     }
 
-    public void retirerPartisan(Point p){
-        if (nombrePartisansRestants<8) {
+    public void retirerPartisan(Point p) {
+        if (nombrePartisansRestants < 8) {
             for (int i = 0; i < tabPartisans.length; i++) {
                 if (tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirerPartisan();
                 nombrePartisansRestants++;
@@ -65,15 +65,27 @@ public class Joueur {
         }
     }
 
-    public void setNom(String nom) { this.nom=nom; }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
-    public int getIdJoueur() { return idJoueur; }
+    public int getIdJoueur() {
+        return idJoueur;
+    }
 
-    public Carte getCarteEnMain() { return carteEnMain; }
+    public Carte getCarteEnMain() {
+        return carteEnMain;
+    }
 
-    public String getNom() { return nom; }
+    public String getNom() {
+        return nom;
+    }
 
-    public int getNombrePartisansRestants(){ return nombrePartisansRestants; }
+    public int getNombrePartisansRestants() {
+        return nombrePartisansRestants;
+    }
 
-    public Color getColor(){return color;}
+    public Color getColor() {
+        return color;
+    }
 }
