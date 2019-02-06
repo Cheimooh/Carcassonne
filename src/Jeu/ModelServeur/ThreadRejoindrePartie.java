@@ -44,6 +44,7 @@ public class ThreadRejoindrePartie {
 
                     nbJoueur = carcassonne.getTabJoueur().size();
                     oo.writeInt(nbJoueur);
+                    System.out.println(nbJoueur);
 
                     for (int i = 0; i < nbJoueur; i++) {
                         Joueur joueurTmp = carcassonne.getTabJoueur().get(i);

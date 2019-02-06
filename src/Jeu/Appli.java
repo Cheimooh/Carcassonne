@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class Appli extends Application {
@@ -32,7 +33,11 @@ public class Appli extends Application {
     private Color[] tabColorJoueurs;
     private String[] tabColorJoueurString;
     private boolean nomJoueursCorrect = true;
+    private boolean changementCorrect = true;
     private boolean colorJoueursCorrect = true;
+    private boolean isReseau = false;
+    private ObjectInputStream oi;
+    private ObjectOutputStream oo;
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -83,12 +88,11 @@ public class Appli extends Application {
     }
 
     private void jeuInternet() {
+        isReseau = true;
         try {
-            System.out.println("beforeSocket");
             Socket sock = new Socket("localhost"/*"62.39.234.71"*/, 3333);
-            System.out.println("Socket créer");
-            ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
-            ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
+            oo = new ObjectOutputStream(sock.getOutputStream());
+            oi = new ObjectInputStream(sock.getInputStream());
 
             SocketJoueur socketJoueur = new SocketJoueur(sock, oi, oo);
 
@@ -99,26 +103,26 @@ public class Appli extends Application {
                 listJoueur.add((Joueur) oi.readObject());
                 System.out.println(listJoueur.get(i).getCouleur());
             }
-            tabNomjoueurs = new String[nombreJoueur];
-            tabColorJoueurs = new Color[nombreJoueur];
-            tabColorJoueurString = new String[nombreJoueur];
+            tabNomjoueurs = new String[nombreJoueur+1];
+            tabColorJoueurs = new Color[nombreJoueur+1];
             for (int i = 0; i < nombreJoueur; i++) {
                 tabNomjoueurs[i] = listJoueur.get(i).getNom();
-                tabColorJoueurString[i] = listJoueur.get(i).getCouleur();
             }
             for (int i = 0; i < nombreJoueur; i++) {
                 if ((listJoueur.get(i).getCouleur()).equals("red")){
                     tabColorJoueurs[i] = Color.RED;
                 }else if ((listJoueur.get(i).getCouleur()).equals("blue")){
                     tabColorJoueurs[i] = Color.BLUE;
-                }else if (tabColorJoueurString.equals("rose")){
+                }else if ((listJoueur.get(i).getCouleur()).equals("rose")){
                     tabColorJoueurs[i] = Color.HOTPINK;
-                }else if (tabColorJoueurString.equals("jaune")){
+                }else if ((listJoueur.get(i).getCouleur()).equals("jaune")){
                     tabColorJoueurs[i] = Color.GOLD;
-                }else if (tabColorJoueurString.equals("bleuClair")){
+                }else if ((listJoueur.get(i).getCouleur()).equals("bleuClair")){
                     tabColorJoueurs[i] = Color.DEEPSKYBLUE;
                 }
             }
+            nombreJoueur+=1;
+            nombreJoueur2 = nombreJoueur;
             instancierJoueur();
 
         } catch (IOException e) {
@@ -129,6 +133,8 @@ public class Appli extends Application {
     }
 
     private void instancierJoueur() {
+        Label erreurNom = new Label("Ce nom est ou déja pris, ou null");
+        erreurNom.setStyle("-fx-text-fill: RED");
         VBox generalBox = new VBox(10);
         generalBox.setAlignment(Pos.CENTER);
         HBox HBname = new HBox(10);
@@ -147,6 +153,13 @@ public class Appli extends Application {
         v_jaune.setAlignment(Pos.CENTER);
         VBox v_bleuClaire = new VBox(3);
         v_bleuClaire.setAlignment(Pos.CENTER);
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        t_rouge.setToggleGroup(toggleGroup);
+        t_bleu.setToggleGroup(toggleGroup);
+        t_rose.setToggleGroup(toggleGroup);
+        t_jaune.setToggleGroup(toggleGroup);
+        t_bleuClaire.setToggleGroup(toggleGroup);
 
         v_rouge.getChildren().addAll(t_rouge,r_rouge);
         v_bleu.getChildren().addAll(t_bleu,r_bleu);
@@ -172,8 +185,20 @@ public class Appli extends Application {
         }
 
         Button b_suivant = new Button("Suivant");
-        b_suivant.setOnAction(event -> {transmitInfoServeur();});
-        generalBox.getChildren().addAll(HBname,lcolor,bouttons,b_suivant);
+        b_suivant.setOnAction(event -> {
+            if (nomJoueursCorrect){
+                tabColorJoueurs[nombreJoueur-1]= recupColorsToggle(toggleGroup.getSelectedToggle());
+                tabNomjoueurs[nombreJoueur-1]=tNom.getText();
+            }
+            askInfosJoueurs(nombreJoueur2,tabNomjoueurs[nombreJoueur-1],tabColorJoueurs[nombreJoueur-1]);
+        });
+        generalBox.getChildren().add(HBname);
+        if (!nomJoueursCorrect){
+            generalBox.getChildren().addAll(erreurNom,b_suivant);
+        }else{
+            generalBox.getChildren().addAll(lcolor,bouttons,b_suivant);
+        }
+        nomJoueursCorrect = true;
         Scene scene = new Scene(generalBox, 350,300);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -181,7 +206,26 @@ public class Appli extends Application {
     }
 
     private void transmitInfoServeur() {
-        salonAttente();
+        String color = new String("");
+        if (tabColorJoueurs[nombreJoueur-1] == Color.BLUE){
+            color = "blue";
+        }else if (tabColorJoueurs[nombreJoueur-1] == Color.RED){
+            color = "red";
+        }else if (tabColorJoueurs[nombreJoueur-1] == Color.GOLD){
+            color = "jaune";
+        }else if (tabColorJoueurs[nombreJoueur-1] == Color.HOTPINK){
+            color = "rose";
+        }else if (tabColorJoueurs[nombreJoueur-1] == Color.DEEPSKYBLUE){
+            color = "bleuClair";
+        }
+        try {
+            oo.writeObject(tabNomjoueurs[nombreJoueur-1]);
+            oo.writeObject(color);
+            salonAttente();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void salonAttente() {
@@ -209,6 +253,38 @@ public class Appli extends Application {
         Button b_quitter = new Button("Quitter");
         Button b_pret = new Button("Prêt !");
         hBoxButtons.getChildren().addAll(b_quitter,b_pret);
+
+        HBox hBoxInfosJoueurs = new HBox(10);
+        hBoxInfosJoueurs.setAlignment(Pos.CENTER);
+
+        try {
+            nombreJoueur = oi.readInt();
+            tabNomjoueurs = new String[nombreJoueur];
+            tabColorJoueurString = new String[nombreJoueur];
+            for (int i = 0; i < nombreJoueur; i++) {
+                Joueur joueur = (Joueur) oi.readObject();
+                tabNomjoueurs[i] = joueur.getNom();
+                tabColorJoueurString[i] = joueur.getCouleur();
+                vBoxNoms.getChildren().add(new Label(joueur.getNom()));
+                if (joueur.getCouleur().equals("red")){
+                    vBoxCouleurs.getChildren().add(r_rouge);
+                }else if (joueur.getCouleur().equals("blue")){
+                    vBoxCouleurs.getChildren().add(r_bleu);
+                }if (joueur.getCouleur().equals("jaune")){
+                    vBoxCouleurs.getChildren().add(r_jaune);
+                }if (joueur.getCouleur().equals("rose")){
+                    vBoxCouleurs.getChildren().add(r_rose);
+                }if (joueur.getCouleur().equals("bleuClair")){
+                    vBoxCouleurs.getChildren().add(r_bleuClaire);
+                }
+                System.out.println(joueur.getNom());
+                System.out.println(joueur.getCouleur());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         hBoxElements.getChildren().addAll(vBoxNoms,vBoxCouleurs,vBoxPrets,hBoxButtons);
         generals.getChildren().addAll(hBoxElements,hBoxButtons);
@@ -246,28 +322,157 @@ public class Appli extends Application {
     }
 
     private void askInfosJoueurs(int nombreJoueur22, String nomJoueur, Color color) {
-        nombreJoueur2=nombreJoueur22;
-        if (nombreJoueur2>0) {
-                if (!verifNom(nomJoueur)) {
-                    nomJoueursCorrect = false;
-                }
+        nombreJoueur2 = nombreJoueur22;
+        if (nombreJoueur2 > 0) {
+            if (!verifNom(nomJoueur)) {
+                nomJoueursCorrect = false;
+            }
             tabNomjoueurs[nombreJoueur2 - 1] = nomJoueur;
             if (color != null) {
                 tabColorJoueurs[nombreJoueur2 - 1] = color;
                 if (!verifColor(color)) {
                     colorJoueursCorrect = false;
                 }
-            }else {
+            } else {
                 colorJoueursCorrect = false;
             }
         }
-        if (nombreJoueur2<1 && color == null)colorJoueursCorrect=false;
-        if (!nomJoueursCorrect || !colorJoueursCorrect){
+        if (nombreJoueur2 < 1 && color == null) colorJoueursCorrect = false;
+        if (!nomJoueursCorrect || !colorJoueursCorrect) {
             nombreJoueur2--;
         }
-        if (nombreJoueur2<nombreJoueur)afficherFenetreInfosJoueurs();
-        else {
-            afficherFenetreJeu();
+        if (isReseau == false) {
+            if (nombreJoueur2 < nombreJoueur) afficherFenetreInfosJoueurs();
+            else {
+                afficheInfosJoueurs();
+            }
+        }else{
+            if (!nomJoueursCorrect){
+                instancierJoueur();
+            }else {
+                transmitInfoServeur();
+            }
+        }
+    }
+
+    private void afficheInfosJoueurs() {
+        Button[] bouttonsModif = new Button[nombreJoueur];
+        Button b_suivant = new Button("Suivant");
+        HBox[] tabHBox = new HBox[nombreJoueur];
+        Label[] labelNoms = new Label[nombreJoueur];
+        for (int i = 0; i < nombreJoueur; i++) {
+            labelNoms[i]= new Label(tabNomjoueurs[i]);
+            tabHBox[i] = new HBox(10);
+            tabHBox[i].setAlignment(Pos.CENTER);
+            tabHBox[i].getChildren().add(labelNoms[i]);
+            bouttonsModif[i] = new Button("modifier");
+        }
+        Rectangle[] tabRectColors = new Rectangle[nombreJoueur];
+        for (int i = 0; i < nombreJoueur; i++) {
+            tabRectColors[i] = new Rectangle(10,10);
+            tabRectColors[i].setFill(tabColorJoueurs[i]);
+            tabHBox[i].getChildren().addAll(tabRectColors[i],bouttonsModif[i]);
+            final int y = i;
+            bouttonsModif[i].setOnAction(event -> {modifInfo(y);});
+        }
+
+        b_suivant.setOnAction(event -> {afficherFenetreJeu();
+        });
+
+        VBox vBox = new VBox(10);
+        vBox.setAlignment(Pos.CENTER);
+        for (int i = 0; i < nombreJoueur; i++) {
+            vBox.getChildren().add(tabHBox[i]);
+        }
+        vBox.getChildren().add(b_suivant);
+        Scene scene = new Scene(vBox,350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void modifInfo(int y) {
+        HBox hBoxNow = new HBox(10);
+        hBoxNow.setAlignment(Pos.CENTER);
+        HBox hBoxNew = new HBox(10);
+        hBoxNew.setAlignment(Pos.CENTER);
+        HBox hBoxNewColors = new HBox(10);
+        hBoxNewColors.setAlignment(Pos.CENTER);
+        Label nom = new Label("nom actuel: "+ tabNomjoueurs[y]);
+        Label couleurs = new Label("couleur actuelle: ");
+        Rectangle rectCouleur = new Rectangle(10,10);
+        rectCouleur.setFill(tabColorJoueurs[y]);
+        Label newNom = new Label("Nouveau nom:");
+        TextField newName = new TextField(tabNomjoueurs[y]);
+        tabNomjoueurs[y] = "";
+        hBoxNew.getChildren().addAll(newNom,newName);
+
+
+        ComboBox<Rectangle> cmb = new ComboBox<Rectangle>();
+        cmb.getItems().addAll(
+                r_rouge,r_bleu,r_rose,r_jaune,r_bleuClaire);
+        Label newColor = new Label("Nouvelle couleur : ");
+        Button b_suivant = new Button("Suivant");
+        Label erreur = new Label();
+        if (changementCorrect == false){
+            erreur.setText("Le nouveau nom doit être:\nnon null et différent des autres joueurs\nLa nouvelle couleur doit être:\ndifférente des autres couleurs et non null");
+            erreur.setStyle("-fx-text-fill: RED");
+        }
+        changementCorrect = true;
+        b_suivant.setOnAction(event -> {
+            nombreJoueur2 = y;
+            final Color selectedColor = selectedColor(cmb);
+            if (verifNomModif(newName.getText())&&verifColorModif(selectedColor) ){
+                tabNomjoueurs[y] = newName.getText();
+                tabColorJoueurs[y] = selectedColor;
+                afficheInfosJoueurs();
+            }else{
+                changementCorrect = false;
+                modifInfo(y);
+            }
+        });
+        hBoxNewColors.getChildren().addAll(newColor,cmb);
+        hBoxNow.getChildren().addAll(couleurs,rectCouleur);
+        VBox vBox = new VBox(10);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(nom,hBoxNew,erreur,hBoxNow,hBoxNewColors,b_suivant);
+        Scene scene = new Scene(vBox,350,300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private boolean verifNomModif(String text) {
+        if (text==null || text.equals(""))return false;
+        for (int i = 0; i < nombreJoueur; i++) {
+            if (i != nombreJoueur2){
+                if (text.equals(tabNomjoueurs[i])) return false;
+            }
+        }
+        if (text.length() > 16)return false;
+        return true;
+    }
+
+    private boolean verifColorModif(Color selectedColor) {
+        for (int i = 0; i < nombreJoueur; i++) {
+            if (i != nombreJoueur2){
+                if (selectedColor.equals(tabColorJoueurs[i])) return false;
+            }
+        }
+        return true;
+    }
+
+    private Color selectedColor(ComboBox<Rectangle> cmb) {
+        if (cmb.getSelectionModel().getSelectedItem() == r_bleu){
+            return Color.BLUE;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_rouge){
+            return Color.RED;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_rose){
+            return Color.HOTPINK;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_jaune){
+            return Color.GOLD;
+        }else if (cmb.getSelectionModel().getSelectedItem() == r_bleuClaire){
+            return Color.DEEPSKYBLUE;
+        }else{
+            return tabColorJoueurs[nombreJoueur2];
         }
     }
 
