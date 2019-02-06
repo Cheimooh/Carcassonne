@@ -11,12 +11,16 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -39,6 +43,9 @@ public class Menu extends Parent {
     private ObjectInputStream oi;
     private ObjectOutputStream oo;
     private SocketJoueur socketJoueur;
+    private ArrayList<Joueur> tabJoueurs;
+    private ArrayList<Label> tabLabelNomJoueurs;
+    private ArrayList<Color> tabColorJoueursReseau;
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -55,6 +62,9 @@ public class Menu extends Parent {
     private Rectangle r_bleuClaire = new Rectangle(30,30,Color.DEEPSKYBLUE);
 
     public Menu(Stage primaryStage){
+        tabJoueurs = new ArrayList<>();
+        tabColorJoueursReseau = new ArrayList<>();
+        tabLabelNomJoueurs = new ArrayList<>();
         this.primaryStage = primaryStage;
         menuDepart();
     }
@@ -202,26 +212,25 @@ public class Menu extends Parent {
 
     private void transmitInfoServeur() {
         String color = new String("");
-        if (tabColorJoueurs[nombreJoueur-1] == Color.BLUE){
-            color = "blue";
-        }else if (tabColorJoueurs[nombreJoueur-1] == Color.RED){
-            color = "red";
-        }else if (tabColorJoueurs[nombreJoueur-1] == Color.GOLD){
-            color = "jaune";
-        }else if (tabColorJoueurs[nombreJoueur-1] == Color.HOTPINK){
-            color = "rose";
-        }else if (tabColorJoueurs[nombreJoueur-1] == Color.DEEPSKYBLUE){
-            color = "bleuClair";
-        }
+        color = tradColorsToString(tabColorJoueurs[nombreJoueur-1]);
         try {
             oo.writeObject(tabNomjoueurs[nombreJoueur-1]);
             oo.writeObject(color);
-            new ThreadSalonAttente(this);
+            //new ThreadSalonAttente(this);
             salonAttente();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String tradColorsToString(Color couleurs) {
+        if (couleurs==Color.BLUE)return "blue";
+        if (couleurs==Color.RED)return "red";
+        if (couleurs==Color.GOLD)return "jaune";
+        if (couleurs==Color.HOTPINK)return "rose";
+        if (couleurs==Color.DEEPSKYBLUE)return "bleuClair";
+        return null;
     }
 
     private void salonAttente() {
@@ -255,24 +264,14 @@ public class Menu extends Parent {
 
         try {
             nombreJoueur = oi.readInt();
-            tabNomjoueurs = new String[nombreJoueur];
-            tabColorJoueurString = new String[nombreJoueur];
+
             for (int i = 0; i < nombreJoueur; i++) {
                 Joueur joueur = (Joueur) oi.readObject();
-                tabNomjoueurs[i] = joueur.getNom();
-                tabColorJoueurString[i] = joueur.getCouleur();
+                tabJoueurs.add(joueur);
+                tabLabelNomJoueurs.add(new Label(joueur.getNom()));
+                tabColorJoueursReseau.add(tradStringToColors(joueur.getCouleur()));
                 vBoxNoms.getChildren().add(new Label(joueur.getNom()));
-                if (joueur.getCouleur().equals("red")){
-                    vBoxCouleurs.getChildren().add(r_rouge);
-                }else if (joueur.getCouleur().equals("blue")){
-                    vBoxCouleurs.getChildren().add(r_bleu);
-                }if (joueur.getCouleur().equals("jaune")){
-                    vBoxCouleurs.getChildren().add(r_jaune);
-                }if (joueur.getCouleur().equals("rose")){
-                    vBoxCouleurs.getChildren().add(r_rose);
-                }if (joueur.getCouleur().equals("bleuClair")){
-                    vBoxCouleurs.getChildren().add(r_bleuClaire);
-                }
+                vBoxCouleurs.getChildren().add(new Rectangle(30,30,tabColorJoueursReseau.get(i)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -284,6 +283,15 @@ public class Menu extends Parent {
         generals.getChildren().addAll(hBoxElements,hBoxButtons);
         Scene scene = new Scene(generals, 500,500);
         primaryStage.setScene(scene);
+    }
+
+    private Color tradStringToColors(String couleur) {
+        if (couleur.equals("blue"))return Color.BLUE;
+        if (couleur.equals("red"))return Color.RED;
+        if (couleur.equals("jaune"))return Color.GOLD;
+        if (couleur.equals("bleuClair"))return Color.DEEPSKYBLUE;
+        if (couleur.equals("rose"))return Color.HOTPINK;
+        else return null;
     }
 
     private void askNbJoueurs(){
