@@ -19,13 +19,10 @@ public class ThreadSalonAttente {
 
         @Override
         public void run() {
-            ObjectOutputStream oo = menu.getOo();
-
-            menu.actualiser(menu.getGPElements());
-
-
-
-
+            do {
+                ObjectOutputStream oo = menu.getOo();
+                menu.actualiser(menu.getGPElements());
+            }while(!isArreter);
         }
     }
 
