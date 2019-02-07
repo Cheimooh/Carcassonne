@@ -5,7 +5,6 @@ import Jeu.ModelServeur.Joueur;
 import Jeu.ModelServeur.SocketJoueur;
 import Jeu.View.FenetreJeu;
 import Jeu.View.PopUpPartisan;
-import Jeu.View.ThreadSalonAttente;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -14,13 +13,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -46,6 +45,7 @@ public class Menu extends Parent {
     private ArrayList<Joueur> tabJoueurs;
     private ArrayList<Label> tabLabelNomJoueurs;
     private ArrayList<Color> tabColorJoueursReseau;
+    private GridPane GPElements;
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -96,7 +96,8 @@ public class Menu extends Parent {
     private void jeuInternet() {
         isReseau = true;
         try {
-            sock = new Socket(/*"localhost"*/"62.39.234.71", 3333);
+            sock = new Socket("62.39.234.71", 3333);
+            //sock = new Socket("localhost", 3333);
             oo = new ObjectOutputStream(sock.getOutputStream());
             oi = new ObjectInputStream(sock.getInputStream());
 
@@ -115,17 +116,7 @@ public class Menu extends Parent {
                 tabNomjoueurs[i] = listJoueur.get(i).getNom();
             }
             for (int i = 0; i < nombreJoueur; i++) {
-                if ((listJoueur.get(i).getCouleur()).equals("red")){
-                    tabColorJoueurs[i] = Color.RED;
-                }else if ((listJoueur.get(i).getCouleur()).equals("blue")){
-                    tabColorJoueurs[i] = Color.BLUE;
-                }else if ((listJoueur.get(i).getCouleur()).equals("rose")){
-                    tabColorJoueurs[i] = Color.HOTPINK;
-                }else if ((listJoueur.get(i).getCouleur()).equals("jaune")){
-                    tabColorJoueurs[i] = Color.GOLD;
-                }else if ((listJoueur.get(i).getCouleur()).equals("bleuClair")){
-                    tabColorJoueurs[i] = Color.DEEPSKYBLUE;
-                }
+                tabColorJoueurs[i] = tradStringToColors(listJoueur.get(i).getCouleur());
             }
             nombreJoueur+=1;
             nombreJoueur2 = nombreJoueur;
@@ -216,7 +207,6 @@ public class Menu extends Parent {
         try {
             oo.writeObject(tabNomjoueurs[nombreJoueur-1]);
             oo.writeObject(color);
-            //new ThreadSalonAttente(this);
             salonAttente();
 
         } catch (IOException e) {
@@ -236,22 +226,34 @@ public class Menu extends Parent {
     private void salonAttente() {
         VBox generals = new VBox(10);
         generals.setAlignment(Pos.CENTER);
-        HBox hBoxElements = new HBox(15);
-        hBoxElements.setAlignment(Pos.CENTER);
+        HBox hBoxTitres = new HBox(30);
+
+        GPElements = new GridPane();
+        GPElements.setAlignment(Pos.CENTER);
+        GPElements.setHgap(25);
+        GPElements.setVgap(10);
         VBox vBoxNoms = new VBox(10);
         vBoxNoms.setAlignment(Pos.CENTER);
+
+        hBoxTitres.setAlignment(Pos.CENTER);
         Label noms = new Label("Noms: ");
-        vBoxNoms.getChildren().add(noms);
+        GPElements.add(noms,0,0);
+
+        Label couleurs = new Label("Couleurs: ");
+        GPElements.add(couleurs,1,0);
+
+        Label prets = new Label("Prêt: ");
+        GPElements.add(prets,2,0);
+
+        HBox elements = new HBox();
+        elements.setAlignment(Pos.CENTER);
+
 
         VBox vBoxCouleurs = new VBox(10);
         vBoxCouleurs.setAlignment(Pos.CENTER);
-        Label couleurs = new Label("Couleurs: ");
-        vBoxCouleurs.getChildren().add(couleurs);
 
         VBox vBoxPrets = new VBox(10);
         vBoxPrets.setAlignment(Pos.CENTER);
-        Label prets = new Label("Prêt: ");
-        vBoxPrets.getChildren().add(prets);
 
         HBox hBoxButtons = new HBox(10);
         hBoxButtons.setAlignment(Pos.CENTER);
@@ -262,6 +264,18 @@ public class Menu extends Parent {
         HBox hBoxInfosJoueurs = new HBox(10);
         hBoxInfosJoueurs.setAlignment(Pos.CENTER);
 
+        actualiser(GPElements);
+        new ThreadSalonAttente(this);
+
+        elements.getChildren().add(GPElements);
+
+
+        generals.getChildren().addAll(hBoxTitres,elements,hBoxButtons);
+        Scene scene = new Scene(generals, 500,500);
+        primaryStage.setScene(scene);
+    }
+
+    public void actualiser(GridPane gridPane) {
         try {
             nombreJoueur = oi.readInt();
 
@@ -270,19 +284,14 @@ public class Menu extends Parent {
                 tabJoueurs.add(joueur);
                 tabLabelNomJoueurs.add(new Label(joueur.getNom()));
                 tabColorJoueursReseau.add(tradStringToColors(joueur.getCouleur()));
-                vBoxNoms.getChildren().add(new Label(joueur.getNom()));
-                vBoxCouleurs.getChildren().add(new Rectangle(30,30,tabColorJoueursReseau.get(i)));
+                gridPane.add(new Label(joueur.getNom()),0, i+1);
+                gridPane.add(new Rectangle(30,30,tabColorJoueursReseau.get(i)),1,i+1);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-        hBoxElements.getChildren().addAll(vBoxNoms,vBoxCouleurs,vBoxPrets,hBoxButtons);
-        generals.getChildren().addAll(hBoxElements,hBoxButtons);
-        Scene scene = new Scene(generals, 500,500);
-        primaryStage.setScene(scene);
     }
 
     private Color tradStringToColors(String couleur) {
@@ -622,5 +631,9 @@ public class Menu extends Parent {
 
     public ObjectOutputStream getOo() {
         return oo;
+    }
+
+    public GridPane getGPElements() {
+        return GPElements;
     }
 }

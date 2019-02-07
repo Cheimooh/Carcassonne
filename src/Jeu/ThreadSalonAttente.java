@@ -1,7 +1,4 @@
-package Jeu.View;
-
-import Jeu.Appli;
-import Jeu.Menu;
+package Jeu;
 
 import java.io.ObjectOutputStream;
 
@@ -23,6 +20,8 @@ public class ThreadSalonAttente {
         @Override
         public void run() {
             ObjectOutputStream oo = menu.getOo();
+
+            menu.actualiser(menu.getGPElements());
 
 
 
