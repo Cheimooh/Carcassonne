@@ -1,8 +1,11 @@
 package Jeu;
 
+import Jeu.ModelServeur.SocketJoueur;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class ThreadSalonAttente {
     private Thread ThreadSalonAttente;
@@ -22,10 +25,9 @@ public class ThreadSalonAttente {
         @Override
         public void run() {
             do {
-                ObjectOutputStream oo = menu.getOo();
-                ObjectInputStream oi = menu.getOi();
+                SocketJoueur socket = menu.getSocketJoueur();
                 try {
-                    if (((String) oi.readObject()).equals("je t'envoie")){
+                    if (((String) socket.getOi().readObject()).equals("je t'envoie")){
                         menu.actualiser(menu.getGPElements());
                     }
                 } catch (IOException e) {

@@ -96,8 +96,8 @@ public class Menu extends Parent {
     private void jeuInternet() {
         isReseau = true;
         try {
-            sock = new Socket("62.39.234.71", 3333);
-            //sock = new Socket("localhost", 3333);
+            //sock = new Socket("62.39.234.71", 3333);
+            sock = new Socket("localhost", 3333);
             oo = new ObjectOutputStream(sock.getOutputStream());
             oi = new ObjectInputStream(sock.getInputStream());
 
@@ -635,5 +635,9 @@ public class Menu extends Parent {
 
     public GridPane getGPElements() {
         return GPElements;
+    }
+
+    public SocketJoueur getSocketJoueur() {
+        return socketJoueur;
     }
 }
