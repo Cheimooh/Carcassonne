@@ -236,14 +236,6 @@ public class Menu extends Parent {
         vBoxNoms.setAlignment(Pos.CENTER);
 
         hBoxTitres.setAlignment(Pos.CENTER);
-        Label noms = new Label("Noms: ");
-        GPElements.add(noms,0,0);
-
-        Label couleurs = new Label("Couleurs: ");
-        GPElements.add(couleurs,1,0);
-
-        Label prets = new Label("Prêt: ");
-        GPElements.add(prets,2,0);
 
         HBox elements = new HBox();
         elements.setAlignment(Pos.CENTER);
@@ -276,6 +268,15 @@ public class Menu extends Parent {
     }
 
     public void actualiser(GridPane gridPane) {
+        gridPane.getChildren().clear();
+        Label noms = new Label("Noms: ");
+        GPElements.add(noms,0,0);
+
+        Label couleurs = new Label("Couleurs: ");
+        GPElements.add(couleurs,1,0);
+
+        Label prets = new Label("Prêt: ");
+        GPElements.add(prets,2,0);
         try {
             nombreJoueur = oi.readInt();
 
