@@ -27,7 +27,7 @@ public class ThreadSalonAttente {
             do {
                 SocketJoueur socket = menu.getSocketJoueur();
                 try {
-                    if (((String) socket.getOi().readObject()).equals("je t'envoie")){
+                    if (((String) socket.getOi().readObject()).equals("j'envoie")){
                         menu.actualiser(menu.getGPElements());
                     }
                 } catch (IOException e) {
