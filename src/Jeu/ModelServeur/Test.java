@@ -22,8 +22,7 @@ public class Test {
 
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
-
-            oo.writeObject(test.nom);
+            SocketJoueur socketJoueur = new SocketJoueur(sock, oi, oo);
 
             int nbJoueur = oi.readInt();
 
@@ -32,7 +31,12 @@ public class Test {
                 test.listJoueur.add(joueurTmp);
             }
 
-            new ThreadJoueurClient(oi, oo, test);
+            oo.writeObject(test.nom);
+            oo.writeObject("rouge");
+
+            test.listJoueur.add(new Joueur(test.nom, "rouge"));
+
+            new ThreadJoueurClient(socketJoueur, test);
 
         } catch (IOException e) {
             e.printStackTrace();

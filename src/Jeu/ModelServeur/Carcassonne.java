@@ -12,7 +12,6 @@ public class Carcassonne {
 
     private List<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
-    private List<String> listColorNonUtiliser;
 
     private int nbJoueur; // Nombre de joueur
     private List<Joueur> tabJoueur; // List de joueurs
@@ -22,10 +21,7 @@ public class Carcassonne {
 
         // Initialisation des listes et maps
         listSocket = new ArrayList<>();
-        tabJoueur = new ArrayList<Joueur>();
-        listColorNonUtiliser = new ArrayList<String>(){{
-            add("red"); add("blue"); add("rose"); add("jaune"); add("bleuClair");
-        }};
+        tabJoueur = new ArrayList<>();
 
         nbJoueur = 0;
         testList();
@@ -55,7 +51,13 @@ public class Carcassonne {
 
                 oo.writeObject("j'envoie");
 
-                oo.writeObject(tabJoueur);
+                int nbJoueur = getTabJoueur().size();
+                oo.writeInt(nbJoueur);
+
+                for (int j = 0; j < nbJoueur; j++) {
+                    Joueur joueurTmp = getTabJoueur().get(j);
+                    oo.writeObject(joueurTmp);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,6 +139,4 @@ public class Carcassonne {
     public List<SocketJoueur> getTabSocket() { return listSocket; }
 
     public void setTabSocket(ArrayList<SocketJoueur> listSocket) { this.listSocket = listSocket; }
-
-    public List<String> getListColorNonUtiliser() { return listColorNonUtiliser; }
 }

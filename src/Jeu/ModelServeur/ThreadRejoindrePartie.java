@@ -29,7 +29,6 @@ public class ThreadRejoindrePartie {
 
                     int nbJoueur = carcassonne.getTabJoueur().size();
                     oo.writeInt(nbJoueur);
-                    System.out.println(nbJoueur);
 
                     for (int i = 0; i < nbJoueur; i++) {
                         Joueur joueurTmp = carcassonne.getTabJoueur().get(i);
@@ -42,15 +41,7 @@ public class ThreadRejoindrePartie {
                     carcassonne.ajouterJoueurDansPartie(nomJoueur, couleurJoueur);
                     carcassonne.getTabSocket().add(new SocketJoueur(sock, oi, oo));
 
-                    nbJoueur = carcassonne.getTabJoueur().size();
-                    oo.writeInt(nbJoueur);
-                    System.out.println(nbJoueur);
-
-                    for (int i = 0; i < nbJoueur; i++) {
-                        Joueur joueurTmp = carcassonne.getTabJoueur().get(i);
-                        oo.writeObject(joueurTmp);
-                    }
-
+                    carcassonne.miseAJourJoueur();
                 } else {
                     sock.close();
                     continue;

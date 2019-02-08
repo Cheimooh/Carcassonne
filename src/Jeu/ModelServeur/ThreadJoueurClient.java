@@ -6,14 +6,12 @@ public class ThreadJoueurClient{
     private Thread rejoindrePartie;
     Test test;
     private boolean isArreter;
-    ObjectInputStream oi;
-    ObjectOutputStream oo;
+    SocketJoueur socketJoueur;
 
-    public ThreadJoueurClient(ObjectInputStream oi, ObjectOutputStream oo, Test test){
+    public ThreadJoueurClient(SocketJoueur socketJoueur, Test test){
         isArreter = false;
         this.test = test;
-        this.oi = oi;
-        this.oo = oo;
+        this.socketJoueur = socketJoueur;
         rejoindrePartie = new Thread(new ThreadJoueurClient.MajJoueur());
         rejoindrePartie.start();
     }
@@ -21,8 +19,13 @@ public class ThreadJoueurClient{
     private class MajJoueur implements Runnable{
         public void run(){
             do try {
-                if(((String) oi.readObject()).equals("j'envoie")){
-                    test.listJoueur.add((Joueur) oi.readObject());
+                String te = (String) socketJoueur.getOi().readObject();
+                if(te.equals("j'envoie")){
+                    int nbJoueur = socketJoueur.getOi().readInt();
+                    for (int i = 0; i < nbJoueur; i++) {
+                        Joueur joueurTmp = (Joueur) socketJoueur.getOi().readObject();
+                        test.listJoueur.add(joueurTmp);
+                    }
                     test.afficher();
                 }
             } catch (IOException e) {
