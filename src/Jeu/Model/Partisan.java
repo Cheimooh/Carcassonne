@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Partisan {
     private boolean isPlacer;
-    private int numZone; // -1 si non Placer
+    private int numZone; // -1 si non placé
     private Point pointPlacementCarte;
     private Color colorPartisan;
 
@@ -26,6 +26,7 @@ public class Partisan {
     public void retirerPartisan() {
         numZone = -1;
         isPlacer = false;
+        pointPlacementCarte = new Point();
     }
 
     public Point getPointPlacementCarte() {

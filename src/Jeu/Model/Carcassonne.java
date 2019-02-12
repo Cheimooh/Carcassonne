@@ -3,10 +3,7 @@ package Jeu.Model;
 import javafx.scene.paint.Color;
 
 import java.awt.Point;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Carcassonne {
 
@@ -24,6 +21,7 @@ public class Carcassonne {
     private Carte carteDeBase; // Carte posée au départ (à modifier)
 
     private int tailleCheminPourLaVerification;
+    private List<Point> etendueDuChemin;
     private int[] nbPartisansSurLeChemin;
 
     public Carcassonne() {
@@ -33,6 +31,7 @@ public class Carcassonne {
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
         tailleCheminPourLaVerification = 0;
+        etendueDuChemin = new ArrayList<>();
 
         pioche = new Pioche();
         carteDeBase = new Carte(TypeCarte.carteVCPC);
@@ -289,6 +288,7 @@ public class Carcassonne {
         int y = (int) carte.getPosition().getY();
         int numListe = getNombreChemin(carte, numCote)[0];
         int longueurListe = getNombreChemin(carte, numCote)[1];
+        etendueDuChemin.add(carte.getPosition());
 
         if (longueurListe == 2) {
             int newI = 0;
@@ -323,13 +323,17 @@ public class Carcassonne {
     }
 
     /**
-     * Verficication d'une zone fermée
+     * Verficication d'un chemin fermé a partir de la carte qu'on vient de poser
      *
      * @param carteEnMain
      */
     public void verificationCheminFerme(CartePosee carteEnMain) {
+        etendueDuChemin.clear();
+        etendueDuChemin.add(carteEnMain.getPosition());
+
         int x = (int) carteEnMain.getPosition().getX();
         int y = (int) carteEnMain.getPosition().getY();
+
 
         Point p = new Point(x, y - 1);
         if (listPointOccupe.contains(p)) {
@@ -402,7 +406,42 @@ public class Carcassonne {
     }
 
     private void attributionPointsChemin() {
-
+        int[] compteurPartisansJoueurs = new int[nbJoueur];
+        for (int i = 0; i < nbJoueur; i++) {
+            Joueur j = tabJoueur[i];
+            Partisan[] tabPartisans = j.getTabPartisans();
+            for (int k = 0; k < tabPartisans.length; k++) {
+                if (etendueDuChemin.contains(tabPartisans[k].getPointPlacementCarte())){
+                    CartePosee c = pointCarteMap.get(tabPartisans[k].getPointPlacementCarte());
+                    int numZone = tabPartisans[k].getNumZone();
+                    switch (numZone){
+                        case 2:
+                            if (c.getNord().equals(CoteCarte.chemin)){
+                                compteurPartisansJoueurs[i]+=1;
+                            }
+                            break;
+                        case 5:
+                            if (c.getEst().equals(CoteCarte.chemin)){
+                                compteurPartisansJoueurs[i]+=1;
+                            }
+                            break;
+                        case 8:
+                            if (c.getSud().equals(CoteCarte.chemin)){
+                                compteurPartisansJoueurs[i]+=1;
+                            }
+                            break;
+                        case 11:
+                            if (c.getOuest().equals(CoteCarte.chemin)){
+                                compteurPartisansJoueurs[i]+=1;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        for (int k = 0; k < compteurPartisansJoueurs.length; k++) {
+            System.out.println(compteurPartisansJoueurs[k]);
+        }
     }
 
     /*

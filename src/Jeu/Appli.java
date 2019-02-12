@@ -143,7 +143,7 @@ public class Appli extends Application {
             tabHBox[i] = new HBox(10);
             tabHBox[i].setAlignment(Pos.CENTER);
             tabHBox[i].getChildren().add(labelNoms[i]);
-            bouttonsModif[i] = new Button("modifier");
+            bouttonsModif[i] = new Button("Modifier");
         }
         Rectangle[] tabRectColors = new Rectangle[nombreJoueur];
         for (int i = 0; i < nombreJoueur; i++) {
@@ -178,8 +178,8 @@ public class Appli extends Application {
         hBoxNew.setAlignment(Pos.CENTER);
         HBox hBoxNewColors = new HBox(10);
         hBoxNewColors.setAlignment(Pos.CENTER);
-        Label nom = new Label("nom actuel: " + tabNomjoueurs[y]);
-        Label couleurs = new Label("couleur actuelle: ");
+        Label nom = new Label("Nom actuel: " + tabNomjoueurs[y]);
+        Label couleurs = new Label("Couleur actuelle: ");
         Rectangle rectCouleur = new Rectangle(10, 10);
         rectCouleur.setFill(tabColorJoueurs[y]);
         Label newNom = new Label("Nouveau nom:");
@@ -278,8 +278,8 @@ public class Appli extends Application {
     }
 
     private void afficherFenetreInfosJoueurs() {
-        Button b_suivant = new Button("suivant");
-        Button b_precedent = new Button("precedent");
+        Button b_suivant = new Button("Suivant");
+        Button b_precedent = new Button("Précédent");
         Label erreurNom = new Label("Le nom doit être:\n- différent des noms déja données\n- non vide\n- faire 16 lettres maximum");
         erreurNom.setStyle("-fx-text-fill: RED");
         Label erreurCouleur = new Label("La couleur doit être:\n- différente des couleurs déja sélectionnée\n- non null");

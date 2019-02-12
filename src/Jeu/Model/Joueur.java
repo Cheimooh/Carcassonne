@@ -88,4 +88,8 @@ public class Joueur {
     public Color getColor() {
         return color;
     }
+
+    public Partisan[] getTabPartisans() {
+        return tabPartisans;
+    }
 }
