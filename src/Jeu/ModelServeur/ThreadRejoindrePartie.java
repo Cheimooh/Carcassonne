@@ -35,10 +35,9 @@ public class ThreadRejoindrePartie {
                         oo.writeObject(joueurTmp);
                     }
 
-                    String nomJoueur = (String) oi.readObject();
-                    String couleurJoueur = (String) oi.readObject();
+                    Joueur newJoueur = (Joueur) oi.readObject();
 
-                    carcassonne.ajouterJoueurDansPartie(nomJoueur, couleurJoueur);
+                    carcassonne.ajouterJoueurDansPartie(newJoueur);
                     carcassonne.getTabSocket().add(new SocketJoueur(sock, oi, oo));
 
                     carcassonne.miseAJourJoueur();

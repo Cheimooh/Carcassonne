@@ -1,18 +1,19 @@
 package Jeu;
 
+import Jeu.ModelServeur.Joueur;
 import Jeu.ModelServeur.SocketJoueur;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.util.List;
 
 public class ThreadSalonAttente {
     private Thread ThreadSalonAttente;
-    private Menu menu;
+    private MenuReseau menu;
     private boolean isArreter;
 
-    public ThreadSalonAttente(Menu menu){
+    public ThreadSalonAttente(MenuReseau menu){
         isArreter = false;
         this.menu = menu;
         ThreadSalonAttente = new Thread(new ThreadSalonAttente.TraitementAttente());
@@ -26,9 +27,18 @@ public class ThreadSalonAttente {
         public void run() {
             do {
                 SocketJoueur socket = menu.getSocketJoueur();
+                ObjectInputStream oi = socket.getOi();
+                List<Joueur> tabJoueurs = menu.getListJoueurs();
                 try {
-                    if (((String) socket.getOi().readObject()).equals("j'envoie")){
-                        menu.actualiser(menu.getGPElements());
+                    if ((socket.getOi().readObject()).equals("j'envoie")){
+                        int nombreJoueur = oi.readInt();
+                        menu.setNombreJoueur(nombreJoueur);
+
+                        for (int i = 0; i < nombreJoueur; i++) {
+                            Joueur joueur = (Joueur) oi.readObject();
+                            tabJoueurs.add(joueur);
+                        }
+                        menu.actualiser();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -38,6 +48,4 @@ public class ThreadSalonAttente {
             }while(!isArreter);
         }
     }
-
-
 }

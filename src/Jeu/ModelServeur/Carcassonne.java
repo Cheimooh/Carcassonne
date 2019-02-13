@@ -30,16 +30,16 @@ public class Carcassonne {
     }
 
     private void testList(){
-        ajouterJoueurDansPartie("lucas", "red");
-        ajouterJoueurDansPartie("Maeva", "blue");
+        ajouterJoueurDansPartie(new Joueur("lucas", "red"));
+        ajouterJoueurDansPartie(new Joueur("Maeva", "blue"));
     }
 
     /*
      * Fonction qui permet d'initialiser les joueurs
      */
-    public void ajouterJoueurDansPartie(String nomJoueur, String couleurJoueur){
+    public void ajouterJoueurDansPartie(Joueur joueur){
         nbJoueur++;
-        tabJoueur.add(new Joueur(nomJoueur, couleurJoueur));
+        tabJoueur.add(joueur);
     }
 
     public void miseAJourJoueur(){
@@ -55,6 +55,7 @@ public class Carcassonne {
                 oo.writeInt(nbJoueur);
 
                 for (int j = 0; j < nbJoueur; j++) {
+                    System.out.println("N°" + j);
                     Joueur joueurTmp = getTabJoueur().get(j);
                     oo.writeObject(joueurTmp);
                 }
