@@ -28,6 +28,7 @@ public class ThreadRejoindrePartie {
                     ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
 
                     int nbJoueur = carcassonne.getTabJoueur().size();
+                    System.out.println(nbJoueur);
                     oo.writeInt(nbJoueur);
 
                     for (int i = 0; i < nbJoueur; i++) {
@@ -38,9 +39,9 @@ public class ThreadRejoindrePartie {
                     Joueur newJoueur = (Joueur) oi.readObject();
 
                     carcassonne.ajouterJoueurDansPartie(newJoueur);
-                    carcassonne.getTabSocket().add(new SocketJoueur(sock, oi, oo));
 
                     carcassonne.miseAJourJoueur();
+                    carcassonne.getTabSocket().add(new SocketJoueur(sock, oi, oo));
                 } else {
                     sock.close();
                     continue;

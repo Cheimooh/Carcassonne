@@ -13,7 +13,6 @@ public class Carcassonne {
     private List<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
 
-    private int nbJoueur; // Nombre de joueur
     private List<Joueur> tabJoueur; // List de joueurs
 
     public Carcassonne(ServerSocket serverSocket){
@@ -23,7 +22,6 @@ public class Carcassonne {
         listSocket = new ArrayList<>();
         tabJoueur = new ArrayList<>();
 
-        nbJoueur = 0;
         testList();
         // Création du thread:
         new ThreadRejoindrePartie(this, serverSocket);
@@ -38,7 +36,6 @@ public class Carcassonne {
      * Fonction qui permet d'initialiser les joueurs
      */
     public void ajouterJoueurDansPartie(Joueur joueur){
-        nbJoueur++;
         tabJoueur.add(joueur);
     }
 

@@ -2,7 +2,6 @@ package Jeu;
 
 import Jeu.ModelServeur.Joueur;
 import Jeu.ModelServeur.SocketJoueur;
-import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,7 +17,6 @@ public class ThreadSalonAttente {
         this.menu = menu;
         ThreadSalonAttente = new Thread(new ThreadSalonAttente.TraitementAttente());
         ThreadSalonAttente.start();
-
     }
 
     public class TraitementAttente implements Runnable {
@@ -28,6 +26,7 @@ public class ThreadSalonAttente {
             do {
                 SocketJoueur socket = menu.getSocketJoueur();
                 ObjectInputStream oi = socket.getOi();
+                menu.getListJoueurs().clear();
                 List<Joueur> tabJoueurs = menu.getListJoueurs();
                 try {
                     if ((socket.getOi().readObject()).equals("j'envoie")){

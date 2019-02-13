@@ -5,6 +5,7 @@ import Jeu.ModelServeur.Joueur;
 import Jeu.ModelServeur.SocketJoueur;
 import Jeu.View.FenetreJeu;
 import Jeu.View.PopUpPartisan;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -20,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.w3c.dom.css.Rect;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -36,7 +38,6 @@ public class MenuReseau extends Parent {
     private List<Joueur> listJoueurs;
     private List<Color> listColorJoueursReseau;
     private String nomJoueurTmpReseau;
-    private GridPane GPElements;
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -51,6 +52,7 @@ public class MenuReseau extends Parent {
     private Rectangle r_rose = new Rectangle(30, 30, Color.HOTPINK);
     private Rectangle r_jaune = new Rectangle(30, 30, Color.GOLD);
     private Rectangle r_bleuClaire = new Rectangle(30, 30, Color.DEEPSKYBLUE);
+
     private Color couleurJoueurTmp;
     private List<HBox> listHBoxElement;
     private VBox generals;
@@ -62,13 +64,13 @@ public class MenuReseau extends Parent {
         listJoueurs = new ArrayList<>();
         listColorJoueursReseau = new ArrayList<>();
         listHBoxElement = new ArrayList<>();
+        nomJoueursCorrect = true;
         this.primaryStage = primaryStage;
-        jeuInternet();
     }
 
     public void jeuInternet() {
         try {
-            //sock = new Socket("62.39.234.71", 3333);
+            //Socket sock = new Socket("62.39.234.71", 3333);
             Socket sock = new Socket("localhost", 3333);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
@@ -160,12 +162,12 @@ public class MenuReseau extends Parent {
 
         generalBox.getChildren().add(HBname);
         if (!nomJoueursCorrect) {
-            generalBox.getChildren().addAll(erreurNom, b_suivant);
+            generalBox.getChildren().addAll(erreurNom, lcolor, bouttons, b_suivant);
+            nomJoueursCorrect = true;
         } else {
             generalBox.getChildren().addAll(lcolor, bouttons, b_suivant);
         }
 
-        nomJoueursCorrect = true;
         Scene scene = new Scene(generalBox, 350, 300);
         primaryStage.setScene(scene);
     }
@@ -182,6 +184,7 @@ public class MenuReseau extends Parent {
         }
         else{
             listJoueurs.add(new Joueur(nomJoueurTmpReseau, tradColorsToString(couleurJoueurTmp)));
+            nombreJoueur++;
             transmitInfoServeur();
         }
     }
@@ -246,38 +249,55 @@ public class MenuReseau extends Parent {
         for (int i = 0; i < nombreJoueur; i++) {
             HBox hBox = new HBox(10);
             hBox.setAlignment(Pos.CENTER);
-            hBox.getChildren().add(new Label(listJoueurs.get(i).getNom()));
-            hBox.getChildren().add(new Rectangle(30, 30, tradStringToColors(listJoueurs.get(i).getCouleur())));
+
+            Label labelJoueur = new Label(listJoueurs.get(i).getNom());
+            Rectangle colorJoueur = new Rectangle(30, 30, tradStringToColors(listJoueurs.get(i).getCouleur()));
+
+            vBoxNoms.getChildren().add(labelJoueur);
+            vBoxCouleurs.getChildren().add(colorJoueur);
+
+            hBox.getChildren().add(labelJoueur);
+            hBox.getChildren().add(colorJoueur);
             listHBoxElement.add(hBox);
         }
-
-        new ThreadSalonAttente(this);
-
         generals.getChildren().add(hBoxTitres);
+
         for (HBox aListHBoxElement : listHBoxElement) {
             generals.getChildren().add(aListHBoxElement);
         }
-        generals.getChildren().add(hBoxButtons);
+       generals.getChildren().add(hBoxButtons);
+
+        new ThreadSalonAttente(this);
+
         Scene scene = new Scene(generals, 500, 500);
         primaryStage.setScene(scene);
     }
 
     public void actualiser() {
-        //generals.getChildren().clear();
+        Platform.runLater(() ->  generals.getChildren().clear());
         listHBoxElement.clear();
         for (int i = 0; i < nombreJoueur; i++) {
-            HBox hBox = new HBox();
-            hBox.getChildren().add(new Label(listJoueurs.get(i).getNom()));
-            hBox.getChildren().add(new Rectangle(30, 30, tradStringToColors(listJoueurs.get(i).getCouleur())));
+
+            HBox hBox = new HBox(10);
+            hBox.setAlignment(Pos.CENTER);
+
+            System.out.println(listJoueurs.get(i).getNom());
+
+            Label labelJoueur = new Label(listJoueurs.get(i).getNom());
+            Rectangle colorJoueur = new Rectangle(30, 30, tradStringToColors(listJoueurs.get(i).getCouleur()));
+
+
+
+            hBox.getChildren().add(labelJoueur);
+            hBox.getChildren().add(colorJoueur);
             listHBoxElement.add(hBox);
         }
-
-        generals.getChildren().add(hBoxTitres);
+        Platform.runLater(() -> generals.getChildren().add(hBoxTitres));
 
         for (HBox aListHBoxElement : listHBoxElement) {
-            generals.getChildren().add(aListHBoxElement);
+            Platform.runLater(() -> generals.getChildren().add(aListHBoxElement));
         }
-        generals.getChildren().add(hBoxButtons);
+        Platform.runLater(() -> generals.getChildren().add(hBoxButtons));
     }
 
     public static Color tradStringToColors(String couleur) {
