@@ -12,12 +12,14 @@ public class Joueur implements Serializable {
     private String couleur;
     private int nombrePartisansRestants;
     private Partisan[] tabPartisans;
+    private boolean isPret;
 
     public Joueur(String nom, String couleur){
         nombrePartisansRestants=8;
         tabPartisans = new Partisan[nombrePartisansRestants];
         this.nom = nom;
         this.couleur = couleur;
+        isPret = false;
     }
 
     public void joue(){
@@ -50,11 +52,11 @@ public class Joueur implements Serializable {
         }
     }
 
-    public void setNom(String nom) { this.nom=nom; }
-
     public String getNom() { return nom; }
 
-    public int getNombrePartisansRestants(){ return nombrePartisansRestants; }
-
     public String getCouleur() { return couleur; }
+
+    public boolean isPret() { return isPret; }
+
+    public void setPret(boolean pret) { isPret = pret; }
 }

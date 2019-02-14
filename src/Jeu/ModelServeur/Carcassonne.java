@@ -28,8 +28,7 @@ public class Carcassonne {
     }
 
     private void testList(){
-        ajouterJoueurDansPartie(new Joueur("lucas", "red"));
-        ajouterJoueurDansPartie(new Joueur("Maeva", "blue"));
+        ajouterJoueurDansPartie(new Joueur("toto", "red"));
     }
 
     /*
