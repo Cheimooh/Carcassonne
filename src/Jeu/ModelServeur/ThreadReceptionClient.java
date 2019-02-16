@@ -26,9 +26,13 @@ public class ThreadReceptionClient {
                     if(objetRecu instanceof String){
                         String string = (String) objetRecu;
                         if(string.equals("pret")){
-                            carcassonne.getTabJoueur().get(idList).setPret(true);
+                            carcassonne.getListJoueur().get(idList).setPret(true);
+                        }
+                        else if(string.equals("quitter")){
+                            carcassonne.quitterClient(idList);
                         }
                     }
+                    carcassonne.miseAJourJoueur();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -41,4 +45,8 @@ public class ThreadReceptionClient {
     public void arreter(){
         isArreter = true;
     }
+
+    public void setIdList(int idList) { this.idList = idList; }
+
+    public int getIdList() { return idList; }
 }

@@ -13,18 +13,45 @@ public class Carcassonne {
     private List<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
 
-    private List<Joueur> tabJoueur; // List de joueurs
+    private List<Joueur> listJoueur; // List de joueurs
+    private List<ThreadReceptionClient> listReceptionClient;
+
+    private boolean isPartieCommencer;
 
     public Carcassonne(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
+        isPartieCommencer = false;
 
         // Initialisation des listes et maps
         listSocket = new ArrayList<>();
-        tabJoueur = new ArrayList<>();
+        listJoueur = new ArrayList<>();
+        listReceptionClient = new ArrayList<>();
 
         testList();
         // Création du thread:
         new ThreadRejoindrePartie(this, serverSocket);
+
+        while(!isPartieCommencer){
+            clientPret();
+        }
+        debutPartie();
+    }
+
+    private void clientPret() {
+        boolean isPret = true;
+        int cptJoueur = 0;
+        while(isPret || cptJoueur < listJoueur.size() || listJoueur.size() >= 2){
+            Joueur joueurTmp = listJoueur.get(cptJoueur);
+            isPret = joueurTmp.isPret();
+            cptJoueur++;
+        }
+        if(isPret){
+            isPartieCommencer = true;
+        }
+    }
+
+    private void debutPartie() {
+        System.out.println("Partie commencer");
     }
 
     private void testList(){
@@ -35,7 +62,23 @@ public class Carcassonne {
      * Fonction qui permet d'initialiser les joueurs
      */
     public void ajouterJoueurDansPartie(Joueur joueur){
-        tabJoueur.add(joueur);
+        listJoueur.add(joueur);
+    }
+
+    public void quitterClient(int idList) {
+        listJoueur.remove(idList);
+        SocketJoueur socketJoueur = listSocket.remove(idList);
+        try {
+            socketJoueur.getOi().close();
+            socketJoueur.getOo().close();
+            socketJoueur.getSocket().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i = idList; i < listJoueur.size()-1; i++) {
+            int idClientTmp = listReceptionClient.get(i).getIdList();
+            listReceptionClient.get(i).setIdList(idClientTmp-1);
+        }
     }
 
     public void miseAJourJoueur(){
@@ -47,12 +90,11 @@ public class Carcassonne {
 
                 oo.writeObject("j'envoie");
 
-                int nbJoueur = getTabJoueur().size();
+                int nbJoueur = getListJoueur().size();
                 oo.writeInt(nbJoueur);
 
                 for (int j = 0; j < nbJoueur; j++) {
-                    System.out.println("N°" + j);
-                    Joueur joueurTmp = getTabJoueur().get(j);
+                    Joueur joueurTmp = getListJoueur().get(j);
                     oo.writeObject(joueurTmp);
                 }
             }
@@ -131,9 +173,11 @@ public class Carcassonne {
         return 143;
     }
 
-    public List<Joueur> getTabJoueur() { return tabJoueur; }
+    public List<Joueur> getListJoueur() { return listJoueur; }
 
     public List<SocketJoueur> getTabSocket() { return listSocket; }
 
     public void setTabSocket(ArrayList<SocketJoueur> listSocket) { this.listSocket = listSocket; }
+
+    public List<ThreadReceptionClient> getListReceptionClient() { return listReceptionClient; }
 }
