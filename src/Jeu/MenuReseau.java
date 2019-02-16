@@ -15,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -232,6 +234,13 @@ public class MenuReseau extends Parent {
         hBoxButtons.setAlignment(Pos.CENTER);
         Button b_quitter = new Button("Quitter");
         Button b_pret = new Button("Prêt !");
+        b_pret.setOnAction(event -> {
+            try {
+                socketJoueur.getOo().writeObject("pret");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         hBoxButtons.getChildren().addAll(b_quitter, b_pret);
 
         HBox hBoxInfosJoueurs = new HBox(10);
@@ -256,6 +265,12 @@ public class MenuReseau extends Parent {
             vBoxNoms.getChildren().add(labelJoueur);
             vBoxCouleurs.getChildren().add(colorJoueur);
 
+            if (listJoueurs.get(i).isPret()){
+                System.out.println("joueur"+i+"est pret");
+            }
+
+            //Image image = new Image("src/jeu/valider.jpeg",100,200,true,false);
+            //hBox.getChildren().add(new ImageView(image));
             hBox.getChildren().add(labelJoueur);
             hBox.getChildren().add(colorJoueur);
             listHBoxElement.add(hBox);
@@ -285,8 +300,10 @@ public class MenuReseau extends Parent {
 
             Label labelJoueur = new Label(listJoueurs.get(i).getNom());
             Rectangle colorJoueur = new Rectangle(30, 30, tradStringToColors(listJoueurs.get(i).getCouleur()));
-
-
+            if (listJoueurs.get(i).isPret()){
+                //image valider si pret
+                System.out.println("joueur "+i+" pret");
+            }
 
             hBox.getChildren().add(labelJoueur);
             hBox.getChildren().add(colorJoueur);
