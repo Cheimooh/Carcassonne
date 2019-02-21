@@ -23,6 +23,7 @@ public class ThreadReceptionClient {
             do try {
                 if ((socketJoueur.getOi().readObject()).equals("j'envoie")){
                     Object objetRecu = socketJoueur.getOi().readObject();
+                    System.out.println("objet recu");
                     if(objetRecu instanceof String){
                         String string = (String) objetRecu;
                         if(string.equals("pret")){

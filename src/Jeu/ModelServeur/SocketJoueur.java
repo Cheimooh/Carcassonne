@@ -22,7 +22,8 @@ public class SocketJoueur implements Serializable {
     public void quitter(){
         try {
             oo.close();
-            oi.close(); socket.close();
+            oi.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

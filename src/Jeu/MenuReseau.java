@@ -65,6 +65,7 @@ public class MenuReseau extends Parent {
     private boolean nomJoueursCorrect;
 
     public MenuReseau(Stage primaryStage) {
+        nombreJoueur = 0;
         listJoueurs = new ArrayList<>();
         listColorJoueursReseau = new ArrayList<>();
         listHBoxElement = new ArrayList<>();
@@ -271,7 +272,6 @@ public class MenuReseau extends Parent {
             hBox.getChildren().add(labelJoueur);
             hBox.getChildren().add(colorJoueur);
             if (listJoueurs.get(i).isPret()){
-                System.out.println("joueur"+i+"est pret");
                 hBox.getChildren().add(new ImageView(image));
             }
             listHBoxElement.add(hBox);
@@ -290,6 +290,7 @@ public class MenuReseau extends Parent {
     }
 
     public void actualiser() {
+        System.out.println("actualisation......");
         Platform.runLater(() ->  generals.getChildren().clear());
         listHBoxElement.clear();
         for (int i = 0; i < nombreJoueur; i++) {
@@ -297,15 +298,13 @@ public class MenuReseau extends Parent {
             HBox hBox = new HBox(10);
             hBox.setAlignment(Pos.CENTER);
 
-            System.out.println(listJoueurs.get(i).getNom());
-
             Label labelJoueur = new Label(listJoueurs.get(i).getNom());
             Rectangle colorJoueur = new Rectangle(30, 30, tradStringToColors(listJoueurs.get(i).getCouleur()));
 
             hBox.getChildren().add(labelJoueur);
             hBox.getChildren().add(colorJoueur);
+            System.out.println(listJoueurs.get(i).isPret());
             if (listJoueurs.get(i).isPret()){
-                System.out.println("joueur "+i+" pret");
                 hBox.getChildren().add(new ImageView(image));
             }
             listHBoxElement.add(hBox);

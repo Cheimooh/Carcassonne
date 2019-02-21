@@ -5,7 +5,6 @@ import Jeu.ModelServeur.SocketJoueur;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.List;
 
 public class ThreadSalonAttente {
     private Thread ThreadSalonAttente;
@@ -26,16 +25,17 @@ public class ThreadSalonAttente {
             do {
                 SocketJoueur socket = menu.getSocketJoueur();
                 ObjectInputStream oi = socket.getOi();
-                menu.getListJoueurs().clear();
-                List<Joueur> tabJoueurs = menu.getListJoueurs();
                 try {
                     if ((socket.getOi().readObject()).equals("j'envoie")){
+                        menu.getListJoueurs().clear();
+
                         int nombreJoueur = oi.readInt();
                         menu.setNombreJoueur(nombreJoueur);
 
                         for (int i = 0; i < nombreJoueur; i++) {
                             Joueur joueur = (Joueur) oi.readObject();
-                            tabJoueurs.add(joueur);
+                            System.out.println(joueur.isPret());
+                            menu.getListJoueurs().add(joueur); // Bug -> Reception d'un joueur pas pret obligatoirement sauf le 1er
                         }
                         menu.actualiser();
                     }

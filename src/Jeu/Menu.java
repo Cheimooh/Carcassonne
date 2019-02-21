@@ -141,7 +141,7 @@ public class Menu extends Parent {
 
     }
 
-    private String tradColorsToString(Color couleurs) {
+    public static String tradColorsToString(Color couleurs) {
         if (couleurs == Color.BLUE) return "blue";
         if (couleurs == Color.RED) return "red";
         if (couleurs == Color.GOLD) return "jaune";

@@ -27,12 +27,12 @@ public class Carcassonne {
         listJoueur = new ArrayList<>();
         listReceptionClient = new ArrayList<>();
 
-        //testList();
+        testList();
         // Création du thread:
         new ThreadRejoindrePartie(this, serverSocket);
 
         while(!isPartieCommencer){
-            clientPret();
+            //clientPret();
         }
         debutPartie();
     }
@@ -40,7 +40,8 @@ public class Carcassonne {
     private void clientPret() {
         boolean isPret = true;
         int cptJoueur = 0;
-        while(isPret || cptJoueur < listJoueur.size() || listJoueur.size() >= 2){
+        System.out.println(listJoueur.size());
+        while(isPret || cptJoueur < listJoueur.size()-1 || listJoueur.size() >= 2){
             Joueur joueurTmp = listJoueur.get(cptJoueur);
             isPret = joueurTmp.isPret();
             cptJoueur++;
@@ -55,7 +56,9 @@ public class Carcassonne {
     }
 
     private void testList(){
-        ajouterJoueurDansPartie(new Joueur("toto", "red"));
+        Joueur joueur = new Joueur("toto", "red");
+        joueur.setPret(true);
+        ajouterJoueurDansPartie(joueur);
     }
 
     /*
@@ -68,13 +71,7 @@ public class Carcassonne {
     public void quitterClient(int idList) {
         listJoueur.remove(idList);
         SocketJoueur socketJoueur = listSocket.remove(idList);
-        try {
-            socketJoueur.getOi().close();
-            socketJoueur.getOo().close();
-            socketJoueur.getSocket().close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        socketJoueur.quitter();
         for (int i = idList; i < listJoueur.size()-1; i++) {
             int idClientTmp = listReceptionClient.get(i).getIdList();
             listReceptionClient.get(i).setIdList(idClientTmp-1);
@@ -95,7 +92,8 @@ public class Carcassonne {
 
                 for (int j = 0; j < nbJoueur; j++) {
                     Joueur joueurTmp = getListJoueur().get(j);
-                    oo.writeObject(joueurTmp);
+                    System.out.println(joueurTmp.isPret());
+                    oo.writeObject(joueurTmp); // Bug -> Envoye un joueur avec pret
                 }
             }
         } catch (IOException e) {
