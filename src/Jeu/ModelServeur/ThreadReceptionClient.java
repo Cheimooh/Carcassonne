@@ -27,7 +27,12 @@ public class ThreadReceptionClient {
                     if(objetRecu instanceof String){
                         String string = (String) objetRecu;
                         if(string.equals("pret")){
-                            carcassonne.getListJoueur().get(idList).setPret(true);
+                            if(carcassonne.getListJoueur().get(idList).isPret()){
+                                carcassonne.getListJoueur().get(idList).setPret(false);
+                            }
+                            else{
+                                carcassonne.getListJoueur().get(idList).setPret(true);
+                            }
                         }
                         else if(string.equals("quitter")){
                             carcassonne.quitterClient(idList);

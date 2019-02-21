@@ -237,6 +237,7 @@ public class MenuReseau extends Parent {
         hBoxButtons.setAlignment(Pos.CENTER);
         Button b_quitter = new Button("Quitter");
         Button b_pret = new Button("Prêt !");
+
         b_pret.setOnAction(event -> {
             try {
                 socketJoueur.getOo().writeObject("j'envoie");
@@ -245,6 +246,17 @@ public class MenuReseau extends Parent {
                 e.printStackTrace();
             }
         });
+
+        b_quitter.setOnAction(event -> {
+            try {
+                socketJoueur.getOo().writeObject("j'envoie");
+                socketJoueur.getOo().writeObject("quitter");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.exit(0);
+        });
+
         hBoxButtons.getChildren().addAll(b_quitter, b_pret);
 
         HBox hBoxInfosJoueurs = new HBox(10);

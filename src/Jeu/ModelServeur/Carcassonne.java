@@ -71,10 +71,12 @@ public class Carcassonne {
     public void quitterClient(int idList) {
         listJoueur.remove(idList);
         SocketJoueur socketJoueur = listSocket.remove(idList);
+        listReceptionClient.get(idList).arreter();
+        listReceptionClient.remove(idList);
         socketJoueur.quitter();
         for (int i = idList; i < listJoueur.size()-1; i++) {
             int idClientTmp = listReceptionClient.get(i).getIdList();
-            listReceptionClient.get(i).setIdList(idClientTmp-1);
+            listReceptionClient.get(i).setIdList(idClientTmp);
         }
     }
 
