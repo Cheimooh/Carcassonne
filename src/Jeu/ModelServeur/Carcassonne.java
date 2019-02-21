@@ -27,7 +27,7 @@ public class Carcassonne {
         listJoueur = new ArrayList<>();
         listReceptionClient = new ArrayList<>();
 
-        testList();
+        //testList();
         // Création du thread:
         new ThreadRejoindrePartie(this, serverSocket);
 

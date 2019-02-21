@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import org.w3c.dom.css.Rect;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -54,6 +55,7 @@ public class MenuReseau extends Parent {
     private Rectangle r_rose = new Rectangle(30, 30, Color.HOTPINK);
     private Rectangle r_jaune = new Rectangle(30, 30, Color.GOLD);
     private Rectangle r_bleuClaire = new Rectangle(30, 30, Color.DEEPSKYBLUE);
+    final Image image = new Image("Jeu/valider.png", 50,50,true,true);
 
     private Color couleurJoueurTmp;
     private List<HBox> listHBoxElement;
@@ -236,6 +238,7 @@ public class MenuReseau extends Parent {
         Button b_pret = new Button("Prêt !");
         b_pret.setOnAction(event -> {
             try {
+                socketJoueur.getOo().writeObject("j'envoie");
                 socketJoueur.getOo().writeObject("pret");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -265,14 +268,12 @@ public class MenuReseau extends Parent {
             vBoxNoms.getChildren().add(labelJoueur);
             vBoxCouleurs.getChildren().add(colorJoueur);
 
-            if (listJoueurs.get(i).isPret()){
-                System.out.println("joueur"+i+"est pret");
-            }
-
-            //Image image = new Image("src/jeu/valider.jpeg",100,200,true,false);
-            //hBox.getChildren().add(new ImageView(image));
             hBox.getChildren().add(labelJoueur);
             hBox.getChildren().add(colorJoueur);
+            if (listJoueurs.get(i).isPret()){
+                System.out.println("joueur"+i+"est pret");
+                hBox.getChildren().add(new ImageView(image));
+            }
             listHBoxElement.add(hBox);
         }
         generals.getChildren().add(hBoxTitres);
@@ -300,13 +301,13 @@ public class MenuReseau extends Parent {
 
             Label labelJoueur = new Label(listJoueurs.get(i).getNom());
             Rectangle colorJoueur = new Rectangle(30, 30, tradStringToColors(listJoueurs.get(i).getCouleur()));
-            if (listJoueurs.get(i).isPret()){
-                //image valider si pret
-                System.out.println("joueur "+i+" pret");
-            }
 
             hBox.getChildren().add(labelJoueur);
             hBox.getChildren().add(colorJoueur);
+            if (listJoueurs.get(i).isPret()){
+                System.out.println("joueur "+i+" pret");
+                hBox.getChildren().add(new ImageView(image));
+            }
             listHBoxElement.add(hBox);
         }
         Platform.runLater(() -> generals.getChildren().add(hBoxTitres));

@@ -1,5 +1,6 @@
 package Jeu.ModelServeur;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -17,6 +18,15 @@ public class SocketJoueur implements Serializable {
     }
 
     public Socket getSocket() { return socket; }
+
+    public void quitter(){
+        try {
+            oo.close();
+            oi.close(); socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ObjectInputStream getOi() { return oi; }
 
