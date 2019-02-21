@@ -31,7 +31,8 @@ public class ThreadRejoindrePartie {
                     carcassonne.getTabSocket().add(socketJoueur);
 
                     int nbJoueur = carcassonne.getListJoueur().size();
-                    oo.writeInt(nbJoueur);
+                    System.out.println(nbJoueur);
+                    oo.writeObject(nbJoueur);
 
                     for (int i = 0; i < nbJoueur; i++) {
                         Joueur joueurTmp = carcassonne.getListJoueur().get(i);

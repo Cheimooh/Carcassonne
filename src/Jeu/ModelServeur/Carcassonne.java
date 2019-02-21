@@ -27,7 +27,6 @@ public class Carcassonne {
         listJoueur = new ArrayList<>();
         listReceptionClient = new ArrayList<>();
 
-        testList();
         // Création du thread:
         new ThreadRejoindrePartie(this, serverSocket);
 
@@ -94,11 +93,12 @@ public class Carcassonne {
 
                 for (int j = 0; j < nbJoueur; j++) {
                     Joueur joueurTmp = getListJoueur().get(j);
-                    System.out.println(joueurTmp.isPret());
-                    oo.writeObject(joueurTmp); // Bug -> Envoye un joueur avec pret
+                    oo.writeObject(joueurTmp.clone());
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
     }

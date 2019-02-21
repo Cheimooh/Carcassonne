@@ -82,7 +82,8 @@ public class MenuReseau extends Parent {
 
             socketJoueur = new SocketJoueur(sock, oi, oo);
 
-            nombreJoueur = oi.readInt();
+            nombreJoueur = (Integer) oi.readObject();
+            System.out.println(nombreJoueur);
             for (int i = 0; i < nombreJoueur; i++) {
                 Joueur joueur = (Joueur) oi.readObject();
                 listJoueurs.add(joueur);

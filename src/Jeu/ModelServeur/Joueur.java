@@ -7,7 +7,7 @@ import Jeu.Exception.PiocheVideException;
 import java.awt.*;
 import java.io.Serializable;
 
-public class Joueur implements Serializable {
+public class Joueur implements Serializable, Cloneable {
     private String nom;
     private String couleur;
     private int nombrePartisansRestants;
@@ -50,6 +50,11 @@ public class Joueur implements Serializable {
                 nombrePartisansRestants++;
             }
         }
+    }
+
+    @Override
+    public Joueur clone() throws CloneNotSupportedException{
+        return (Joueur)super.clone();
     }
 
     public String getNom() { return nom; }
