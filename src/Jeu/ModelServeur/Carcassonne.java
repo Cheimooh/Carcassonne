@@ -73,9 +73,9 @@ public class Carcassonne {
         listReceptionClient.get(idList).arreter();
         listReceptionClient.remove(idList);
         socketJoueur.quitter();
-        for (int i = idList; i < listJoueur.size()-1; i++) {
+        for (int i = idList; i < listJoueur.size(); i++) {
             int idClientTmp = listReceptionClient.get(i).getIdList();
-            listReceptionClient.get(i).setIdList(idClientTmp);
+            listReceptionClient.get(i).setIdList(idClientTmp-1);
         }
     }
 
