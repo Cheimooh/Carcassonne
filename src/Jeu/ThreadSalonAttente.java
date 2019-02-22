@@ -26,7 +26,8 @@ public class ThreadSalonAttente {
                 SocketJoueur socket = menu.getSocketJoueur();
                 ObjectInputStream oi = socket.getOi();
                 try {
-                    if ((socket.getOi().readObject()).equals("j'envoie")){
+                    String test = (String) socket.getOi().readObject();
+                    if (test.equals("j'envoie")){
                         menu.getListJoueurs().clear();
 
                         int nombreJoueur = oi.readInt();
@@ -39,6 +40,9 @@ public class ThreadSalonAttente {
                         }
                         menu.actualiser();
                     }
+                    else if (test.equals("quitter")){
+                        arreter();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -46,5 +50,9 @@ public class ThreadSalonAttente {
                 }
             }while(!isArreter);
         }
+    }
+
+    public void arreter(){
+        isArreter = true;
     }
 }

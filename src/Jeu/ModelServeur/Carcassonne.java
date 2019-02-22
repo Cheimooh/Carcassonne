@@ -70,6 +70,11 @@ public class Carcassonne {
     public void quitterClient(int idList) {
         listJoueur.remove(idList);
         SocketJoueur socketJoueur = listSocket.remove(idList);
+        try {
+            socketJoueur.getOo().writeObject("quitter");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         listReceptionClient.get(idList).arreter();
         listReceptionClient.remove(idList);
         socketJoueur.quitter();

@@ -63,6 +63,7 @@ public class MenuReseau extends Parent {
     private HBox hBoxTitres;
     private HBox hBoxButtons;
     private boolean nomJoueursCorrect;
+    private ThreadSalonAttente salonAttente;
 
     public MenuReseau(Stage primaryStage) {
         nombreJoueur = 0;
@@ -255,6 +256,7 @@ public class MenuReseau extends Parent {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            salonAttente.arreter();
             System.exit(0);
         });
 
@@ -296,7 +298,7 @@ public class MenuReseau extends Parent {
         }
        generals.getChildren().add(hBoxButtons);
 
-        new ThreadSalonAttente(this);
+        salonAttente = new ThreadSalonAttente(this);
 
         Scene scene = new Scene(generals, 500, 500);
         primaryStage.setScene(scene);
