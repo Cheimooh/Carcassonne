@@ -1,14 +1,28 @@
 package Jeu.ModelServeur;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Carcassonne {
+
+    private static Pioche pioche;
+
+    private Map<Point, CartePosee> pointCarteMap;
+    private ArrayList<Point> listPointDispo;
+    private ArrayList<Point> listPointOccupe;
+    private ArrayList<Carte> defausse;
+
+    private Carte carteDeBase;
+    private int nbJoueur;
+    private int numJoueurCourant;
 
     private List<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
@@ -19,6 +33,17 @@ public class Carcassonne {
     private boolean isPartieCommencer;
 
     public Carcassonne(ServerSocket serverSocket){
+        //Instanciation pour le model du jeu
+        pointCarteMap = new HashMap<>();
+        listPointDispo = new ArrayList<>();
+        listPointOccupe = new ArrayList<>();
+        defausse = new ArrayList<>();
+
+        pioche = new Pioche();
+        carteDeBase = new Carte(TypeCarte.carteVCPC);
+        carteDeBase.setPosition(new Point(8,8));
+
+        //Instantiation pour le serveur
         this.serverSocket = serverSocket;
         isPartieCommencer = false;
 
@@ -28,20 +53,18 @@ public class Carcassonne {
         listReceptionClient = new ArrayList<>();
 
         // Création du thread:
-        new ThreadRejoindrePartie(this, serverSocket);
+        ThreadRejoindrePartie rejoindrePartie =  new ThreadRejoindrePartie(this, serverSocket);
 
         while(!isPartieCommencer){
             clientPret();
         }
+        rejoindrePartie.arreter();
         debutPartie();
     }
 
     private void clientPret() {
         boolean isPret = true;
         int cptJoueur = 0;
-        System.out.println("isPret : "+isPret);
-        System.out.println("cptJoueur : "+cptJoueur);
-        System.out.println("nbJoueur : "+listJoueur.size());
         while(isPret && cptJoueur < listJoueur.size() && listJoueur.size() > 0){
             Joueur joueurTmp = listJoueur.get(cptJoueur);
             isPret = joueurTmp.isPret();
@@ -53,7 +76,19 @@ public class Carcassonne {
     }
 
     private void debutPartie() {
-        System.out.println("Partie commencer");
+        isPartieCommencer = true;
+        nbJoueur = listJoueur.size();
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectInputStream oi = listSocket.get(i).getOi();
+                ObjectOutputStream oo = listSocket.get(i).getOo();
+
+                oo.writeObject("startPartie");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        initJeu();
     }
 
     /*
@@ -105,7 +140,17 @@ public class Carcassonne {
     }
 
     public void initJeu(){
+        numJoueurCourant = (int) (Math.random()*(nbJoueur-1));
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectInputStream oi = listSocket.get(i).getOi();
+                ObjectOutputStream oo = listSocket.get(i).getOo();
 
+                oo.writeObject("startPartie");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -119,7 +164,11 @@ public class Carcassonne {
      * Permet de passer au joueur suivant
      */
     public void joueurSuivant(){
-
+        numJoueurCourant++;
+        numJoueurCourant = numJoueurCourant %(nbJoueur+1);
+        if(numJoueurCourant == 0){
+            numJoueurCourant++;
+        }
     }
 
     /*

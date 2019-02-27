@@ -46,11 +46,8 @@ public class ThreadRejoindrePartie {
                     carcassonne.getListReceptionClient().add(new ThreadReceptionClient(carcassonne, socketJoueur, carcassonne.getListJoueur().size()-1));
                 } else {
                     sock.close();
-                    continue;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             } while(!isArreter);
         }

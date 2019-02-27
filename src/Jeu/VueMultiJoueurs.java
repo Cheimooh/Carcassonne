@@ -28,7 +28,6 @@ public class VueMultiJoueurs extends Parent {
         listPointOccupe = new ArrayList<Point>();
         defausse = new ArrayList<Carte>();
         this.socketJoueur = socketJoueur;
-
     }
 
     public void initialiser(){

@@ -93,9 +93,19 @@ public class MenuReseau extends Parent {
             inscriptionJoueurReseau();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Connexion Serveur");
+
+            alert.setContentText("Connexion au serveur echouer");
+            alert.showAndWait();
+            System.exit(0);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Version Jeu");
+
+            alert.setContentText("Vous n'avez pas la bonne version du jeu désolé :(");
+            alert.showAndWait();
+            System.exit(0);
         }
     }
 
