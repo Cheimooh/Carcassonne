@@ -407,26 +407,27 @@ public class Carcassonne {
     }
 
     private void attributionPointsChemin() {
-        int[] compteurPartisansJoueurs = new int[nbJoueur];
-        for (int i = 0; i < nbJoueur; i++) {
-            Joueur j = tabJoueur[i];
-            Partisan[] tabPartisans = j.getTabPartisans();
-            for (int k = 0; k < tabPartisans.length; k++) {
-                System.out.println(tabPartisans[k].getPointPlacementCarte() + " " +
-                        tabPartisans[k].getNumZone());
-                if (etendueDuChemin.contains(tabPartisans[k].getPointPlacementCarte())) {
-
-                    CartePosee c = pointCarteMap.get(tabPartisans[k].getPointPlacementCarte());
-                    int numZone = tabPartisans[k].getNumZone();
-                    if (numZone != -1) {
-                        int[] tab = c.getZonesControlleesParLesPoints()[numZone];
-
+        int[] nbPartisanParJoueur = new int[nbJoueur];
+        for (int i = 0; i < etendueDuChemin.size()-1; i++) {
+            CartePosee c = pointCarteMap.get(etendueDuChemin.get(i));
+            int[][] tabZones = c.getZonesControlleesParLesPoints();
+            for (int j = 0; j < tabZones.length; j++) {
+                for (int k = 0; k < tabZones[j].length; k++) {
+                    if (tabZones[j][k] == passageChemin.get(i)){
+                        for (int l = 0; l < tabJoueur.length; l++) {
+                            for (int m = 0; m < tabJoueur[l].getTabPartisans().length; m++) {
+                                if (tabJoueur[l].getTabPartisans()[m].getNumZone() == j){
+                                    nbPartisanParJoueur[l] += 1;
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        for (int k = 0; k < compteurPartisansJoueurs.length; k++) {
-            System.out.println(compteurPartisansJoueurs[k]);
+
+        for (int i = 0; i < nbPartisanParJoueur.length; i++) {
+            System.out.println(nbPartisanParJoueur[i]);
         }
     }
 
