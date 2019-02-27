@@ -20,8 +20,8 @@ public class Carcassonne {
 
     private Carte carteDeBase; // Carte posée au départ (à modifier)
 
-    private int tailleCheminPourLaVerification;
     private List<Point> etendueDuChemin;
+    private List<Integer> passageChemin;
     private int[] nbPartisansSurLeChemin;
 
     public Carcassonne() {
@@ -30,8 +30,8 @@ public class Carcassonne {
         listPointDispo = new ArrayList<>();
         listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
-        tailleCheminPourLaVerification = 0;
         etendueDuChemin = new ArrayList<>();
+        passageChemin = new ArrayList<>();
 
         pioche = new Pioche();
         carteDeBase = new Carte(TypeCarte.carteVCPC);
@@ -289,8 +289,8 @@ public class Carcassonne {
         int numListe = getNombreChemin(carte, numCote)[0];
         int longueurListe = getNombreChemin(carte, numCote)[1];
         etendueDuChemin.add(carte.getPosition());
-
         if (longueurListe == 2) {
+            passageChemin.add(numCote);
             int newI = 0;
             for (int j = 0; j < longueurListe; j++) {
                 if (carte.getZonesControlleesParLesPoints()[numListe][j] != numCote) {
@@ -329,6 +329,7 @@ public class Carcassonne {
      */
     public void verificationCheminFerme(CartePosee carteEnMain) {
         etendueDuChemin.clear();
+        passageChemin.clear();
         etendueDuChemin.add(carteEnMain.getPosition());
 
         int x = (int) carteEnMain.getPosition().getX();
@@ -338,7 +339,6 @@ public class Carcassonne {
         Point p = new Point(x, y - 1);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getNord().equals(CoteCarte.chemin)) {
-                tailleCheminPourLaVerification = 0;
                 for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
                     nbPartisansSurLeChemin[i] = 0;
                 }
@@ -346,6 +346,7 @@ public class Carcassonne {
                 int longueurListe = getNombreChemin(carteEnMain, 2)[1];
                 if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(8, pointCarteMap.get(p))) {
+                    passageChemin.add(8);
                     if (cheminFermeSurLaCarteCourante) {
                         attributionPointsChemin();
                     }
@@ -355,7 +356,6 @@ public class Carcassonne {
         p = new Point(x, y + 1);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getSud().equals(CoteCarte.chemin)) {
-                tailleCheminPourLaVerification = 0;
                 for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
                     nbPartisansSurLeChemin[i] = 0;
                 }
@@ -363,6 +363,7 @@ public class Carcassonne {
                 int longueurListe = getNombreChemin(carteEnMain, 8)[1];
                 if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(2, pointCarteMap.get(p))) {
+                    passageChemin.add(2);
                     if (cheminFermeSurLaCarteCourante) {
                         attributionPointsChemin();
                     }
@@ -372,7 +373,6 @@ public class Carcassonne {
         p = new Point(x - 1, y);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getOuest().equals(CoteCarte.chemin)) {
-                tailleCheminPourLaVerification = 0;
                 for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
                     nbPartisansSurLeChemin[i] = 0;
                 }
@@ -380,6 +380,7 @@ public class Carcassonne {
                 int longueurListe = getNombreChemin(carteEnMain, 11)[1];
                 if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(5, pointCarteMap.get(p))) {
+                    passageChemin.add(5);
                     if (cheminFermeSurLaCarteCourante) {
                         attributionPointsChemin();
                     }
@@ -389,7 +390,6 @@ public class Carcassonne {
         p = new Point(x + 1, y);
         if (listPointOccupe.contains(p)) {
             if (carteEnMain.getEst().equals(CoteCarte.chemin)) {
-                tailleCheminPourLaVerification = 0;
                 for (int i = 0; i < nbPartisansSurLeChemin.length; i++) {
                     nbPartisansSurLeChemin[i] = 0;
                 }
@@ -397,6 +397,7 @@ public class Carcassonne {
                 int longueurListe = getNombreChemin(carteEnMain, 5)[1];
                 if (longueurListe == 1) cheminFermeSurLaCarteCourante = true;
                 if (isCheminFerme(11, pointCarteMap.get(p))) {
+                    passageChemin.add(11);
                     if (cheminFermeSurLaCarteCourante) {
                         attributionPointsChemin();
                     }
@@ -411,30 +412,15 @@ public class Carcassonne {
             Joueur j = tabJoueur[i];
             Partisan[] tabPartisans = j.getTabPartisans();
             for (int k = 0; k < tabPartisans.length; k++) {
-                if (etendueDuChemin.contains(tabPartisans[k].getPointPlacementCarte())){
+                System.out.println(tabPartisans[k].getPointPlacementCarte() + " " +
+                        tabPartisans[k].getNumZone());
+                if (etendueDuChemin.contains(tabPartisans[k].getPointPlacementCarte())) {
+
                     CartePosee c = pointCarteMap.get(tabPartisans[k].getPointPlacementCarte());
                     int numZone = tabPartisans[k].getNumZone();
-                    switch (numZone){
-                        case 2:
-                            if (c.getNord().equals(CoteCarte.chemin)){
-                                compteurPartisansJoueurs[i]+=1;
-                            }
-                            break;
-                        case 5:
-                            if (c.getEst().equals(CoteCarte.chemin)){
-                                compteurPartisansJoueurs[i]+=1;
-                            }
-                            break;
-                        case 8:
-                            if (c.getSud().equals(CoteCarte.chemin)){
-                                compteurPartisansJoueurs[i]+=1;
-                            }
-                            break;
-                        case 11:
-                            if (c.getOuest().equals(CoteCarte.chemin)){
-                                compteurPartisansJoueurs[i]+=1;
-                            }
-                            break;
+                    if (numZone != -1) {
+                        int[] tab = c.getZonesControlleesParLesPoints()[numZone];
+
                     }
                 }
             }
