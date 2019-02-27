@@ -76,8 +76,8 @@ public class MenuReseau extends Parent {
 
     public void jeuInternet() {
         try {
-            //Socket sock = new Socket("62.39.234.71", 3333);
-            Socket sock = new Socket("localhost", 3333);
+            Socket sock = new Socket("62.39.234.71", 3333);
+            //Socket sock = new Socket("localhost", 3333);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
 
@@ -350,6 +350,10 @@ public class MenuReseau extends Parent {
             if (toggle.equals(t_bleuClaire)) return Color.DEEPSKYBLUE;
         }
         return null;
+    }
+
+    public void startPartie(){
+        new VueMultiJoueurs(primaryStage, socketJoueur).initialiser();
     }
 
     public SocketJoueur getSocketJoueur() {
