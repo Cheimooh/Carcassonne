@@ -18,11 +18,13 @@ public class VueMultiJoueurs extends Parent {
     private ArrayList<Point> listPointOccupe; // Liste de point où il y a déjà une carte posée
     private ArrayList<Carte> defausse; // Liste de carte où il y a la défausse
     private Stage primaryStage;
+    private String nomJoueur;
+    private String nomJoueurCourant;
     private SocketJoueur socketJoueur;
-    private List<Joueur> listJoueurs;
 
-    public VueMultiJoueurs(Stage primaryStage, SocketJoueur socketJoueur) {
+    public VueMultiJoueurs(Stage primaryStage, SocketJoueur socketJoueur, String nom) {
         this.primaryStage = primaryStage;
+        nomJoueur = nom;
         pointCarteMap = new HashMap<>();
         listPointDispo = new ArrayList<Point>();
         listPointOccupe = new ArrayList<Point>();
@@ -33,23 +35,19 @@ public class VueMultiJoueurs extends Parent {
     public void initialiser(){
         ObjectInputStream oi = socketJoueur.getOi();
         try {
-            /*On récupère la liste des joueur*/
-            int nombreJoueurs = oi.readInt()-1;
-            for (int i = 0; i < nombreJoueurs; i++) {
+            /*On récupère la map point carte*/
+            int tailleMap = oi.readInt();
+            for (int i = 0; i < tailleMap; i++) {
                 try {
-                    listJoueurs.add((Joueur)oi.readObject());
+                    Point point = (Point) oi.readObject();
+                    CartePosee cartePosee = (CartePosee) oi.readObject();
+                    pointCarteMap.put(point,cartePosee);
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
-            /*On récupère la map point carte*/
-            try {
-                pointCarteMap = (Map) oi.readObject();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
             /*On récupère la liste des points disponible*/
-            int tailleListePointDispo = oi.readInt()-1;
+            int tailleListePointDispo = oi.readInt();
             for (int i = 0; i < tailleListePointDispo; i++) {
                 try {
                     listPointDispo.add((Point)oi.readObject());
@@ -58,7 +56,7 @@ public class VueMultiJoueurs extends Parent {
                 }
             }
             /*On récupère la liste des points occuper*/
-            int tailleListePointOccupe = oi.readInt()-1;
+            int tailleListePointOccupe = oi.readInt();
             for (int i = 0; i < tailleListePointOccupe; i++) {
                 try {
                     listPointOccupe.add((Point)oi.readObject());
@@ -67,7 +65,7 @@ public class VueMultiJoueurs extends Parent {
                 }
             }
             /*On récupère la defausse*/
-            int tailleDefausse = oi.readInt()-1;
+            int tailleDefausse = oi.readInt();
             for (int i = 0; i < tailleDefausse; i++) {
                 try {
                     defausse.add((Carte)oi.readObject());

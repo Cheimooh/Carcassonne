@@ -363,7 +363,7 @@ public class MenuReseau extends Parent {
     }
 
     public void startPartie(){
-        new VueMultiJoueurs(primaryStage, socketJoueur).initialiser();
+        new VueMultiJoueurs(primaryStage, socketJoueur, nomJoueurTmpReseau).initialiser();
     }
 
     public SocketJoueur getSocketJoueur() {

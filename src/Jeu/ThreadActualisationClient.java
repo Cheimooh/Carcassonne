@@ -35,53 +35,13 @@ public class ThreadActualisationClient {
             try {
                 String test = (String) socketJoueur.getOi().readObject();
             if (test.equals("actualise")) {
-                try {
-                    /*On récupère la map point carte*/
-                    try {
-                        pointCarteMap = (Map) oi.readObject();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    /*On récupère la liste des points disponible*/
-                    int tailleListePointDispo = oi.readInt() - 1;
-                    for (int i = 0; i < tailleListePointDispo; i++) {
-                        try {
-                            listPointDispo.add((Point) oi.readObject());
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    /*On récupère la liste des points occuper*/
-                    int tailleListePointOccupe = oi.readInt() - 1;
-                    for (int i = 0; i < tailleListePointOccupe; i++) {
-                        try {
-                            listPointOccupe.add((Point) oi.readObject());
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    /*On récupère la defausse*/
-                    int tailleDefausse = oi.readInt() - 1;
-                    for (int i = 0; i < tailleDefausse; i++) {
-                        try {
-                            defausse.add((Carte) oi.readObject());
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            vueMultiJoueurs.setPointCarteMap(pointCarteMap);
-            vueMultiJoueurs.setListPointDispo(listPointDispo);
-            vueMultiJoueurs.setListPointOccupe(listPointOccupe);
-            vueMultiJoueurs.setDefausse(defausse);
             }while(!isArreter);
         }
 
