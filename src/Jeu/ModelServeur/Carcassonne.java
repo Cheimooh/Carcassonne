@@ -1,15 +1,16 @@
 package Jeu.ModelServeur;
 
+import Jeu.Exception.PiocheVideException;
+import javafx.scene.image.Image;
+
 import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class Carcassonne {
 
@@ -23,6 +24,7 @@ public class Carcassonne {
     private Carte carteDeBase;
     private int nbJoueur;
     private int numJoueurCourant;
+    private Carte carteCourante;
 
     private List<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
@@ -41,7 +43,6 @@ public class Carcassonne {
 
         pioche = new Pioche();
         carteDeBase = new Carte(TypeCarte.carteVCPC);
-        carteDeBase.setPosition(new Point(8,8));
 
         //Instantiation pour le serveur
         this.serverSocket = serverSocket;
@@ -73,22 +74,6 @@ public class Carcassonne {
         if(isPret && listJoueur.size() >= 2 && listJoueur.size() <= 5 ){
             isPartieCommencer = true;
         }
-    }
-
-    private void debutPartie() {
-        isPartieCommencer = true;
-        nbJoueur = listJoueur.size();
-        try {
-            for (int i = 0; i < listSocket.size(); i++) {
-                ObjectInputStream oi = listSocket.get(i).getOi();
-                ObjectOutputStream oo = listSocket.get(i).getOo();
-
-                oo.writeObject("startPartie");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        initJeu();
     }
 
     /*
@@ -139,8 +124,9 @@ public class Carcassonne {
         }
     }
 
-    public void initJeu(){
-        numJoueurCourant = (int) (Math.random()*(nbJoueur-1));
+    private void debutPartie() {
+        isPartieCommencer = true;
+        nbJoueur = listJoueur.size();
         try {
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectInputStream oi = listSocket.get(i).getOi();
@@ -151,13 +137,79 @@ public class Carcassonne {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        initJeu();
     }
 
-    /*
-     * Demande au joueur suivant de jouer
-     */
-    public void jouer(){
+    public void initJeu(){
+        numJoueurCourant = (int) (Math.random()*(nbJoueur-1));
+        placerCarte(carteDeBase, new Point(8,8));
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectInputStream oi = listSocket.get(i).getOi();
+                ObjectOutputStream oo = listSocket.get(i).getOo();
 
+                int tailleMap = pointCarteMap.size();
+                oo.writeInt(tailleMap);
+                for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
+                {
+                    oo.writeObject(entry.getKey());
+                    oo.writeObject(entry.getValue());
+                }
+
+                int tailleListDispo = listPointDispo.size();
+                oo.writeInt(tailleListDispo);
+                for (int j = 0; j < tailleListDispo; j++) {
+                    oo.writeObject(listPointDispo.get(j));
+                }
+
+                int tailleListOccuper = listPointOccupe.size();
+                oo.writeInt(tailleListOccuper);
+                for (int j = 0; j < tailleListOccuper; j++) {
+                    oo.writeObject(listPointOccupe.get(j));
+                }
+
+                int tailleDefausse = defausse.size();
+                oo.writeInt(tailleDefausse);
+                for (int j = 0; j < tailleDefausse; j++) {
+                    oo.writeObject(defausse.get(j));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        envoieClientsTourSuivant();
+    }
+
+    public void placerCarte(Carte carte, Point positionCarte){
+        CartePosee cartePosee = new CartePosee(carte);
+        listPointOccupe.add(cartePosee.getPosition());
+        pointCarteMap.put(positionCarte, cartePosee);
+
+        int x = (int) positionCarte.getX();
+        int y = (int) positionCarte.getY();
+
+        //Permet de tester si l'on doit rajouter des emplacements disponibles ou non
+        Point p = new Point(x+1,y);
+        testLDispo(p);
+        p.setLocation(x-1,y);
+        testLDispo(p);
+        p.setLocation(x,y+1);
+        testLDispo(p);
+        p.setLocation(x,y-1);
+        testLDispo(p);
+
+        //Supression de l'emplacement de la carte dans la liste des emplacements disponibles
+        listPointDispo.remove(cartePosee.getPosition());
+        //Dessine l'image sur la fenêtre de jeu
+        if(carte!=carteDeBase) {
+            contaminationDeLaCarteAvecCouleur(cartePosee);
+        }
+    }
+
+    private void testLDispo(Point p){
+        if ( !listPointDispo.contains(p) && !listPointOccupe.contains(p)) {
+            listPointOccupe.add(p);
+        }
     }
 
     /*
@@ -169,6 +221,27 @@ public class Carcassonne {
         if(numJoueurCourant == 0){
             numJoueurCourant++;
         }
+        envoieClientsTourSuivant();
+    }
+
+    private void envoieClientsTourSuivant() {
+        try {
+            carteCourante = pioche.piocher();
+        } catch (PiocheVideException e) {
+            e.printStackTrace();
+        }
+        String nomJoueurCourant = listJoueur.get(numJoueurCourant).getNom();
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectOutputStream oo = listSocket.get(i).getOo();
+                oo.writeObject("actualise");
+                oo.writeObject("tourSuivant");
+                oo.writeObject(nomJoueurCourant);
+                oo.writeObject(carteCourante);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -176,13 +249,35 @@ public class Carcassonne {
      * return true si c'est le cas, false sinon
      */
     public boolean isCarteAdjacente(int x, int y){
-        return false;
+        Point point = new Point(x+1, y);
+        if(listPointOccupe.contains(point)) return true;
+
+        point = new Point(x-1, y);
+        if(listPointOccupe.contains(point)) return true;
+
+        point = new Point(x, y+1);
+        if(listPointOccupe.contains(point)) return true;
+
+        point = new Point(x, y-1);
+        return listPointOccupe.contains(point);
     }
 
     /*
      * Permet de savoir si la carte donnée en paramètre est défaussable ou non
      */
-    public boolean isDefaussable(Carte carteAPosee){
+    public boolean isDefaussable(){
+        boolean isDefau = true;
+        int x;
+        int y;
+        for (Point pointDispo : listPointDispo) {
+            x = pointDispo.x;
+            y = pointDispo.y;
+            for (int j = 0; j < 4; j++) {
+                isDefau = isPlacable(x, y);
+                carteCourante.pivoter();
+            }
+            if (isDefau) return false;
+        }
         return true;
     }
 
@@ -190,29 +285,159 @@ public class Carcassonne {
      * Permet de savoir si la carte courante peut etre posée où non en fonction de si elle coincide avec les cartes
      * adjacentes ou non
      */
-    public boolean isPlacable(int x, int y, Carte carteEnMain) {
-        return true;
+    public boolean isPlacable(int x, int y) {
+        boolean isPlacable = true;
+        // creer un point temporaire pour faire les verifications
+        Point point = new Point(x-1, y);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getEst() != carteCourante.getOuest()){
+                isPlacable=false;
+            }
+        }
+
+        point = new Point(x+1, y);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getOuest() != carteCourante.getEst()){
+                isPlacable=false;
+            }
+        }
+
+        point = new Point(x, y-1);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getSud() != carteCourante.getNord()){
+                isPlacable=false;
+            }
+        }
+
+        point = new Point(x, y+1);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getNord() != carteCourante.getSud()){
+                isPlacable=false;
+            }
+        }
+
+        return isPlacable;
     }
 
     /*
      * Permet de contaminer la carte donnée en paramètre avec les couleurs correspondantes
      */
     public void contaminationDeLaCarteAvecCouleur(CartePosee carte) {
+        int x = (int) carte.getPosition().getX();
+        int y = (int) carte.getPosition().getY();
 
+        Point point = new Point(x-1, y);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesCouleurPartisan().containsKey(4)) carte.getZonesCouleurPartisan().put(12, c.getZonesCouleurPartisan().get(4));
+            if (c.getZonesCouleurPartisan().containsKey(5)) carte.getZonesCouleurPartisan().put(11, c.getZonesCouleurPartisan().get(5));
+            if (c.getZonesCouleurPartisan().containsKey(6)) carte.getZonesCouleurPartisan().put(10, c.getZonesCouleurPartisan().get(6));
+            ajoutCouleurMap(c, 4, carte, 12);
+            ajoutCouleurMap(c, 5, carte, 11);
+            ajoutCouleurMap(c, 6, carte, 10);
+        }
+
+        point = new Point(x+1, y);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesCouleurPartisan().containsKey(12)) carte.getZonesCouleurPartisan().put(4, c.getZonesCouleurPartisan().get(12));
+            if (c.getZonesCouleurPartisan().containsKey(11)) carte.getZonesCouleurPartisan().put(5, c.getZonesCouleurPartisan().get(11));
+            if (c.getZonesCouleurPartisan().containsKey(10)) carte.getZonesCouleurPartisan().put(6, c.getZonesCouleurPartisan().get(10));
+            ajoutCouleurMap(c, 12, carte, 4);
+            ajoutCouleurMap(c, 11, carte, 5);
+            ajoutCouleurMap(c, 10, carte, 6);
+        }
+
+        point = new Point(x, y+1);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesCouleurPartisan().containsKey(1)) carte.getZonesCouleurPartisan().put(9, c.getZonesCouleurPartisan().get(1));
+            if (c.getZonesCouleurPartisan().containsKey(2)) carte.getZonesCouleurPartisan().put(8, c.getZonesCouleurPartisan().get(2));
+            if (c.getZonesCouleurPartisan().containsKey(3)) carte.getZonesCouleurPartisan().put(7, c.getZonesCouleurPartisan().get(3));
+            ajoutCouleurMap(c, 1, carte, 9);
+            ajoutCouleurMap(c, 2, carte, 8);
+            ajoutCouleurMap(c, 3, carte, 7);
+        }
+
+        point = new Point(x, y-1);
+        if(listPointOccupe.contains(point)){
+            CartePosee c = pointCarteMap.get(point);
+            if (c.getZonesCouleurPartisan().containsKey(9)) carte.getZonesCouleurPartisan().put(1, c.getZonesCouleurPartisan().get(9));
+            if (c.getZonesCouleurPartisan().containsKey(8)) carte.getZonesCouleurPartisan().put(2, c.getZonesCouleurPartisan().get(8));
+            if (c.getZonesCouleurPartisan().containsKey(7)) carte.getZonesCouleurPartisan().put(3, c.getZonesCouleurPartisan().get(7));
+            ajoutCouleurMap(c, 9, carte, 1);
+            ajoutCouleurMap(c, 8, carte, 2);
+            ajoutCouleurMap(c, 7, carte, 3);
+        }
     }
 
     /*
      * Permet d'ajouter une couleur à la map qui contient la couleur en fonction de la zone contaminée
      */
     private void ajoutCouleurMap(CartePosee carteAdjacent, int zoneCarteAdjacente, CartePosee carteCourante, int zoneCarteCourante) {
-
+        for (int i = 0; i < carteCourante.getZonesControlleesParLesPoints().length; i++) {
+            for (int j = 0; j < carteCourante.getZonesControlleesParLesPoints()[i].length; j++) {
+                if(carteCourante.getZonesControlleesParLesPoints()[i][j] == zoneCarteCourante && carteAdjacent.getZonesCouleurPartisan().containsKey(zoneCarteAdjacente)){
+                    for (int k = 0; k < carteCourante.getZonesControlleesParLesPoints()[i].length; k++) {
+                        carteCourante.getZonesCouleurPartisan().putIfAbsent(carteCourante.getZonesControlleesParLesPoints()[i][k], carteAdjacent.getZonesCouleurPartisan().get(zoneCarteAdjacente));
+                    }
+                }
+            }
+        }
     }
 
     /*
      * Permet de contaminer les cartes déjà posées grâce à la carte donnée en paramètre
      */
     public void contaminationDesAutresCarteAvecCouleur(CartePosee carteBase){
+        ArrayDeque<CartePosee> carteNonVerifiee = new ArrayDeque<>();
+        ArrayList<CartePosee> cartesDejaVerifiees = new ArrayList<>();
+        carteNonVerifiee.offer(carteBase);
+        int x;
+        int y;
+        while(!carteNonVerifiee.isEmpty()){
+            CartePosee carteCourante = carteNonVerifiee.poll();
+            cartesDejaVerifiees.add(carteCourante);
+            x = (int) carteCourante.getPosition().getX();
+            y = (int) carteCourante.getPosition().getY();
+            contaminationDeLaCarteAvecCouleur(carteCourante);
 
+            Point point = new Point(x-1, y);
+            if(listPointOccupe.contains(point)){
+                CartePosee c = pointCarteMap.get(point);
+                if(!cartesDejaVerifiees.contains(c)){
+                    carteNonVerifiee.addFirst(c);
+                }
+            }
+
+            point = new Point(x+1, y);
+            if(listPointOccupe.contains(point)){
+                CartePosee c = pointCarteMap.get(point);
+                if(!cartesDejaVerifiees.contains(c)) {
+                    carteNonVerifiee.addFirst(c);
+                }
+            }
+
+            point = new Point(x, y+1);
+            if(listPointOccupe.contains(point)){
+                CartePosee c = pointCarteMap.get(point);
+                if(!cartesDejaVerifiees.contains(c)) {
+                    carteNonVerifiee.addFirst(c);
+                }
+            }
+
+            point = new Point(x, y-1);
+            if(listPointOccupe.contains(point)){
+                CartePosee c = pointCarteMap.get(point);
+                if(!cartesDejaVerifiees.contains(c)) {
+                    carteNonVerifiee.addFirst(c);
+                }
+            }
+        }
     }
 
     public void verificationZoneFermee(CartePosee carteEnMain) {
@@ -230,4 +455,14 @@ public class Carcassonne {
     public void setTabSocket(ArrayList<SocketJoueur> listSocket) { this.listSocket = listSocket; }
 
     public List<ThreadReceptionClient> getListReceptionClient() { return listReceptionClient; }
+
+    public Map<Point, CartePosee> getPointCarteMap() { return pointCarteMap; }
+
+    public ArrayList<Point> getListPointDispo() { return listPointDispo; }
+
+    public ArrayList<Point> getListPointOccupe() { return listPointOccupe; }
+
+    public ArrayList<Carte> getDefausse() { return defausse; }
+
+    public Carte getCarteCourante() { return carteCourante; }
 }

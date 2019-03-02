@@ -33,10 +33,16 @@ public class ThreadActualisationClient {
             do {
             ObjectInputStream oi = socketJoueur.getOi();
             try {
-                String test = (String) socketJoueur.getOi().readObject();
-            if (test.equals("actualise")) {
+                String test = (String) oi.readObject();
+                if (test.equals("actualise")) {
+                    test = (String) oi.readObject();
+                    if(test.equals("tourSuivant")){
 
-            }
+                    }
+                }
+                else if (test.equals("erreur")) {
+
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {

@@ -38,42 +38,31 @@ public class VueMultiJoueurs extends Parent {
             /*On récupère la map point carte*/
             int tailleMap = oi.readInt();
             for (int i = 0; i < tailleMap; i++) {
-                try {
-                    Point point = (Point) oi.readObject();
-                    CartePosee cartePosee = (CartePosee) oi.readObject();
-                    pointCarteMap.put(point,cartePosee);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                Point point = (Point) oi.readObject();
+                CartePosee cartePosee = (CartePosee) oi.readObject();
+                pointCarteMap.put(point,cartePosee);
             }
+
             /*On récupère la liste des points disponible*/
             int tailleListePointDispo = oi.readInt();
             for (int i = 0; i < tailleListePointDispo; i++) {
-                try {
-                    listPointDispo.add((Point)oi.readObject());
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                listPointDispo.add((Point)oi.readObject());
             }
+
             /*On récupère la liste des points occuper*/
             int tailleListePointOccupe = oi.readInt();
             for (int i = 0; i < tailleListePointOccupe; i++) {
-                try {
-                    listPointOccupe.add((Point)oi.readObject());
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                listPointOccupe.add((Point)oi.readObject());
             }
+
             /*On récupère la defausse*/
             int tailleDefausse = oi.readInt();
             for (int i = 0; i < tailleDefausse; i++) {
-                try {
-                    defausse.add((Carte)oi.readObject());
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                defausse.add((Carte)oi.readObject());
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
