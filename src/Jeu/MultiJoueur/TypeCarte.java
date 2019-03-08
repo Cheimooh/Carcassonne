@@ -1,4 +1,4 @@
-package Jeu.ModelServeur;
+package Jeu.MultiJoueur;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
-package Jeu.ModelServeur;
+package Jeu.MultiJoueur;
 
 import Jeu.Exception.PiocheVideException;
-import javafx.scene.image.Image;
 
 import java.awt.*;
 import java.io.IOException;
@@ -73,6 +72,7 @@ public class Carcassonne {
         }
         if(isPret && listJoueur.size() >= 2 && listJoueur.size() <= 5 ){
             isPartieCommencer = true;
+            System.out.println("startPartie");
         }
     }
 

@@ -1,7 +1,7 @@
 package Jeu;
 
-import Jeu.ModelServeur.Joueur;
-import Jeu.ModelServeur.SocketJoueur;
+import Jeu.MultiJoueur.Joueur;
+import Jeu.MultiJoueur.SocketJoueur;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

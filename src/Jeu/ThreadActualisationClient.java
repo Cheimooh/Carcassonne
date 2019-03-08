@@ -1,6 +1,6 @@
 package Jeu;
 
-import Jeu.ModelServeur.*;
+import Jeu.MultiJoueur.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -37,7 +37,18 @@ public class ThreadActualisationClient {
                 if (test.equals("actualise")) {
                     test = (String) oi.readObject();
                     if(test.equals("tourSuivant")){
-
+                        /*Recup nom joueur courant*/
+                        /*Recup carte courante*/
+                        vueMultiJoueurs.actualiserTourSuivant();
+                    }
+                    if (test.equals("poserCarte")){
+                        vueMultiJoueurs.actualiserPoserCarte();
+                    }
+                    if (test.equals("defausse")){
+                        vueMultiJoueurs.actualiserDefausse();
+                    }
+                    if (test.equals("poserPartisant")){
+                        vueMultiJoueurs.actualiserPoserPartisant();
                     }
                 }
                 else if (test.equals("erreur")) {

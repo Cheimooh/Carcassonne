@@ -1,4 +1,4 @@
-package Jeu.ModelServeur;
+package Jeu.MultiJoueur;
 
 import java.io.*;
 import java.net.ServerSocket;

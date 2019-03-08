@@ -1,14 +1,9 @@
 package Jeu;
 
-import Jeu.Model.Carcassonne;
-import Jeu.ModelServeur.Joueur;
-import Jeu.ModelServeur.SocketJoueur;
-import Jeu.View.FenetreJeu;
-import Jeu.View.PopUpPartisan;
+import Jeu.MultiJoueur.Joueur;
+import Jeu.MultiJoueur.SocketJoueur;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,16 +12,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import org.w3c.dom.css.Rect;
 
-import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -76,8 +67,8 @@ public class MenuReseau extends Parent {
 
     public void jeuInternet() {
         try {
-            Socket sock = new Socket("62.39.234.71", 3333);
-            //Socket sock = new Socket("localhost", 3333);
+            //Socket sock = new Socket("62.39.234.71", 3333);
+            Socket sock = new Socket("localhost", 3333);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
 

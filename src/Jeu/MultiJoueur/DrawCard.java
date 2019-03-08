@@ -1,4 +1,4 @@
-package Jeu.ModelServeur;
+package Jeu.MultiJoueur;
 
 public class DrawCard {
     private String path; // Lien de l'image non tournée
