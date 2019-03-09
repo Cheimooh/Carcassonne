@@ -1,7 +1,9 @@
 package Jeu;
 
-import Jeu.MultiJoueur.*;
 import Jeu.MultiJoueur.Controller.ControlMouse;
+import Jeu.MultiJoueur.Model.Carte;
+import Jeu.MultiJoueur.Model.CartePosee;
+import Jeu.MultiJoueur.Model.SocketJoueur;
 import Jeu.MultiJoueur.View.FenetreJeu;
 import Jeu.MultiJoueur.View.PopUpPartisan;
 import javafx.scene.Group;

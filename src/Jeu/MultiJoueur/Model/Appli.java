@@ -1,4 +1,4 @@
-package Jeu.MultiJoueur;
+package Jeu.MultiJoueur.Model;
 
 import java.io.IOException;
 import java.net.ServerSocket;

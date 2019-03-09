@@ -1,4 +1,4 @@
-package Jeu.MultiJoueur;
+package Jeu.MultiJoueur.Model;
 
 import javafx.scene.paint.Color;
 

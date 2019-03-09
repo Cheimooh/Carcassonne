@@ -14,8 +14,8 @@
 * */
 package Jeu.MultiJoueur.View;
 
-import Jeu.MultiJoueur.Carte;
-import Jeu.MultiJoueur.CartePosee;
+import Jeu.MultiJoueur.Model.Carte;
+import Jeu.MultiJoueur.Model.CartePosee;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.VueMultiJoueurs;
 import javafx.scene.Parent;
@@ -79,19 +79,9 @@ public class FenetreJeu extends Parent {
         vueMultiJoueurs.getPointCarteMap().put(carte.getPosition(), cartePosee);
         //Image de la carte
         Image image = cartePosee.getImageCarte();
-
         int x = (int) cartePosee.getPosition().getX();
         int y = (int) cartePosee.getPosition().getY();
 
-        //Permet de tester si l'on doit rajouter des emplacements disponibles ou non
-        Point p = new Point(x+1,y);
-        testLDispo(p);
-        p.setLocation(x-1,y);
-        testLDispo(p);
-        p.setLocation(x,y+1);
-        testLDispo(p);
-        p.setLocation(x,y-1);
-        testLDispo(p);
 
         //Supression de l'emplacement de la carte dans la liste des emplacements disponibles
         vueMultiJoueurs.getListPointDispo().remove(cartePosee.getPosition());
@@ -101,20 +91,6 @@ public class FenetreJeu extends Parent {
             barreInfos.drawInformationsPartisans();
             carcassonne.contaminationDeLaCarteAvecCouleur(cartePosee);
         }*/
-    }
-
-    /*
-     * Test si l'on doit ajouter ou non des emplacements disponibles
-     * Permet également de les ajouter
-     */
-    private void testLDispo(Point p){
-        ArrayList<Point> lDispo = vueMultiJoueurs.getListPointDispo();
-        ArrayList<Point> lOccupee = vueMultiJoueurs.getListPointOccupe();
-        if ( !lDispo.contains(p) && !lOccupee.contains(p)) {
-            lDispo.add(new Point((int)p.getX(), (int)p.getY()));
-            queueImage.addLast(placeDispo.getImagePlus());
-            graphicsContext.drawImage(queueImage.getLast(),(int)p.getX()*50, (int)p.getY()*50, 50, 50);
-        }
     }
 
     /*

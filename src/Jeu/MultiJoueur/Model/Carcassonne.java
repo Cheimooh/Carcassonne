@@ -1,4 +1,4 @@
-package Jeu.MultiJoueur;
+package Jeu.MultiJoueur.Model;
 
 import Jeu.Exception.PiocheVideException;
 
@@ -65,7 +65,9 @@ public class Carcassonne {
     private void clientPret() {
         boolean isPret = true;
         int cptJoueur = 0;
-        while(isPret && cptJoueur < listJoueur.size() && listJoueur.size() > 0){
+        System.out.println(listJoueur.size());
+        while(isPret && cptJoueur < listJoueur.size() && listJoueur.size() > 0  ){
+            System.out.println("debut");
             Joueur joueurTmp = listJoueur.get(cptJoueur);
             isPret = joueurTmp.isPret();
             cptJoueur++;
@@ -142,7 +144,7 @@ public class Carcassonne {
 
     public void initJeu(){
         numJoueurCourant = (int) (Math.random()*(nbJoueur-1));
-        placerCarte(carteDeBase, new Point(8,8));
+        //placerCarte(carteDeBase, new Point(8,8));
         try {
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectInputStream oi = listSocket.get(i).getOi();

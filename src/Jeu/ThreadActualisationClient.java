@@ -1,6 +1,8 @@
 package Jeu;
 
-import Jeu.MultiJoueur.*;
+import Jeu.MultiJoueur.Model.Carte;
+import Jeu.MultiJoueur.Model.CartePosee;
+import Jeu.MultiJoueur.Model.SocketJoueur;
 
 import java.awt.*;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package Jeu;
 
-import Jeu.MultiJoueur.Joueur;
-import Jeu.MultiJoueur.SocketJoueur;
+import Jeu.MultiJoueur.Model.Joueur;
+import Jeu.MultiJoueur.Model.SocketJoueur;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;

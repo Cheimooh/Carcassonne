@@ -1,6 +1,6 @@
 package Jeu.MultiJoueur.Controller;
 
-import Jeu.MultiJoueur.Carte;
+import Jeu.MultiJoueur.Model.Carte;
 import Jeu.View.FenetreJeu;
 import Jeu.VueMultiJoueurs;
 import javafx.event.EventHandler;
