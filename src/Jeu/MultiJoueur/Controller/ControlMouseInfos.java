@@ -1,15 +1,5 @@
 package Jeu.MultiJoueur.Controller;
 
-import Jeu.Model.Carcassonne;
-import Jeu.Model.Carte;
-import Jeu.MultiJoueur.View.BarreInfos;
-import Jeu.View.FenetreDefausse;
-import Jeu.View.FenetreJeu;
-import Jeu.VueMultiJoueurs;
-import javafx.event.EventHandler;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-
 /*
 public class ControlMouseInfos implements EventHandler<MouseEvent> {
     private BarreInfos barreInfos;

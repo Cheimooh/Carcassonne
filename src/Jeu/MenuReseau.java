@@ -2,6 +2,7 @@ package Jeu;
 
 import Jeu.MultiJoueur.Model.Joueur;
 import Jeu.MultiJoueur.Model.SocketJoueur;
+import Jeu.MultiJoueur.View.VueMultiJoueurs;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -75,7 +76,6 @@ public class MenuReseau extends Parent {
             socketJoueur = new SocketJoueur(sock, oi, oo);
 
             nombreJoueur = (Integer) oi.readObject();
-            System.out.println(nombreJoueur);
             for (int i = 0; i < nombreJoueur; i++) {
                 Joueur joueur = (Joueur) oi.readObject();
                 listJoueurs.add(joueur);
@@ -306,7 +306,6 @@ public class MenuReseau extends Parent {
     }
 
     public void actualiser() {
-        System.out.println("actualisation......");
         Platform.runLater(() ->  generals.getChildren().clear());
         listHBoxElement.clear();
         for (int i = 0; i < nombreJoueur; i++) {
@@ -354,7 +353,7 @@ public class MenuReseau extends Parent {
     }
 
     public void startPartie(){
-        new VueMultiJoueurs(primaryStage, socketJoueur, nomJoueurTmpReseau).initialiser();
+        new VueMultiJoueurs(primaryStage, socketJoueur, nomJoueurTmpReseau);
     }
 
     public SocketJoueur getSocketJoueur() {

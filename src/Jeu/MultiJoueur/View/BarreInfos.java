@@ -1,10 +1,7 @@
 package Jeu.MultiJoueur.View;
 
 //import Jeu.MultiJoueur.Controller.ControlMouseInfos;
-import Jeu.Exception.PiocheVideException;
-import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
-import Jeu.VueMultiJoueurs;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

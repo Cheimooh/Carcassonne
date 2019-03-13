@@ -1,11 +1,10 @@
-package Jeu;
+package Jeu.MultiJoueur.View;
 
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.CartePosee;
 import Jeu.MultiJoueur.Model.SocketJoueur;
-import Jeu.MultiJoueur.View.FenetreJeu;
-import Jeu.MultiJoueur.View.PopUpPartisan;
+import Jeu.ThreadActualisationClient;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,7 +38,7 @@ public class VueMultiJoueurs extends Parent {
         listPointOccupe = new ArrayList<Point>();
         defausse = new ArrayList<Carte>();
         this.socketJoueur = socketJoueur;
-        ControlMouse controlMouse = new ControlMouse(this);
+        initialiser();
     }
 
     public void initialiser(){
@@ -48,7 +47,9 @@ public class VueMultiJoueurs extends Parent {
             /*On récupère la map point carte*/
             int tailleMap = oi.readInt();
             for (int i = 0; i < tailleMap; i++) {
-                Point point = (Point) oi.readObject();
+                int x = oi.readInt();
+                int y = oi.readInt();
+                Point point = new Point(x,y);
                 CartePosee cartePosee = (CartePosee) oi.readObject();
                 pointCarteMap.put(point,cartePosee);
             }
@@ -56,13 +57,17 @@ public class VueMultiJoueurs extends Parent {
             /*On récupère la liste des points disponible*/
             int tailleListePointDispo = oi.readInt();
             for (int i = 0; i < tailleListePointDispo; i++) {
-                listPointDispo.add((Point)oi.readObject());
+                int x = oi.readInt();
+                int y = oi.readInt();
+                listPointDispo.add(new Point(x,y));
             }
 
             /*On récupère la liste des points occuper*/
             int tailleListePointOccupe = oi.readInt();
             for (int i = 0; i < tailleListePointOccupe; i++) {
-                listPointOccupe.add((Point)oi.readObject());
+                int x = oi.readInt();
+                int y = oi.readInt();
+                listPointOccupe.add(new Point(x,y));
             }
 
             /*On récupère la defausse*/
@@ -84,12 +89,15 @@ public class VueMultiJoueurs extends Parent {
         int WIDTH = 1000;
         int HEIGHT = 700;
         PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
-        FenetreJeu fenetreJeu = new FenetreJeu(this, WIDTH, HEIGHT, popUpPartisan);
-        root.getChildren().add(fenetreJeu);
+        //FenetreJeu fenetreJeu = new FenetreJeu(this, WIDTH, HEIGHT, popUpPartisan);
+        //root.getChildren().add(fenetreJeu);
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
+        ThreadActualisationClient threadActualisationClient = new ThreadActualisationClient(this);
     }
 
-    public void actualiserTourSuivant() {
+    public void actualiserTourSuivant(String nomJoueurCourant1, Carte carteCourante1) {
+        nomJoueurCourant = nomJoueurCourant1;
+        carteCourante = carteCourante1;
     }
 
     public void actualiserPoserCarte() {

@@ -2,7 +2,7 @@ package Jeu.MultiJoueur.Controller;
 
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.View.FenetreJeu;
-import Jeu.VueMultiJoueurs;
+import Jeu.MultiJoueur.View.VueMultiJoueurs;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 

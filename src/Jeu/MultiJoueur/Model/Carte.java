@@ -1,9 +1,10 @@
 package Jeu.MultiJoueur.Model;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Carte {
+public class Carte implements Serializable, Cloneable {
     private Point position; // Position de la carte
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
@@ -63,6 +64,11 @@ public class Carte {
             }
         }
         zonesControlleesParLesPoints=newZonesControlleesParLesPoints;
+    }
+
+    @Override
+    public Carte clone() throws CloneNotSupportedException {
+        return (Carte)super.clone();
     }
 
     public Point getPosition() { return position; }

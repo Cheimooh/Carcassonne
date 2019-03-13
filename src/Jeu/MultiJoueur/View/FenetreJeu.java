@@ -17,16 +17,13 @@ package Jeu.MultiJoueur.View;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.CartePosee;
 import Jeu.MultiJoueur.Controller.ControlMouse;
-import Jeu.VueMultiJoueurs;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
-import java.awt.*;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 
 public class FenetreJeu extends Parent {
     private static PlaceDispo placeDispo;

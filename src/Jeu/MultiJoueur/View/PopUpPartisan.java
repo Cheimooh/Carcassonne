@@ -17,9 +17,9 @@ public class PopUpPartisan {
     private ControlMousePartisan controlMousePartisan;
 
     public PopUpPartisan(Stage primaryStage){
-        popup = new Stage();
+        //popup = new Stage();
         this.primaryStage = primaryStage;
-        initPopup();
+        //initPopup();
     }
 
     private void initPopup(){
@@ -46,7 +46,7 @@ public class PopUpPartisan {
 
     public void lierControl(FenetreJeu fenetreJeu){
         //controlMousePartisan = new ControlMousePartisan(fenetreJeu);
-        pane.setOnMouseClicked(controlMousePartisan);
+        //pane.setOnMouseClicked(controlMousePartisan);
     }
 
     public void quitter() {

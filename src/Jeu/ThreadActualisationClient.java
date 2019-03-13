@@ -3,6 +3,7 @@ package Jeu;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.CartePosee;
 import Jeu.MultiJoueur.Model.SocketJoueur;
+import Jeu.MultiJoueur.View.VueMultiJoueurs;
 
 import java.awt.*;
 import java.io.IOException;
@@ -39,9 +40,9 @@ public class ThreadActualisationClient {
                 if (test.equals("actualise")) {
                     test = (String) oi.readObject();
                     if(test.equals("tourSuivant")){
-                        /*Recup nom joueur courant*/
-                        /*Recup carte courante*/
-                        vueMultiJoueurs.actualiserTourSuivant();
+                        String nomJoueurCourant = (String) oi.readObject();
+                        Carte carteCourante = (Carte) oi.readObject();
+                        vueMultiJoueurs.actualiserTourSuivant(nomJoueurCourant, carteCourante);
                     }
                     if (test.equals("poserCarte")){
                         vueMultiJoueurs.actualiserPoserCarte();

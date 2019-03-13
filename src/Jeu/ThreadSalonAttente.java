@@ -36,12 +36,9 @@ public class ThreadSalonAttente {
                         for (int i = 0; i < nombreJoueur; i++) {
                             Joueur joueur = (Joueur) oi.readObject();
                             System.out.println(joueur.isPret());
-                            menu.getListJoueurs().add(joueur); // Bug -> Reception d'un joueur pas pret obligatoirement sauf le 1er
+                            menu.getListJoueurs().add(joueur);
                         }
                         menu.actualiser();
-                    }
-                    else if (test.equals("quitter")){
-                        arreter();
                     }else if (test.equals("startPartie")){
                         arreter();
                         menu.startPartie();
