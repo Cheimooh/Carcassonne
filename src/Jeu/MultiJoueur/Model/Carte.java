@@ -1,6 +1,5 @@
 package Jeu.MultiJoueur.Model;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -41,13 +40,8 @@ public class Carte implements Serializable, Cloneable {
         this.sud=lastEst;
         this.ouest=lastSud;
         ArrayList<Point> newCoordonnees = new ArrayList<>();
-        double x;
-        double y;
         for (Point positionsCoordonnee : positionsCoordonnees) {
-            x = 50 - positionsCoordonnee.getY();
-            y = positionsCoordonnee.getX();
-            Point point = new Point((int) x, (int) y);
-            newCoordonnees.add(point);
+            newCoordonnees.add(positionsCoordonnee);
         }
         positionsCoordonnees=newCoordonnees;
 

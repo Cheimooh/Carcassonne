@@ -1,6 +1,5 @@
 package Jeu.MultiJoueur.Model;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public enum TypeCarte {

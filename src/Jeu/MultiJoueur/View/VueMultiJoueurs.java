@@ -3,6 +3,7 @@ package Jeu.MultiJoueur.View;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.CartePosee;
+import Jeu.MultiJoueur.Model.Point;
 import Jeu.MultiJoueur.Model.SocketJoueur;
 import Jeu.ThreadActualisationClient;
 import javafx.scene.Group;
@@ -11,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -47,9 +47,7 @@ public class VueMultiJoueurs extends Parent {
             /*On récupère la map point carte*/
             int tailleMap = oi.readInt();
             for (int i = 0; i < tailleMap; i++) {
-                int x = oi.readInt();
-                int y = oi.readInt();
-                Point point = new Point(x,y);
+                Point point = (Point) oi.readObject();
                 CartePosee cartePosee = (CartePosee) oi.readObject();
                 pointCarteMap.put(point,cartePosee);
             }

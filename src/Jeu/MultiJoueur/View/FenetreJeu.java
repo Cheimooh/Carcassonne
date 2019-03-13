@@ -14,8 +14,7 @@
 * */
 package Jeu.MultiJoueur.View;
 
-import Jeu.MultiJoueur.Model.Carte;
-import Jeu.MultiJoueur.Model.CartePosee;
+import Jeu.MultiJoueur.Model.*;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -75,9 +74,9 @@ public class FenetreJeu extends Parent {
         vueMultiJoueurs.getListPointOccupe().add(cartePosee.getPosition());
         vueMultiJoueurs.getPointCarteMap().put(carte.getPosition(), cartePosee);
         //Image de la carte
-        Image image = cartePosee.getImageCarte();
-        int x = (int) cartePosee.getPosition().getX();
-        int y = (int) cartePosee.getPosition().getY();
+        Image image = new Image(cartePosee.getImageCarte());
+        int x = cartePosee.getPosition().getX();
+        int y = cartePosee.getPosition().getY();
 
 
         //Supression de l'emplacement de la carte dans la liste des emplacements disponibles

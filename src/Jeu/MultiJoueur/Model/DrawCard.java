@@ -2,7 +2,7 @@ package Jeu.MultiJoueur.Model;
 
 import java.io.Serializable;
 
-public class DrawCard implements Serializable, Cloneable {
+public class DrawCard implements Serializable{
     private String path; // Lien de l'image non tournée
     private String path90; // Lien de l'image tournée à 90 degrés
     private String path180; // Lien de l'image tournée à 180 degrés
@@ -13,11 +13,6 @@ public class DrawCard implements Serializable, Cloneable {
         this.path90 = path90;
         this.path180 = path180;
         this.path270 = path270;
-    }
-
-    @Override
-    public DrawCard clone() throws CloneNotSupportedException {
-        return (DrawCard) super.clone();
     }
 
     public String getPath() { return path; }

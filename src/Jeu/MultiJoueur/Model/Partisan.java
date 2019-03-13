@@ -8,9 +8,9 @@ public class Partisan {
     private boolean isPlacer;
     private int numZone; // -1 si non Placer
     private Point pointPlacementCarte;
-    private Color colorPartisan;
+    private String colorPartisan;
 
-    public Partisan(Color colorPartisan) {
+    public Partisan(String colorPartisan) {
         this.colorPartisan = colorPartisan;
         pointPlacementCarte = new Point();
         isPlacer = false;

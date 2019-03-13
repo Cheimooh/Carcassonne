@@ -39,7 +39,7 @@ public class Joueur implements Serializable, Cloneable {
     public void placerPartisan(CartePosee cartePosee, int numZone) {
         if(nombrePartisansRestants>0) {
             nombrePartisansRestants--;
-            tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
+            tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().getX(), cartePosee.getPosition().getY(), numZone);
         }
     }
 

@@ -1,10 +1,6 @@
 package Jeu.MultiJoueur.Model;
 
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +13,9 @@ public class CartePosee {
     private Point position;
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
-    private Image imageCarte;
+    private String imageCarte;
     private ArrayList<CoteCarte> listeZones;
-    private Map<Integer, Color> zonesCouleurPartisan;
+    private Map<Integer, String> zonesCouleurPartisan;
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
     private String type;
@@ -63,20 +59,20 @@ public class CartePosee {
         }
     }
 
-    private Image setImageCarte(Carte carte){
-        Image image;
+    private String setImageCarte(Carte carte){
+        String image;
         switch (carte.getNbRotation()){
             case 0:
-                image = new Image(carte.getDraw().getPath());
+                image = carte.getDraw().getPath();
                 break;
             case 1:
-                image = new Image(carte.getDraw().getPath90());
+                image = carte.getDraw().getPath90();
                 break;
             case 2:
-                image = new Image(carte.getDraw().getPath180());
+                image = carte.getDraw().getPath180();
                 break;
             case 3:
-                image = new Image(carte.getDraw().getPath270());
+                image = carte.getDraw().getPath270();
                 break;
             default:
                 image=null;
@@ -84,7 +80,7 @@ public class CartePosee {
         return image;
     }
 
-    public void addZonesOccupees(int numZone, Color couleurJoueur) {
+    public void addZonesOccupees(int numZone, String couleurJoueur) {
 
         for (int i = 0; i < zonesControlleesParLesPoints.length ; i++) {
             if (i==numZone) {
@@ -105,11 +101,11 @@ public class CartePosee {
 
     public CoteCarte getOuest() { return ouest; }
 
-    public Image getImageCarte() { return imageCarte; }
+    public String getImageCarte() { return imageCarte; }
 
-    public Map<Integer, Color> getZonesCouleurPartisan() { return zonesCouleurPartisan; }
+    public Map<Integer, String> getZonesCouleurPartisan() { return zonesCouleurPartisan; }
 
-    public void setZonesCouleurPartisan(Map<Integer, Color> zonesCouleurPartisan) { this.zonesCouleurPartisan = zonesCouleurPartisan; }
+    public void setZonesCouleurPartisan(Map<Integer, String> zonesCouleurPartisan) { this.zonesCouleurPartisan = zonesCouleurPartisan; }
 
     public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
 

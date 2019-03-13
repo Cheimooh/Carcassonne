@@ -2,7 +2,6 @@ package Jeu.MultiJoueur.Model;
 
 import Jeu.Exception.PiocheVideException;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -272,8 +271,8 @@ public class Carcassonne {
         int x;
         int y;
         for (Point pointDispo : listPointDispo) {
-            x = pointDispo.x;
-            y = pointDispo.y;
+            x = pointDispo.getX();
+            y = pointDispo.getY();
             for (int j = 0; j < 4; j++) {
                 isDefau = isPlacable(x, y);
                 carteCourante.pivoter();
