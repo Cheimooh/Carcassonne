@@ -32,6 +32,8 @@ public class Carcassonne {
 
     private boolean isPartieCommencer;
 
+    private boolean isEnvoyer;
+
     public Carcassonne(ServerSocket serverSocket){
         //Instanciation pour le model du jeu
         pointCarteMap = new HashMap<>();
@@ -41,6 +43,8 @@ public class Carcassonne {
 
         pioche = new Pioche();
         carteDeBase = new Carte(TypeCarte.carteVCPC);
+
+        isEnvoyer = true;
 
         //Instantiation pour le serveur
         this.serverSocket = serverSocket;
@@ -103,6 +107,7 @@ public class Carcassonne {
 
     public void miseAJourJoueur(){
         Socket sock = null;
+        isEnvoyer = false;
         try {
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectInputStream oi = listSocket.get(i).getOi();
@@ -123,12 +128,16 @@ public class Carcassonne {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+        isEnvoyer = true;
     }
 
     private void debutPartie() {
         isPartieCommencer = true;
         nbJoueur = listJoueur.size();
         try {
+            while(!isEnvoyer){
+                continue;
+            }
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectInputStream oi = listSocket.get(i).getOi();
                 ObjectOutputStream oo = listSocket.get(i).getOo();
