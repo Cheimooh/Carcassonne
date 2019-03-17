@@ -56,6 +56,7 @@ public class MenuReseau extends Parent {
     private HBox hBoxButtons;
     private boolean nomJoueursCorrect;
     private ThreadSalonAttente salonAttente;
+    private boolean startPartie = false;
 
     public MenuReseau(Stage primaryStage) {
         nombreJoueur = 0;
@@ -64,10 +65,17 @@ public class MenuReseau extends Parent {
         listHBoxElement = new ArrayList<>();
         nomJoueursCorrect = true;
         this.primaryStage = primaryStage;
+        jeuInternet();
+        System.out.println("on lance la boucle while");
+        while (!startPartie){
+            continue;
+        }
+        startPartie();
     }
 
     public void jeuInternet() {
         try {
+            System.out.println("test");
             //Socket sock = new Socket("62.39.234.71", 3333);
             Socket sock = new Socket("localhost", 3333);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
@@ -374,5 +382,9 @@ public class MenuReseau extends Parent {
 
     public void setListColorJoueursReseau(ArrayList<Color> listColorJoueursReseau) {
         this.listColorJoueursReseau = listColorJoueursReseau;
+    }
+
+    public void setStartPartie(boolean startPartie) {
+        this.startPartie = startPartie;
     }
 }

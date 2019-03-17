@@ -24,13 +24,6 @@ public class Appli extends Application {
         VBox boutonsMenu = new VBox(10);
         boutonsMenu.setAlignment(Pos.CENTER);
         Button jouer = new Button("Jouer");
-        jouer.setStyle("-fx-background-color:\n" +
-                "        linear-gradient(blue, dodgerblue),\n" +
-                "        radial-gradient(center 50% -40%, radius 200%, blue 45%, dodgerblue 50%);\n" +
-                "    -fx-background-radius: 6, 5;\n" +
-                "    -fx-background-insets: 0, 1;\n" +
-                "    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );\n" +
-                "    -fx-text-fill: black;");
         Button quitter = new Button("Quitter");
         quitter.setStyle("    -fx-background-radius: 6, 5;\n");
         boutonsMenu.getChildren().addAll(jouer, quitter);
@@ -57,7 +50,7 @@ public class Appli extends Application {
     }
 
     private void jeuInternet() {
-        new MenuReseau(primaryStage).jeuInternet();
+        new MenuReseau(primaryStage);
     }
 
     public static void main(String[] args) {

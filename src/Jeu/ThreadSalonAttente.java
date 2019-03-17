@@ -41,7 +41,7 @@ public class ThreadSalonAttente {
                         menu.actualiser();
                     }else if (test.equals("startPartie")){
                         arreter();
-                        menu.startPartie();
+                        menu.setStartPartie(true);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
