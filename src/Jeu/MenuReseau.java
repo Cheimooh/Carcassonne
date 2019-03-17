@@ -57,6 +57,9 @@ public class MenuReseau extends Parent {
     private HBox hBoxTitres;
     private HBox hBoxButtons;
     private boolean nomJoueursCorrect;
+
+    // variable pour le jeu
+
     private ThreadSalonAttente salonAttente;
     private Map<Point, CartePosee> pointCarteMap;
     private List<Point> listPointDispo;
@@ -416,7 +419,7 @@ public class MenuReseau extends Parent {
         PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
         //FenetreJeu fenetreJeu = new FenetreJeu(this, WIDTH, HEIGHT, popUpPartisan);
         //root.getChildren().add(fenetreJeu);
-        primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
+        Platform.runLater(() -> primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY) ));
     }
 
     public SocketJoueur getSocketJoueur() {
@@ -438,5 +441,4 @@ public class MenuReseau extends Parent {
     public void setListColorJoueursReseau(ArrayList<Color> listColorJoueursReseau) {
         this.listColorJoueursReseau = listColorJoueursReseau;
     }
-
 }

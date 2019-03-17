@@ -50,9 +50,6 @@ public class FenetreJeu extends Parent {
         barreInfos = new BarreInfos(width, 100, this);
         drawFond(width,height);
 
-        placeDispo = new PlaceDispo();
-        queueImage = new ArrayDeque<>();
-        placerCarte(vueMultiJoueurs.getCarteCourante());
         //barreInfos.afficherCarteSuivante();
         this.getChildren().addAll(canvas, barreInfos.getCanvasInfos());
     }

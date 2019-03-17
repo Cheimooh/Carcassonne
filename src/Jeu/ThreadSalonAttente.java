@@ -1,5 +1,6 @@
 package Jeu;
 
+import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.Joueur;
 import Jeu.MultiJoueur.Model.SocketJoueur;
 
@@ -39,8 +40,29 @@ public class ThreadSalonAttente {
                             menu.getListJoueurs().add(joueur);
                         }
                         menu.actualiser();
-                    }else if (test.equals("startPartie")){
-                        arreter();
+                    }
+                    else if (test.equals("startPartie")){
+                        menu.startPartie();
+                    }
+                    else if (test.equals("actualise")) {
+                        test = (String) oi.readObject();
+                        if(test.equals("tourSuivant")){
+                            String nomJoueurCourant = (String) oi.readObject();
+                            Carte carteCourante = (Carte) oi.readObject();
+                            //menu.actualiserTourSuivant(nomJoueurCourant, carteCourante);
+                        }
+                        if (test.equals("poserCarte")){
+                            //menu.actualiserPoserCarte();
+                        }
+                        if (test.equals("defausse")){
+                            //menu.actualiserDefausse();
+                        }
+                        if (test.equals("poserPartisant")){
+                            //menu.actualiserPoserPartisant();
+                        }
+                    }
+                    else if (test.equals("erreur")) {
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

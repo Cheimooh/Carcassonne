@@ -1,11 +1,9 @@
 package Jeu.MultiJoueur.View;
 
-import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.CartePosee;
 import Jeu.MultiJoueur.Model.Point;
 import Jeu.MultiJoueur.Model.SocketJoueur;
-import Jeu.ThreadActualisationClient;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,6 +37,18 @@ public class VueMultiJoueurs extends Parent {
         defausse = new ArrayList<Carte>();
         this.socketJoueur = socketJoueur;
         initialiser();
+    }
+
+
+
+    private void afficherFenetreJeu() {
+        Group root = new Group();
+        int WIDTH = 1000;
+        int HEIGHT = 700;
+        PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
+        //FenetreJeu fenetreJeu = new FenetreJeu(this, WIDTH, HEIGHT, popUpPartisan);
+        //root.getChildren().add(fenetreJeu);
+        primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
     }
 
     public void initialiser(){
@@ -80,17 +90,6 @@ public class VueMultiJoueurs extends Parent {
             e.printStackTrace();
         }
         afficherFenetreJeu();
-    }
-
-    private void afficherFenetreJeu() {
-        Group root = new Group();
-        int WIDTH = 1000;
-        int HEIGHT = 700;
-        PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
-        //FenetreJeu fenetreJeu = new FenetreJeu(this, WIDTH, HEIGHT, popUpPartisan);
-        //root.getChildren().add(fenetreJeu);
-        primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
-        ThreadActualisationClient threadActualisationClient = new ThreadActualisationClient(this);
     }
 
     public void actualiserTourSuivant(String nomJoueurCourant1, Carte carteCourante1) {
