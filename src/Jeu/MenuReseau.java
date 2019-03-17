@@ -1,10 +1,10 @@
 package Jeu;
 
-import Jeu.MultiJoueur.Model.Joueur;
-import Jeu.MultiJoueur.Model.SocketJoueur;
-import Jeu.MultiJoueur.View.VueMultiJoueurs;
+import Jeu.MultiJoueur.Model.*;
+import Jeu.MultiJoueur.View.PopUpPartisan;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,7 +24,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MenuReseau extends Parent {
     private Stage primaryStage;
@@ -32,7 +34,7 @@ public class MenuReseau extends Parent {
     private SocketJoueur socketJoueur;
     private List<Joueur> listJoueurs;
     private List<Color> listColorJoueursReseau;
-    private String nomJoueurTmpReseau;
+    private String nomJoueur;
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -56,7 +58,10 @@ public class MenuReseau extends Parent {
     private HBox hBoxButtons;
     private boolean nomJoueursCorrect;
     private ThreadSalonAttente salonAttente;
-    private boolean startPartie = false;
+    private Map<Point, CartePosee> pointCarteMap;
+    private List<Point> listPointDispo;
+    private List<Point> listPointOccupe;
+    private List<Carte> defausse;
 
     public MenuReseau(Stage primaryStage) {
         nombreJoueur = 0;
@@ -66,11 +71,6 @@ public class MenuReseau extends Parent {
         nomJoueursCorrect = true;
         this.primaryStage = primaryStage;
         jeuInternet();
-        System.out.println("on lance la boucle while");
-        while (!startPartie){
-            continue;
-        }
-        startPartie();
     }
 
     public void jeuInternet() {
@@ -172,7 +172,7 @@ public class MenuReseau extends Parent {
         Button b_suivant = new Button("Suivant");
         b_suivant.setOnAction(event -> {
             couleurJoueurTmp = recupColorsToggle(toggleGroup.getSelectedToggle());
-            nomJoueurTmpReseau = tNom.getText();
+            nomJoueur = tNom.getText();
             verifJoueurReseau();
         });
 
@@ -189,7 +189,7 @@ public class MenuReseau extends Parent {
     }
 
     private void verifJoueurReseau() {
-        if(!(nomJoueurTmpReseau.length() > 0 && nomJoueurTmpReseau.length() <= 16)){
+        if(!(nomJoueur.length() > 0 && nomJoueur.length() <= 16)){
             nomJoueursCorrect = false;
         }
         if(couleurJoueurTmp == null){
@@ -199,7 +199,7 @@ public class MenuReseau extends Parent {
             inscriptionJoueurReseau();
         }
         else{
-            listJoueurs.add(new Joueur(nomJoueurTmpReseau, tradColorsToString(couleurJoueurTmp)));
+            listJoueurs.add(new Joueur(nomJoueur, tradColorsToString(couleurJoueurTmp)));
             nombreJoueur++;
             transmitInfoServeur();
         }
@@ -361,7 +361,62 @@ public class MenuReseau extends Parent {
     }
 
     public void startPartie(){
-        new VueMultiJoueurs(primaryStage, socketJoueur, nomJoueurTmpReseau);
+        pointCarteMap = new HashMap<>();
+        listPointDispo = new ArrayList<Point>();
+        listPointOccupe = new ArrayList<Point>();
+        defausse = new ArrayList<Carte>();
+        initialiser();
+    }
+
+    private void initialiser() {
+        ObjectInputStream oi = socketJoueur.getOi();
+        try {
+            /*On récupère la map point carte*/
+            int tailleMap = oi.readInt();
+            for (int i = 0; i < tailleMap; i++) {
+                Point point = (Point) oi.readObject();
+                CartePosee cartePosee = (CartePosee) oi.readObject();
+                pointCarteMap.put(point,cartePosee);
+            }
+
+            /*On récupère la liste des points disponible*/
+            int tailleListePointDispo = oi.readInt();
+            for (int i = 0; i < tailleListePointDispo; i++) {
+                int x = oi.readInt();
+                int y = oi.readInt();
+                listPointDispo.add(new Point(x,y));
+            }
+
+            /*On récupère la liste des points occuper*/
+            int tailleListePointOccupe = oi.readInt();
+            for (int i = 0; i < tailleListePointOccupe; i++) {
+                int x = oi.readInt();
+                int y = oi.readInt();
+                listPointOccupe.add(new Point(x,y));
+            }
+
+            /*On récupère la defausse*/
+            int tailleDefausse = oi.readInt();
+            for (int i = 0; i < tailleDefausse; i++) {
+                defausse.add((Carte)oi.readObject());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        afficherFenetreJeu();
+    }
+
+    private void afficherFenetreJeu() {
+        Group root = new Group();
+        int WIDTH = 1000;
+        int HEIGHT = 700;
+        PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
+        //FenetreJeu fenetreJeu = new FenetreJeu(this, WIDTH, HEIGHT, popUpPartisan);
+        //root.getChildren().add(fenetreJeu);
+        primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY));
     }
 
     public SocketJoueur getSocketJoueur() {
@@ -384,7 +439,4 @@ public class MenuReseau extends Parent {
         this.listColorJoueursReseau = listColorJoueursReseau;
     }
 
-    public void setStartPartie(boolean startPartie) {
-        this.startPartie = startPartie;
-    }
 }
