@@ -7,6 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,6 +37,11 @@ public class MenuReseau extends Parent {
     private List<Joueur> listJoueurs;
     private List<Color> listColorJoueursReseau;
     private String nomJoueur;
+    private Carte carteCourante;
+
+    /*
+    * Elements affichage fenetre instanciation du jeu (connexion au serveur + choix couleur+nom + salonAttente
+    * */
 
     //les boutton radio de la fenetre de selection des couleurs
     private RadioButton t_rouge = new RadioButton();
@@ -65,6 +72,15 @@ public class MenuReseau extends Parent {
     private List<Point> listPointDispo;
     private List<Point> listPointOccupe;
     private List<Carte> defausse;
+
+    /*
+    * Affichage fenetre Jeu après startPartie
+    * */
+
+    private GraphicsContext graphicsContext;
+    private int[] tabDefausseCarte;
+    private GraphicsContext graphicsContextInfos;
+    private Canvas canvasInfos;
 
     public MenuReseau(Stage primaryStage) {
         nombreJoueur = 0;
@@ -414,12 +430,50 @@ public class MenuReseau extends Parent {
 
     private void afficherFenetreJeu() {
         Group root = new Group();
-        int WIDTH = 1000;
-        int HEIGHT = 700;
+        int width = 1000;
+        int height = 700;
         PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
-        //FenetreJeu fenetreJeu = new FenetreJeu(this, WIDTH, HEIGHT, popUpPartisan);
-        //root.getChildren().add(fenetreJeu);
-        Platform.runLater(() -> primaryStage.setScene(new Scene(root, WIDTH, HEIGHT, Color.LIGHTGREY) ));
+        //voir barre infos pour affichage
+
+        Canvas canvas = new Canvas(143*50, 143*50);
+        graphicsContext = canvas.getGraphicsContext2D();
+
+        Image image = new Image("Jeu/fond2.jpg");
+        graphicsContext.drawImage(image,0,100,width,height);
+        image = new Image("Jeu/fond.jpg");
+        graphicsContext.drawImage(image,0,0,width,100);
+
+        tabDefausseCarte = new int[]{750, 35, 180, 30};
+        canvasInfos = new Canvas(width, height);
+        //canvasInfos.setOnMouseClicked(controlMouseInfos);
+        graphicsContextInfos = canvasInfos.getGraphicsContext2D();
+        graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
+        graphicsContextInfos.clearRect(0,0,width,100);
+        graphicsContextInfos.setFill(Color.BLACK);
+        graphicsContextInfos.moveTo(0,height);
+        graphicsContextInfos.lineTo(width,height);
+        graphicsContextInfos.stroke();
+        String s;
+        /*graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 30, 50, 50);
+
+        int numJoueur = carcassonne.getNumJoueur();
+        s = "Joueur " + numJoueur;
+        s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
+
+        String defausse = "Defausser ma carte";
+        String voirDefausse = "Défausse";
+
+        graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width/7., 35, 100, 30);
+        //Affichage du "bouton" pour défausser une carte
+        drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
+
+        graphicsContextInfos.strokeText(s, (width/2.), 15);*/
+
+        root.getChildren().addAll(canvas, canvasInfos);
+        Platform.runLater(() -> primaryStage.setScene(new Scene(root, width, height, Color.LIGHTGREY) ));
     }
 
     public SocketJoueur getSocketJoueur() {

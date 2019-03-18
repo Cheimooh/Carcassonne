@@ -52,6 +52,7 @@ public class FenetreJeu extends Parent {
 
         //barreInfos.afficherCarteSuivante();
         this.getChildren().addAll(canvas, barreInfos.getCanvasInfos());
+
     }
 
     private void drawFond(int width, int height){
