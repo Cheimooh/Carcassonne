@@ -12,8 +12,10 @@ public class Carte implements Serializable, Cloneable {
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
     private String type;
+    private String path;
 
     public Carte(TypeCarte typeCarte){
+        this.path = typeCarte.getPath();
         this.type = typeCarte.getTypeCarte();
         this.nord = typeCarte.getNord();
         this.sud = typeCarte.getSud();
@@ -92,4 +94,6 @@ public class Carte implements Serializable, Cloneable {
     public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
 
     public String getType() { return type; }
+
+    public String getPath() {return path;}
 }

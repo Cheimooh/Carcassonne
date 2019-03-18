@@ -1,6 +1,7 @@
 package Jeu;
 
 import Jeu.MultiJoueur.Model.*;
+import Jeu.MultiJoueur.View.PlaceDispo;
 import Jeu.MultiJoueur.View.PopUpPartisan;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -20,15 +21,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MenuReseau extends Parent {
     private Stage primaryStage;
@@ -81,6 +78,11 @@ public class MenuReseau extends Parent {
     private int[] tabDefausseCarte;
     private GraphicsContext graphicsContextInfos;
     private Canvas canvasInfos;
+    private PlaceDispo placeDispo;
+    private ArrayDeque<Image> queueImage;
+    private CartePosee derniereCartePosee;
+    int width = 1000;
+    int height = 700;
 
     public MenuReseau(Stage primaryStage) {
         nombreJoueur = 0;
@@ -430,35 +432,59 @@ public class MenuReseau extends Parent {
 
     private void afficherFenetreJeu() {
         Group root = new Group();
-        int width = 1000;
-        int height = 700;
         PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
         //voir barre infos pour affichage
 
         Canvas canvas = new Canvas(143*50, 143*50);
         graphicsContext = canvas.getGraphicsContext2D();
 
+        //Le fond
         Image image = new Image("Jeu/fond2.jpg");
         graphicsContext.drawImage(image,0,100,width,height);
         image = new Image("Jeu/fond.jpg");
         graphicsContext.drawImage(image,0,0,width,100);
 
+        //barreInfos
+        barreInfos();
+        drawInformationsCarte();
+
+        //fenetreJeu
+        placeDispo = new PlaceDispo();
+        queueImage = new ArrayDeque<>();
+        placerCarte(new Carte(TypeCarte.carteVCPC));
+
+
+        root.getChildren().addAll(canvas, canvasInfos);
+        Platform.runLater(() -> primaryStage.setScene(new Scene(root, width, height, Color.LIGHTGREY) ));
+    }
+
+    private void barreInfos() {
         tabDefausseCarte = new int[]{750, 35, 180, 30};
         canvasInfos = new Canvas(width, height);
+        //controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
         //canvasInfos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = canvasInfos.getGraphicsContext2D();
         graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
+    }
+
+    /*
+     * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
+     */
+    public void drawInformationsCarte(){
+        //controlMouseInfos.setMode(0);
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
-        graphicsContextInfos.moveTo(0,height);
-        graphicsContextInfos.lineTo(width,height);
-        graphicsContextInfos.stroke();
-        String s;
-        /*graphicsContextInfos.drawImage(prochaineCarte, (width/2.), 30, 50, 50);
+        drawLigneSeparatrice();
 
-        int numJoueur = carcassonne.getNumJoueur();
+        String s;
+
+        carteCourante = new Carte(TypeCarte.cartePPPP);
+        graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width/2.), 30, 50, 50);
+
+        int numJoueur = 1;
+        //carcassonne.getNumJoueur();
         s = "Joueur " + numJoueur;
-        s += " : " + carcassonne.getTabJoueur()[numJoueur - 1].getNom();
+        s += " : " + nomJoueur;
 
         String defausse = "Defausser ma carte";
         String voirDefausse = "Défausse";
@@ -470,10 +496,70 @@ public class MenuReseau extends Parent {
         //Affichage du "bouton" pour défausser une carte
         drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
 
-        graphicsContextInfos.strokeText(s, (width/2.), 15);*/
+        graphicsContextInfos.strokeText(s, (width/2.), 15);
+    }
 
-        root.getChildren().addAll(canvas, canvasInfos);
-        Platform.runLater(() -> primaryStage.setScene(new Scene(root, width, height, Color.LIGHTGREY) ));
+    private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {
+        graphicsContextInfos.fillRoundRect(x,y, largeur,hauteur,20,20);
+        graphicsContextInfos.strokeText(texte, x+20,y+17);
+    }
+
+    /*
+     * Dessine la ligne séparatrice entre la fenêtre de jeu et la barre d'canvasInfos
+     */
+    private void drawLigneSeparatrice() {
+        graphicsContextInfos.moveTo(0,height);
+        graphicsContextInfos.lineTo(width,height);
+        graphicsContextInfos.stroke();
+    }
+
+    /*
+     * Permet de placer une carte sur la fenêtre de jeu
+     */
+    public void placerCarte(Carte carte){
+        //Ajout de la carte à la liste des cartes déjà posée
+        CartePosee cartePosee = new CartePosee(carte);
+        derniereCartePosee=cartePosee;
+        listPointOccupe.add(cartePosee.getPosition());
+        pointCarteMap.put(carte.getPosition(),cartePosee);
+        //Image de la carte
+        Image image = new Image(cartePosee.getImageCarte());
+
+        int x = (int) cartePosee.getPosition().getX();
+        int y = (int) cartePosee.getPosition().getY();
+
+        //Permet de tester si l'on doit rajouter des emplacements disponibles ou non
+        java.awt.Point p = new java.awt.Point(x+1,y);
+        testLDispo(p);
+        p.setLocation(x-1,y);
+        testLDispo(p);
+        p.setLocation(x,y+1);
+        testLDispo(p);
+        p.setLocation(x,y-1);
+        testLDispo(p);
+
+        //Supression de l'emplacement de la carte dans la liste des emplacements disponibles
+        listPointDispo.remove(cartePosee.getPosition());
+        //Dessine l'image sur la fenêtre de jeu
+        graphicsContext.drawImage(image, x*50,y*50, 50, 50);
+        Carte carteDeBase = new Carte(TypeCarte.carteVCPC);
+        if(carte!=carteDeBase) {
+            //drawInformationsPartisans();
+        }
+    }
+
+    /*
+     * Test si l'on doit ajouter ou non des emplacements disponibles
+     * Permet également de les ajouter
+     */
+    private void testLDispo(java.awt.Point p){
+        ArrayList<java.awt.Point> lDispo = (ArrayList)listPointDispo;
+        ArrayList<java.awt.Point> lOccupee = (ArrayList)listPointOccupe;
+        if ( !lDispo.contains(p) && !lOccupee.contains(p)) {
+            lDispo.add(new java.awt.Point((int)p.getX(), (int)p.getY()));
+            queueImage.addLast(placeDispo.getImagePlus());
+            graphicsContext.drawImage(queueImage.getLast(),(int)p.getX()*50, (int)p.getY()*50, 50, 50);
+        }
     }
 
     public SocketJoueur getSocketJoueur() {
@@ -486,13 +572,5 @@ public class MenuReseau extends Parent {
 
     public void setNombreJoueur(int nombreJoueur) {
         this.nombreJoueur = nombreJoueur;
-    }
-
-    public List<Color> getListColorJoueursReseau() {
-        return listColorJoueursReseau;
-    }
-
-    public void setListColorJoueursReseau(ArrayList<Color> listColorJoueursReseau) {
-        this.listColorJoueursReseau = listColorJoueursReseau;
     }
 }
