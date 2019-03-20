@@ -1,8 +1,7 @@
 package Jeu.MultiJoueur.Controller;
 
+import Jeu.MenuReseau;
 import Jeu.MultiJoueur.Model.Carte;
-import Jeu.View.FenetreJeu;
-import Jeu.MultiJoueur.View.VueMultiJoueurs;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -13,13 +12,12 @@ import java.io.ObjectOutputStream;
 
 public class ControlMouse implements EventHandler<MouseEvent> {
 
-    private FenetreJeu fenetreJeu;
-    private VueMultiJoueurs vueMultiJoueurs;
+    private MenuReseau menuReseau;
     private Carte carteEnMain;
     private int mode; // 0 placement de carte
 
-    public ControlMouse(VueMultiJoueurs vueMultiJoueurs1){
-        vueMultiJoueurs = vueMultiJoueurs1;
+    public ControlMouse(MenuReseau menuReseau1){
+        menuReseau = menuReseau1;
         this.mode=0;
     }
 
@@ -35,8 +33,8 @@ public class ControlMouse implements EventHandler<MouseEvent> {
      * Si l'on doit placer une carte sur la fenêtre, on appelle cette fonction
      */
     private void placerCarte(MouseEvent event){
-        ObjectOutputStream oo = vueMultiJoueurs.getSocketJoueur().getOo();
-        ObjectInputStream oi = vueMultiJoueurs.getSocketJoueur().getOi();
+        ObjectOutputStream oo = menuReseau.getSocketJoueur().getOo();
+        ObjectInputStream oi = menuReseau.getSocketJoueur().getOi();
         // Position x de la dernière carte placée
         int xCartePlacee = (int) event.getX() / 50;
         // Position y de la dernière carte placée
@@ -50,7 +48,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             if (test.equals("erreur")){
 
             }else{
-                vueMultiJoueurs.actualiserPoserCarte();
+                menuReseau.actualiserPoserCarte();
                 oo.writeObject("j'envoie");
                 oo.writeObject("tourSuivant");
             }
@@ -67,5 +65,5 @@ public class ControlMouse implements EventHandler<MouseEvent> {
 
     public void setMode(int mode) { this.mode = mode; }
 
-    public FenetreJeu getFenetreJeu() { return fenetreJeu; }
+    public MenuReseau getMenuReseau() {return menuReseau;}
 }

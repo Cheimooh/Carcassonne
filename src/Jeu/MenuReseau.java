@@ -1,5 +1,7 @@
 package Jeu;
 
+import Jeu.MultiJoueur.Controller.ControlMouseInfos;
+import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Model.*;
 import Jeu.MultiJoueur.View.PlaceDispo;
 import Jeu.MultiJoueur.View.PopUpPartisan;
@@ -83,6 +85,8 @@ public class MenuReseau extends Parent {
     private CartePosee derniereCartePosee;
     int width = 1000;
     int height = 700;
+    private ControlMouse controlMouse;
+    private ControlMouseInfos controlMouseInfos;
 
     public MenuReseau(Stage primaryStage) {
         nombreJoueur = 0;
@@ -97,7 +101,7 @@ public class MenuReseau extends Parent {
     public void jeuInternet() {
         try {
             System.out.println("test");
-            //Socket sock = new Socket("62.39.234.71", 3333);
+            //Socket sock = new Socket("86.77.97.239", 3333);
             Socket sock = new Socket("localhost", 3333);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
@@ -436,6 +440,8 @@ public class MenuReseau extends Parent {
         //voir barre infos pour affichage
 
         Canvas canvas = new Canvas(143*50, 143*50);
+        controlMouse = new ControlMouse(this);
+        canvas.setOnMouseClicked(controlMouse);
         graphicsContext = canvas.getGraphicsContext2D();
 
         //Le fond
@@ -451,7 +457,9 @@ public class MenuReseau extends Parent {
         //fenetreJeu
         placeDispo = new PlaceDispo();
         queueImage = new ArrayDeque<>();
-        placerCarte(new Carte(TypeCarte.carteVCPC));
+        Carte carteDeBase = new Carte(TypeCarte.carteVCPC);
+        carteDeBase.setPosition(new Point(8,8));
+        placerCarte(carteDeBase);
 
 
         root.getChildren().addAll(canvas, canvasInfos);
@@ -460,9 +468,9 @@ public class MenuReseau extends Parent {
 
     private void barreInfos() {
         tabDefausseCarte = new int[]{750, 35, 180, 30};
-        canvasInfos = new Canvas(width, height);
-        //controlMouseInfos = new ControlMouseInfos(this, f.getControlMouse(), tabDefausseCarte);
-        //canvasInfos.setOnMouseClicked(controlMouseInfos);
+        canvasInfos = new Canvas(1000, 100);
+        controlMouseInfos = new ControlMouseInfos(controlMouse, tabDefausseCarte);
+        canvasInfos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = canvasInfos.getGraphicsContext2D();
         graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
     }
@@ -471,7 +479,7 @@ public class MenuReseau extends Parent {
      * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
      */
     public void drawInformationsCarte(){
-        //controlMouseInfos.setMode(0);
+        controlMouseInfos.setMode(0);
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
         drawLigneSeparatrice();
@@ -528,37 +536,18 @@ public class MenuReseau extends Parent {
         int x = (int) cartePosee.getPosition().getX();
         int y = (int) cartePosee.getPosition().getY();
 
-        //Permet de tester si l'on doit rajouter des emplacements disponibles ou non
-        java.awt.Point p = new java.awt.Point(x+1,y);
-        testLDispo(p);
-        p.setLocation(x-1,y);
-        testLDispo(p);
-        p.setLocation(x,y+1);
-        testLDispo(p);
-        p.setLocation(x,y-1);
-        testLDispo(p);
+        for (int i = 0; i < listPointDispo.size(); i++) {
+            graphicsContext.drawImage(queueImage.getLast(),(int)listPointDispo.get(i).getX()*50, (int)listPointDispo.get(i).getY()*50, 50, 50);
+        }
 
         //Supression de l'emplacement de la carte dans la liste des emplacements disponibles
         listPointDispo.remove(cartePosee.getPosition());
         //Dessine l'image sur la fenêtre de jeu
         graphicsContext.drawImage(image, x*50,y*50, 50, 50);
         Carte carteDeBase = new Carte(TypeCarte.carteVCPC);
+        carteDeBase.setPosition(new Point(8,8));
         if(carte!=carteDeBase) {
             //drawInformationsPartisans();
-        }
-    }
-
-    /*
-     * Test si l'on doit ajouter ou non des emplacements disponibles
-     * Permet également de les ajouter
-     */
-    private void testLDispo(java.awt.Point p){
-        ArrayList<java.awt.Point> lDispo = (ArrayList)listPointDispo;
-        ArrayList<java.awt.Point> lOccupee = (ArrayList)listPointOccupe;
-        if ( !lDispo.contains(p) && !lOccupee.contains(p)) {
-            lDispo.add(new java.awt.Point((int)p.getX(), (int)p.getY()));
-            queueImage.addLast(placeDispo.getImagePlus());
-            graphicsContext.drawImage(queueImage.getLast(),(int)p.getX()*50, (int)p.getY()*50, 50, 50);
         }
     }
 
@@ -572,5 +561,12 @@ public class MenuReseau extends Parent {
 
     public void setNombreJoueur(int nombreJoueur) {
         this.nombreJoueur = nombreJoueur;
+    }
+
+    public void actualiserPoserCarte() {
+    }
+
+    public ControlMouse getControlMouse() {
+        return controlMouse;
     }
 }

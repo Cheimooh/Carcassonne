@@ -71,6 +71,7 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                     controlMouse.setMode(0);
                 }
             }
+            //si on clique sur lebouton defausse
             if (x>barreInfos.getWidth()/7 && x<barreInfos.getWidth()/7 +100 && y>35 && y<65){
                 FenetreDefausse fenetreDefausse = new FenetreDefausse();
                 fenetreDefausse.afficherDefausse(carcassonne.getDefausse());

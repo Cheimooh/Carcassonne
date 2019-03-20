@@ -66,7 +66,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         }
     }
 
-    protected void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
+    public void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
 
     public Carte getCarteEnMain() { return carteEnMain; }
 

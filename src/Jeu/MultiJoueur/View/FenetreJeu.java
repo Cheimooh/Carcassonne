@@ -14,6 +14,7 @@
 * */
 package Jeu.MultiJoueur.View;
 
+import Jeu.MenuReseau;
 import Jeu.MultiJoueur.Model.*;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import javafx.scene.Parent;
@@ -21,6 +22,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.util.ArrayDeque;
 
@@ -43,7 +45,7 @@ public class FenetreJeu extends Parent {
         this.popUpPartisan = popUpPartisan;
         popUpPartisan.lierControl(this);
         Canvas canvas = new Canvas(143*50, 143*50);
-        controlMouse = new ControlMouse(vueMultiJoueurs);
+        controlMouse = new ControlMouse(new MenuReseau(new Stage()));
         canvas.setOnMouseClicked(controlMouse);
         graphicsContext = canvas.getGraphicsContext2D();
 
