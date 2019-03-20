@@ -36,8 +36,8 @@ public class Appli extends Application {
     private void choixTypeJeu() {
         VBox boutonsMenu = new VBox(10);
         boutonsMenu.setAlignment(Pos.CENTER);
-        Button internet = new Button("Internet");
-        Button local = new Button("Local");
+        Button internet = new Button("Jeu en ligne");
+        Button local = new Button("Jeu hors ligne");
         boutonsMenu.getChildren().addAll(internet, local);
         internet.setOnAction(event -> jeuInternet());
         local.setOnAction(event -> jeuLocal());

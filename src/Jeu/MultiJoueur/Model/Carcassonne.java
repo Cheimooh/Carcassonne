@@ -70,7 +70,6 @@ public class Carcassonne {
         int cptJoueur = 0;
         System.out.println(listJoueur.size());
         while(isPret && cptJoueur < listJoueur.size() && listJoueur.size() > 0  ){
-            System.out.println("debut");
             Joueur joueurTmp = listJoueur.get(cptJoueur);
             isPret = joueurTmp.isPret();
             cptJoueur++;
@@ -152,7 +151,8 @@ public class Carcassonne {
 
     public void initJeu(){
         numJoueurCourant = (int) (Math.random()*(nbJoueur-1));
-        //placerCarte(carteDeBase, new Point(8,8));
+        carteCourante = carteDeBase;
+        placerCarte(new Point(8,8));
         try {
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectInputStream oi = listSocket.get(i).getOi();
@@ -190,13 +190,14 @@ public class Carcassonne {
         envoieClientsTourSuivant();
     }
 
-    public void placerCarte(Carte carte, Point positionCarte){
-        CartePosee cartePosee = new CartePosee(carte);
-        listPointOccupe.add(cartePosee.getPosition());
+    public void placerCarte(Point positionCarte){
+        carteCourante.setPosition(positionCarte);
+        CartePosee cartePosee = new CartePosee(carteCourante);
+        listPointOccupe.add(positionCarte);
         pointCarteMap.put(positionCarte, cartePosee);
 
-        int x = (int) positionCarte.getX();
-        int y = (int) positionCarte.getY();
+        int x = positionCarte.getX();
+        int y = positionCarte.getY();
 
         //Permet de tester si l'on doit rajouter des emplacements disponibles ou non
         Point p = new Point(x+1,y);
@@ -209,16 +210,17 @@ public class Carcassonne {
         testLDispo(p);
 
         //Supression de l'emplacement de la carte dans la liste des emplacements disponibles
-        listPointDispo.remove(cartePosee.getPosition());
+        listPointDispo.remove(positionCarte);
+
         //Dessine l'image sur la fenêtre de jeu
-        if(carte!=carteDeBase) {
-            contaminationDeLaCarteAvecCouleur(cartePosee);
+        if(carteCourante!=carteDeBase) {
+            //contaminationDeLaCarteAvecCouleur(cartePosee);
         }
     }
 
     private void testLDispo(Point p){
         if ( !listPointDispo.contains(p) && !listPointOccupe.contains(p)) {
-            listPointOccupe.add(p);
+            listPointDispo.add(new Point(p.getX(), p.getY()));
         }
     }
 
@@ -231,6 +233,7 @@ public class Carcassonne {
         if(numJoueurCourant == 0){
             numJoueurCourant++;
         }
+        System.out.println("numJoueur: " + numJoueurCourant );
         envoieClientsTourSuivant();
     }
 
@@ -298,7 +301,7 @@ public class Carcassonne {
     public boolean isPlacable(int x, int y) {
         boolean isPlacable = true;
         // creer un point temporaire pour faire les verifications
-        Point point = new Point(x-1, y);
+       /* Point point = new Point(x-1, y);
         if(listPointOccupe.contains(point)){
             CartePosee c = pointCarteMap.get(point);
             if (c.getEst() != carteCourante.getOuest()){
@@ -328,9 +331,9 @@ public class Carcassonne {
             if (c.getNord() != carteCourante.getSud()){
                 isPlacable=false;
             }
-        }
-
-        return isPlacable;
+        }*/
+        return false;
+        //return isPlacable;
     }
 
     /*

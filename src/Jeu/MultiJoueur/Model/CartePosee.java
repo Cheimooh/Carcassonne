@@ -1,6 +1,7 @@
 package Jeu.MultiJoueur.Model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
 /*
  * Carte qui a déjà été placée
  */
-public class CartePosee {
+public class CartePosee implements Serializable, Cloneable {
 
     private Point position;
     private CoteCarte nord, sud, est, ouest;

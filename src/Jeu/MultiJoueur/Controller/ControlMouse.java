@@ -2,10 +2,10 @@ package Jeu.MultiJoueur.Controller;
 
 import Jeu.MenuReseau;
 import Jeu.MultiJoueur.Model.Carte;
+import Jeu.MultiJoueur.Model.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,7 +26,8 @@ public class ControlMouse implements EventHandler<MouseEvent> {
      */
     @Override
     public void handle(MouseEvent event) {
-        placerCarte(event);
+        if( menuReseau.getNomJoueurCourant().equals(menuReseau.getNomJoueur()) ) placerCarte(event);
+        else menuReseau.afficheErreur("C'est pas votre tour de jouer", "Tour de jeu");
     }
 
     /*
@@ -35,35 +36,17 @@ public class ControlMouse implements EventHandler<MouseEvent> {
     private void placerCarte(MouseEvent event){
         ObjectOutputStream oo = menuReseau.getSocketJoueur().getOo();
         ObjectInputStream oi = menuReseau.getSocketJoueur().getOi();
-        // Position x de la dernière carte placée
+        // Position x du clique
         int xCartePlacee = (int) event.getX() / 50;
-        // Position y de la dernière carte placée
+        // Position y du clique
         int yCartePlacee = (int) event.getY() / 50;
         Point point = new Point(xCartePlacee, yCartePlacee);
         try {
             oo.writeObject("j'envoie");
             oo.writeObject("poserCarte");
             oo.writeObject(point);
-            String test = (String) oi.readObject();
-            if (test.equals("erreur")){
-
-            }else{
-                menuReseau.actualiserPoserCarte();
-                oo.writeObject("j'envoie");
-                oo.writeObject("tourSuivant");
-            }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-
-    protected void setCarteEnMain(Carte carteEnMain) { this.carteEnMain = carteEnMain; }
-
-    public Carte getCarteEnMain() { return carteEnMain; }
-
-    public void setMode(int mode) { this.mode = mode; }
-
-    public MenuReseau getMenuReseau() {return menuReseau;}
 }

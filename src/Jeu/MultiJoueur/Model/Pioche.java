@@ -5,7 +5,7 @@ import Jeu.Exception.PiocheVideException;
 import java.io.Serializable;
 import java.util.*;
 
-public class Pioche implements Serializable {
+public class Pioche {
     private Queue<Carte> lCarte = new ArrayDeque<>();
     private int taille; // Taille de la pioche
 

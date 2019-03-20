@@ -1,10 +1,8 @@
 package Jeu.MultiJoueur.Model;
 
-import javafx.scene.paint.Color;
+import java.io.Serializable;
 
-import java.awt.*;
-
-public class Partisan {
+public class Partisan implements Serializable {
     private boolean isPlacer;
     private int numZone; // -1 si non Placer
     private Point pointPlacementCarte;

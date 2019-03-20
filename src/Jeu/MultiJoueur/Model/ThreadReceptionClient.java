@@ -3,6 +3,7 @@ package Jeu.MultiJoueur.Model;
 import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class ThreadReceptionClient {
     private Thread rejoindrePartie;
@@ -47,18 +48,20 @@ public class ThreadReceptionClient {
                         }
                         else if(string.equals("poserCarte")){
                             Point position = (Point) oi.readObject();
+                            System.out.println("x: " + position.getX() + ", y: " + position.getY());
                             if (carcassonne.getListPointOccupe().contains(position)) {
-                                // envoie erreur ("Une carte est déjà placée à cet endroit", "Placement de carte impossible")
+                                envoieErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
                             } else if (carcassonne.isCarteAdjacente(position.getX(), position.getY())) {
                                 if (carcassonne.isPlacable(position.getX(), position.getY())) {
-                                    carcassonne.getCarteCourante().setPosition(position);
+                                    carcassonne.placerCarte(position);
+                                    carcassonne.joueurSuivant();
                                 }
                                 else {
-                                    // envoie erreur ("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible")
+                                    envoieErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
                                 }
                             }
                             else {
-                                // envoie erreur ("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible")
+                                envoieErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");
                             }
                         }
                         else if(string.equals("poserPartisant")){
@@ -74,6 +77,16 @@ public class ThreadReceptionClient {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } while(!isArreter);
+        }
+    }
+    public void envoieErreur(String erreur, String titre){
+        ObjectOutputStream oo = socketJoueur.getOo();
+        try{
+            oo.writeObject("erreur");
+            oo.writeObject(titre);
+            oo.writeObject(erreur);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

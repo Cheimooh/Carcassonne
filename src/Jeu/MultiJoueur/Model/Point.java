@@ -16,6 +16,19 @@ public class Point implements Serializable{
         y = 0;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point point = (Point) o;
+        return x == point.x && y == point.y;
+    }
+
+    public void setLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getX() { return x; }
 
     public void setX(int x) { this.x = x; }
@@ -23,9 +36,4 @@ public class Point implements Serializable{
     public int getY() { return y; }
 
     public void setY(int y) { this.y = y; }
-
-    public void setLocation(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 }

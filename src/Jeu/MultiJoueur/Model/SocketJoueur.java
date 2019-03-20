@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 
-public class SocketJoueur implements Serializable {
+public class SocketJoueur {
     private Socket socket;
     private ObjectInputStream oi;
     private ObjectOutputStream oo;

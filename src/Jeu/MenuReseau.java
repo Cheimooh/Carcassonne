@@ -36,7 +36,6 @@ public class MenuReseau extends Parent {
     private List<Joueur> listJoueurs;
     private List<Color> listColorJoueursReseau;
     private String nomJoueur;
-    private Carte carteCourante;
 
     /*
     * Elements affichage fenetre instanciation du jeu (connexion au serveur + choix couleur+nom + salonAttente
@@ -55,7 +54,7 @@ public class MenuReseau extends Parent {
     private Rectangle r_rose = new Rectangle(30, 30, Color.HOTPINK);
     private Rectangle r_jaune = new Rectangle(30, 30, Color.GOLD);
     private Rectangle r_bleuClaire = new Rectangle(30, 30, Color.DEEPSKYBLUE);
-    final Image image = new Image("Jeu/valider.png", 50,50,true,true);
+    final Image IMAGE_VALIDER = new Image("Jeu/valider.png", 50,50,true,true);
 
     private Color couleurJoueurTmp;
     private List<HBox> listHBoxElement;
@@ -72,6 +71,9 @@ public class MenuReseau extends Parent {
     private List<Point> listPointOccupe;
     private List<Carte> defausse;
 
+    private Carte carteCourante;
+    private String nomJoueurCourant;
+
     /*
     * Affichage fenetre Jeu après startPartie
     * */
@@ -81,14 +83,13 @@ public class MenuReseau extends Parent {
     private GraphicsContext graphicsContextInfos;
     private Canvas canvasInfos;
     private PlaceDispo placeDispo;
-    private ArrayDeque<Image> queueImage;
-    private CartePosee derniereCartePosee;
     int width = 1000;
     int height = 700;
     private ControlMouse controlMouse;
     private ControlMouseInfos controlMouseInfos;
 
     public MenuReseau(Stage primaryStage) {
+        placeDispo = new PlaceDispo();
         nombreJoueur = 0;
         listJoueurs = new ArrayList<>();
         listColorJoueursReseau = new ArrayList<>();
@@ -120,14 +121,14 @@ public class MenuReseau extends Parent {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Connexion Serveur");
 
-            alert.setContentText("Connexion au serveur echouer");
+            alert.setContentText("Connexion au serveur échoué");
             alert.showAndWait();
             System.exit(0);
         } catch (ClassNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Version Jeu");
 
-            alert.setContentText("Vous n'avez pas la bonne version du jeu désolé :(");
+            alert.setContentText("Vous n'avez pas la bonne version du jeu");
             alert.showAndWait();
             System.exit(0);
         }
@@ -144,7 +145,8 @@ public class MenuReseau extends Parent {
         HBname.setAlignment(Pos.CENTER);
 
         Label lNom = new Label("Nom: ");
-        TextField tNom = new TextField("Entrez votre nom");
+        TextField tNom = new TextField();
+        tNom.setPromptText("Entrez un nom");
 
         HBname.getChildren().addAll(lNom, tNom);
         Label lcolor = new Label("Couleur:");
@@ -321,7 +323,7 @@ public class MenuReseau extends Parent {
             hBox.getChildren().add(labelJoueur);
             hBox.getChildren().add(colorJoueur);
             if (listJoueurs.get(i).isPret()){
-                hBox.getChildren().add(new ImageView(image));
+                hBox.getChildren().add(new ImageView(IMAGE_VALIDER));
             }
             listHBoxElement.add(hBox);
         }
@@ -353,7 +355,7 @@ public class MenuReseau extends Parent {
             hBox.getChildren().add(colorJoueur);
             System.out.println(listJoueurs.get(i).isPret());
             if (listJoueurs.get(i).isPret()){
-                hBox.getChildren().add(new ImageView(image));
+                hBox.getChildren().add(new ImageView(IMAGE_VALIDER));
             }
             listHBoxElement.add(hBox);
         }
@@ -387,50 +389,15 @@ public class MenuReseau extends Parent {
 
     public void startPartie(){
         pointCarteMap = new HashMap<>();
-        listPointDispo = new ArrayList<Point>();
-        listPointOccupe = new ArrayList<Point>();
-        defausse = new ArrayList<Carte>();
+        listPointDispo = new ArrayList<>();
+        listPointOccupe = new ArrayList<>();
+        defausse = new ArrayList<>();
         initialiser();
     }
 
     private void initialiser() {
-        ObjectInputStream oi = socketJoueur.getOi();
-        try {
-            /*On récupère la map point carte*/
-            int tailleMap = oi.readInt();
-            for (int i = 0; i < tailleMap; i++) {
-                Point point = (Point) oi.readObject();
-                CartePosee cartePosee = (CartePosee) oi.readObject();
-                pointCarteMap.put(point,cartePosee);
-            }
-
-            /*On récupère la liste des points disponible*/
-            int tailleListePointDispo = oi.readInt();
-            for (int i = 0; i < tailleListePointDispo; i++) {
-                int x = oi.readInt();
-                int y = oi.readInt();
-                listPointDispo.add(new Point(x,y));
-            }
-
-            /*On récupère la liste des points occuper*/
-            int tailleListePointOccupe = oi.readInt();
-            for (int i = 0; i < tailleListePointOccupe; i++) {
-                int x = oi.readInt();
-                int y = oi.readInt();
-                listPointOccupe.add(new Point(x,y));
-            }
-
-            /*On récupère la defausse*/
-            int tailleDefausse = oi.readInt();
-            for (int i = 0; i < tailleDefausse; i++) {
-                defausse.add((Carte)oi.readObject());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        actualiserPoserCarte();
+        actualiserDefausse();
         afficherFenetreJeu();
     }
 
@@ -452,15 +419,8 @@ public class MenuReseau extends Parent {
 
         //barreInfos
         barreInfos();
-        drawInformationsCarte();
 
-        //fenetreJeu
-        placeDispo = new PlaceDispo();
-        queueImage = new ArrayDeque<>();
-        Carte carteDeBase = new Carte(TypeCarte.carteVCPC);
-        carteDeBase.setPosition(new Point(8,8));
-        placerCarte(carteDeBase);
-
+        actualiserPlateau();
 
         root.getChildren().addAll(canvas, canvasInfos);
         Platform.runLater(() -> primaryStage.setScene(new Scene(root, width, height, Color.LIGHTGREY) ));
@@ -476,35 +436,16 @@ public class MenuReseau extends Parent {
     }
 
     /*
-     * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
+     * Permet de générer une fenêtre pop-up d'erreur
      */
-    public void drawInformationsCarte(){
-        controlMouseInfos.setMode(0);
-        graphicsContextInfos.clearRect(0,0,width,100);
-        graphicsContextInfos.setFill(Color.BLACK);
-        drawLigneSeparatrice();
+    public void afficheErreur(String erreur, String title){
+        Platform.runLater(()->{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
 
-        String s;
-
-        carteCourante = new Carte(TypeCarte.cartePPPP);
-        graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width/2.), 30, 50, 50);
-
-        int numJoueur = 1;
-        //carcassonne.getNumJoueur();
-        s = "Joueur " + numJoueur;
-        s += " : " + nomJoueur;
-
-        String defausse = "Defausser ma carte";
-        String voirDefausse = "Défausse";
-
-        graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
-
-        //Affichage du "bouton" pour voir la défausse
-        drawBouton(voirDefausse, width/7., 35, 100, 30);
-        //Affichage du "bouton" pour défausser une carte
-        drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
-
-        graphicsContextInfos.strokeText(s, (width/2.), 15);
+            alert.setContentText(erreur);
+            alert.showAndWait();
+        });
     }
 
     private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {
@@ -521,52 +462,117 @@ public class MenuReseau extends Parent {
         graphicsContextInfos.stroke();
     }
 
+    public void actualiserPoserCarte(){
+        ObjectInputStream oi = socketJoueur.getOi();
+        try {
+            /*On récupère la map point carte*/
+            int tailleMap = oi.readInt();
+            for (int i = 0; i < tailleMap; i++) {
+                Point point = (Point) oi.readObject();
+                CartePosee cartePosee = (CartePosee) oi.readObject();
+                pointCarteMap.put(point,cartePosee);
+            }
+
+            /*On récupère la liste des points disponible*/
+            int tailleListePointDispo = oi.readInt();
+            System.out.println("taille: " + tailleListePointDispo);
+            for (int i = 0; i < tailleListePointDispo; i++) {
+                Point point = (Point) oi.readObject();
+                listPointDispo.add(point);
+            }
+
+            /*On récupère la liste des points occuper*/
+            int tailleListePointOccupe = oi.readInt();
+            for (int i = 0; i < tailleListePointOccupe; i++) {
+                Point point = (Point) oi.readObject();
+                listPointDispo.add(point);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     /*
      * Permet de placer une carte sur la fenêtre de jeu
      */
-    public void placerCarte(Carte carte){
-        //Ajout de la carte à la liste des cartes déjà posée
-        CartePosee cartePosee = new CartePosee(carte);
-        derniereCartePosee=cartePosee;
-        listPointOccupe.add(cartePosee.getPosition());
-        pointCarteMap.put(carte.getPosition(),cartePosee);
-        //Image de la carte
-        Image image = new Image(cartePosee.getImageCarte());
-
-        int x = (int) cartePosee.getPosition().getX();
-        int y = (int) cartePosee.getPosition().getY();
+    public void actualiserPlateau(){
+        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
+        {
+            Point point = entry.getKey();
+            CartePosee carteAPosee = entry.getValue();
+            Image image = new Image(carteAPosee.getImageCarte());
+            graphicsContext.drawImage(image, point.getX()*50,point.getY()*50, 50, 50);
+        }
 
         for (int i = 0; i < listPointDispo.size(); i++) {
-            graphicsContext.drawImage(queueImage.getLast(),(int)listPointDispo.get(i).getX()*50, (int)listPointDispo.get(i).getY()*50, 50, 50);
-        }
-
-        //Supression de l'emplacement de la carte dans la liste des emplacements disponibles
-        listPointDispo.remove(cartePosee.getPosition());
-        //Dessine l'image sur la fenêtre de jeu
-        graphicsContext.drawImage(image, x*50,y*50, 50, 50);
-        Carte carteDeBase = new Carte(TypeCarte.carteVCPC);
-        carteDeBase.setPosition(new Point(8,8));
-        if(carte!=carteDeBase) {
-            //drawInformationsPartisans();
+            graphicsContext.drawImage(placeDispo.getImagePlus(),listPointDispo.get(i).getX()*50, listPointDispo.get(i).getY()*50, 50, 50);
         }
     }
 
-    public SocketJoueur getSocketJoueur() {
-        return socketJoueur;
+    public void actualiserDefausse() {
+        ObjectInputStream oi = socketJoueur.getOi();
+        try {
+            /*On récupère la defausse*/
+            int tailleDefausse = oi.readInt();
+            for (int i = 0; i < tailleDefausse; i++) {
+                defausse.add((Carte)oi.readObject());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Joueur> getListJoueurs() {
-        return listJoueurs;
+    /*
+     * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
+     */
+    public void actualiserTourSuivant(){
+        controlMouseInfos.setMode(0);
+        graphicsContextInfos.clearRect(0,0,width,100);
+        graphicsContextInfos.setFill(Color.BLACK);
+        drawLigneSeparatrice();
+
+        String s;
+
+        graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width/2.), 30, 50, 50);
+
+        s = "Joueur: " + nomJoueurCourant;
+
+        String defausse = "Defausser ma carte";
+        String voirDefausse = "Défausse";
+
+        graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
+
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width/7., 35, 100, 30);
+        //Affichage du "bouton" pour défausser une carte
+        drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
+
+        if(nomJoueur.equals(nomJoueurCourant)) graphicsContextInfos.setStroke(Color.RED);
+
+        graphicsContextInfos.strokeText(s, (width/2.), 15);
+
+        graphicsContextInfos.setStroke(Color.BLACK);
     }
 
-    public void setNombreJoueur(int nombreJoueur) {
-        this.nombreJoueur = nombreJoueur;
-    }
+    public SocketJoueur getSocketJoueur() { return socketJoueur; }
 
-    public void actualiserPoserCarte() {
-    }
+    public List<Joueur> getListJoueurs() { return listJoueurs; }
 
-    public ControlMouse getControlMouse() {
-        return controlMouse;
-    }
+    public void setNombreJoueur(int nombreJoueur) { this.nombreJoueur = nombreJoueur; }
+
+    public ControlMouse getControlMouse() { return controlMouse; }
+
+    public Carte getCarteCourante() { return carteCourante; }
+
+    public void setCarteCourante(Carte carteCourante) { this.carteCourante = carteCourante; }
+
+    public String getNomJoueurCourant() { return nomJoueurCourant; }
+
+    public void setNomJoueurCourant(String nomJoueurCourant) { this.nomJoueurCourant = nomJoueurCourant; }
+
+    public String getNomJoueur() { return nomJoueur; }
 }

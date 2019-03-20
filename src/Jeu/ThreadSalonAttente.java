@@ -49,20 +49,25 @@ public class ThreadSalonAttente {
                         if(test.equals("tourSuivant")){
                             String nomJoueurCourant = (String) oi.readObject();
                             Carte carteCourante = (Carte) oi.readObject();
-                            //menu.actualiserTourSuivant(nomJoueurCourant, carteCourante);
+                            menu.setCarteCourante(carteCourante);
+                            menu.setNomJoueurCourant(nomJoueurCourant);
+                            menu.actualiserTourSuivant();
                         }
                         if (test.equals("poserCarte")){
-                            //menu.actualiserPoserCarte();
+                            menu.actualiserPoserCarte();
+                            menu.actualiserPlateau();
                         }
                         if (test.equals("defausse")){
-                            //menu.actualiserDefausse();
+                            menu.actualiserDefausse();
                         }
                         if (test.equals("poserPartisant")){
                             //menu.actualiserPoserPartisant();
                         }
                     }
                     else if (test.equals("erreur")) {
-
+                        String titre = (String) oi.readObject();
+                        String contenue = (String) oi.readObject();
+                        menu.afficheErreur(contenue, titre);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
