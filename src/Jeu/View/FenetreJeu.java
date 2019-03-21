@@ -18,6 +18,7 @@ import Jeu.Controller.ControlMouse;
 import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
 import Jeu.Model.CartePosee;
+import Jeu.Model.Partisan;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -127,7 +128,8 @@ public class FenetreJeu extends Parent {
         if (carcassonne.getTabJoueur()[numJoueur].getNombrePartisansRestants() > 0) {
             derniereCartePosee.addZonesOccupees(numZone, carcassonne.getTabJoueur()[carcassonne.getNumJoueur() - 1].getColor());
             Carte carte = carcassonne.getTabJoueur()[numJoueur].getCarteEnMain();
-            carcassonne.getTabJoueur()[numJoueur].placerPartisan(derniereCartePosee, numZone);
+            Partisan p = carcassonne.getTabJoueur()[numJoueur].placerPartisan(derniereCartePosee, numZone);
+            derniereCartePosee.attributionPartisan(p, numZone);
             int xCarte = (int) carte.getPosition().getX();
             int yCarte = (int) carte.getPosition().getY();
 

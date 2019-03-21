@@ -73,7 +73,7 @@ public class Pioche {
         }
         for (int i = 0; i < 3; i++) {
             //lCarte.add(new Carte(TypeCarte.cartePVPVNonReliees));
-        }
+        }//Je t'aime ma fille <3 Maman
 
         taille = lCarte.size();
 

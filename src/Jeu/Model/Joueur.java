@@ -27,7 +27,7 @@ public class Joueur {
         p = newP;
         this.color = newColor;
         for (int i = 0; i < nombrePartisansRestants; i++) {
-            tabPartisans[i] = new Partisan(color);
+            tabPartisans[i] = new Partisan(this);
         }
     }
 
@@ -49,11 +49,12 @@ public class Joueur {
     /*
      * Décrémente le nombre de partisans "non posés" du joueur
      */
-    public void placerPartisan(CartePosee cartePosee, int numZone) {
+    public Partisan placerPartisan(CartePosee cartePosee, int numZone) {
         if (nombrePartisansRestants > 0) {
             nombrePartisansRestants--;
             tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
-        }
+            return tabPartisans[8-nombrePartisansRestants];
+        } else return null;
     }
 
     public void retirerPartisan(Point p) {

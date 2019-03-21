@@ -8,10 +8,10 @@ public class Partisan {
     private boolean isPlacer;
     private int numZone; // -1 si non placé
     private Point pointPlacementCarte;
-    private Color colorPartisan;
+    private Joueur joueur;
 
-    public Partisan(Color colorPartisan) {
-        this.colorPartisan = colorPartisan;
+    public Partisan(Joueur joueur) {
+        this.joueur = joueur;
         pointPlacementCarte = new Point();
         isPlacer = false;
         numZone = -1;
@@ -39,5 +39,9 @@ public class Partisan {
 
     public int getNumZone() {
         return numZone;
+    }
+
+    public Joueur getJoueur() {
+        return joueur;
     }
 }

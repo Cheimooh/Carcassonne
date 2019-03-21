@@ -1,7 +1,5 @@
 package Jeu.Model;
 
-
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +22,9 @@ public class CartePosee {
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
     private String type;
+    private Partisan[] zonesControlleesParLesPartisans;
 
-    public CartePosee(Carte carte){
+    public CartePosee(Carte carte) {
         type = carte.getType();
         nord = carte.getNord();
         sud = carte.getSud();
@@ -36,8 +35,9 @@ public class CartePosee {
         position = carte.getPosition();
         listeZones = new ArrayList<>();
         zonesCouleurPartisan = new HashMap<>();
-        positionsCoordonnees=carte.getPositionsCoordonnees();
+        positionsCoordonnees = carte.getPositionsCoordonnees();
         zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
+        zonesControlleesParLesPartisans = carte.getZonesControlleesParLesPartisans();
         addZones();
     }
 
@@ -53,8 +53,8 @@ public class CartePosee {
 
     private void addZone(CoteCarte cote) {
         // Si le centre du côté est une ville
-        if (cote.equals(CoteCarte.ville)){
-            for (int i = 0; i < 3 ; i++) {
+        if (cote.equals(CoteCarte.ville)) {
+            for (int i = 0; i < 3; i++) {
                 listeZones.add(CoteCarte.ville);
             }
         } else {
@@ -64,9 +64,9 @@ public class CartePosee {
         }
     }
 
-    private Image setImageCarte(Carte carte){
+    private Image setImageCarte(Carte carte) {
         Image image;
-        switch (carte.getNbRotation()){
+        switch (carte.getNbRotation()) {
             case 0:
                 image = new Image(carte.getDraw().getPath());
                 break;
@@ -80,15 +80,14 @@ public class CartePosee {
                 image = new Image(carte.getDraw().getPath270());
                 break;
             default:
-                image=null;
+                image = null;
         }
         return image;
     }
 
     public void addZonesOccupees(int numZone, Color couleurJoueur) {
-
-        for (int i = 0; i < zonesControlleesParLesPoints.length ; i++) {
-            if (i==numZone) {
+        for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
+            if (i == numZone) {
                 for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
                     zonesCouleurPartisan.put(zonesControlleesParLesPoints[i][j], couleurJoueur);
                 }
@@ -96,27 +95,59 @@ public class CartePosee {
         }
     }
 
-    public Point getPosition() { return position; }
+    public void attributionPartisan(Partisan p, int numZone) {
+        if (p != null) {
+            zonesControlleesParLesPartisans[numZone] = p;
+        }
+    }
 
-    public CoteCarte getNord() { return nord; }
+    public Point getPosition() {
+        return position;
+    }
 
-    public CoteCarte getSud() { return sud; }
+    public CoteCarte getNord() {
+        return nord;
+    }
 
-    public CoteCarte getEst() { return est; }
+    public CoteCarte getSud() {
+        return sud;
+    }
 
-    public CoteCarte getOuest() { return ouest; }
+    public CoteCarte getEst() {
+        return est;
+    }
 
-    public Image getImageCarte() { return imageCarte; }
+    public CoteCarte getOuest() {
+        return ouest;
+    }
 
-    public Map<Integer, Color> getZonesCouleurPartisan() { return zonesCouleurPartisan; }
+    public Image getImageCarte() {
+        return imageCarte;
+    }
 
-    public void setZonesCouleurPartisan(Map<Integer, Color> zonesCouleurPartisan) { this.zonesCouleurPartisan = zonesCouleurPartisan; }
+    public Map<Integer, Color> getZonesCouleurPartisan() {
+        return zonesCouleurPartisan;
+    }
 
-    public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
+    public void setZonesCouleurPartisan(Map<Integer, Color> zonesCouleurPartisan) {
+        this.zonesCouleurPartisan = zonesCouleurPartisan;
+    }
 
-    public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
+    public int[][] getZonesControlleesParLesPoints() {
+        return zonesControlleesParLesPoints;
+    }
 
-    public ArrayList<CoteCarte> getListeZones() { return listeZones; }
+    public ArrayList<Point> getPositionsCoordonnees() {
+        return positionsCoordonnees;
+    }
 
-    public String getType() { return type; }
+    public ArrayList<CoteCarte> getListeZones() {
+        return listeZones;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Partisan[] getZonesControlleesParLesPartisans() { return zonesControlleesParLesPartisans; }
 }

@@ -407,17 +407,89 @@ public class Carcassonne {
     }
 
     private void attributionPointsChemin() {
-        int[] nbPartisanParJoueur = new int[nbJoueur];
-        for (int i = 0; i < etendueDuChemin.size()-1; i++) {
-            CartePosee c = pointCarteMap.get(etendueDuChemin.get(i));
-            int[][] tabZones = c.getZonesControlleesParLesPoints();
-            for (int j = 0; j < tabZones.length; j++) {
-                for (int k = 0; k < tabZones[j].length; k++) {
-                    if (tabZones[j][k] == passageChemin.get(i)){
-                        for (int l = 0; l < tabJoueur.length; l++) {
-                            for (int m = 0; m < tabJoueur[l].getTabPartisans().length; m++) {
-                                if (tabJoueur[l].getTabPartisans()[m].getNumZone() == j){
-                                    nbPartisanParJoueur[l] += 1;
+        int[] tabNbPartisans = new int[nbJoueur];
+        for (int i = 0; i < etendueDuChemin.size(); i++) {
+            CartePosee carte = pointCarteMap.get(etendueDuChemin.get(i));
+            Partisan p = null;
+            System.out.println(etendueDuChemin.get(i).getX() + " " + etendueDuChemin.get(i).getY());
+            for (int j = 0; j < carte.getZonesControlleesParLesPartisans().length; j++) {
+                if (carte.getZonesControlleesParLesPartisans()[j] != null) {
+                    p = carte.getZonesControlleesParLesPartisans()[j];
+                    System.out.println(p.getJoueur().getIdJoueur());
+                }
+            }
+            if (p != null) {
+                boolean cheminDejaPritEnCompte = false;
+                int[] tabZones = carte.getZonesControlleesParLesPoints()[p.getNumZone()];
+                if (carte.getNord() == CoteCarte.chemin) {
+                    for (int j = 0; j < tabZones.length; j++) {
+                        if (tabZones[j] == 2) {
+                            if (tabZones.length == 1) {
+                                Point point = new Point((int) carte.getPosition().getX(), (int) carte.getPosition().getY() - 1);
+                                if (pointCarteMap.containsKey(point)) {
+                                    if (etendueDuChemin.contains(point)) {
+                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    }
+                                }
+                            } else {
+                                cheminDejaPritEnCompte = true;
+                                tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                            }
+                        }
+                    }
+                }
+                if (carte.getEst() == CoteCarte.chemin) {
+                    for (int j = 0; j < tabZones.length; j++) {
+                        if (tabZones[j] == 5) {
+                            if (tabZones.length == 1) {
+                                Point point = new Point((int) carte.getPosition().getX() + 1, (int) carte.getPosition().getY());
+                                if (pointCarteMap.containsKey(point)) {
+                                    if (etendueDuChemin.contains(point)) {
+                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    }
+                                }
+                            } else {
+                                if (!cheminDejaPritEnCompte) {
+                                    tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    cheminDejaPritEnCompte = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (carte.getSud() == CoteCarte.chemin) {
+                    for (int j = 0; j < tabZones.length; j++) {
+                        if (tabZones[j] == 8) {
+                            if (tabZones.length == 1) {
+                                Point point = new Point((int) carte.getPosition().getX(), (int) carte.getPosition().getY() + 1);
+                                if (pointCarteMap.containsKey(point)) {
+                                    if (etendueDuChemin.contains(point)) {
+                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    }
+                                }
+                            } else {
+                                if (!cheminDejaPritEnCompte) {
+                                    tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    cheminDejaPritEnCompte = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (carte.getOuest() == CoteCarte.chemin) {
+                    for (int j = 0; j < tabZones.length; j++) {
+                        if (tabZones[j] == 11) {
+                            if (tabZones.length == 1) {
+                                Point point = new Point((int) carte.getPosition().getX() - 1, (int) carte.getPosition().getY());
+                                if (pointCarteMap.containsKey(point)) {
+                                    if (etendueDuChemin.contains(point)) {
+                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    }
+                                }
+                            } else {
+                                if (!cheminDejaPritEnCompte) {
+                                    tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    cheminDejaPritEnCompte = true;
                                 }
                             }
                         }
@@ -425,9 +497,8 @@ public class Carcassonne {
                 }
             }
         }
-
-        for (int i = 0; i < nbPartisanParJoueur.length; i++) {
-            System.out.println(nbPartisanParJoueur[i]);
+        for (int i = 0; i < tabNbPartisans.length; i++) {
+            System.out.println(tabNbPartisans[i]);
         }
     }
 

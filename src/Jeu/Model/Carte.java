@@ -12,6 +12,7 @@ public class Carte {
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
     private String type;
+    private Partisan[] zonesControlleesParLesPartisans;
 
     public Carte(TypeCarte typeCarte) {
         this.type = typeCarte.getTypeCarte();
@@ -24,6 +25,7 @@ public class Carte {
         this.nbRotation = 0;
         this.positionsCoordonnees = typeCarte.getCoordonneesPartisans();
         this.zonesControlleesParLesPoints = typeCarte.getZonesControlleesParLesPoints();
+        this.zonesControlleesParLesPartisans = typeCarte.getZonesControlleesParLesPartisans();
     }
 
     /*
@@ -119,5 +121,9 @@ public class Carte {
 
     public String getType() {
         return type;
+    }
+
+    public Partisan[] getZonesControlleesParLesPartisans() {
+        return zonesControlleesParLesPartisans;
     }
 }
