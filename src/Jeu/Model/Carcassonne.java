@@ -322,10 +322,8 @@ public class Carcassonne {
         return true;
     }
 
-    /**
+    /*
      * Verficication d'un chemin fermé a partir de la carte qu'on vient de poser
-     *
-     * @param carteEnMain
      */
     public void verificationCheminFerme(CartePosee carteEnMain) {
         etendueDuChemin.clear();
@@ -412,11 +410,9 @@ public class Carcassonne {
         for (int i = 0; i < etendueDuChemin.size(); i++) {
             CartePosee carte = pointCarteMap.get(etendueDuChemin.get(i));
             Partisan p = null;
-            System.out.println(etendueDuChemin.get(i).getX() + " " + etendueDuChemin.get(i).getY());
             for (int j = 0; j < carte.getZonesControlleesParLesPartisans().length; j++) {
                 if (carte.getZonesControlleesParLesPartisans()[j] != null) {
                     p = carte.getZonesControlleesParLesPartisans()[j];
-                    System.out.println(p.getJoueur().getIdJoueur());
                 }
             }
             if (p != null) {
@@ -429,13 +425,13 @@ public class Carcassonne {
                                 Point point = new Point((int) carte.getPosition().getX(), (int) carte.getPosition().getY() - 1);
                                 if (pointCarteMap.containsKey(point)) {
                                     if (etendueDuChemin.contains(point)) {
-                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                        tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                         tabPartisansSurLeChemin.add(p);
                                     }
                                 }
                             } else {
                                 cheminDejaPritEnCompte = true;
-                                tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                 tabPartisansSurLeChemin.add(p);
                             }
                         }
@@ -448,13 +444,13 @@ public class Carcassonne {
                                 Point point = new Point((int) carte.getPosition().getX() + 1, (int) carte.getPosition().getY());
                                 if (pointCarteMap.containsKey(point)) {
                                     if (etendueDuChemin.contains(point)) {
-                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                        tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                         tabPartisansSurLeChemin.add(p);
                                     }
                                 }
                             } else {
                                 if (!cheminDejaPritEnCompte) {
-                                    tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                     cheminDejaPritEnCompte = true;
                                     tabPartisansSurLeChemin.add(p);
                                 }
@@ -469,13 +465,13 @@ public class Carcassonne {
                                 Point point = new Point((int) carte.getPosition().getX(), (int) carte.getPosition().getY() + 1);
                                 if (pointCarteMap.containsKey(point)) {
                                     if (etendueDuChemin.contains(point)) {
-                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                        tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                         tabPartisansSurLeChemin.add(p);
                                     }
                                 }
                             } else {
                                 if (!cheminDejaPritEnCompte) {
-                                    tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                     cheminDejaPritEnCompte = true;
                                     tabPartisansSurLeChemin.add(p);
                                 }
@@ -490,13 +486,13 @@ public class Carcassonne {
                                 Point point = new Point((int) carte.getPosition().getX() - 1, (int) carte.getPosition().getY());
                                 if (pointCarteMap.containsKey(point)) {
                                     if (etendueDuChemin.contains(point)) {
-                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                        tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                         tabPartisansSurLeChemin.add(p);
                                     }
                                 }
                             } else {
                                 if (!cheminDejaPritEnCompte) {
-                                    tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                    tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                     cheminDejaPritEnCompte = true;
                                     tabPartisansSurLeChemin.add(p);
                                 }
@@ -506,21 +502,28 @@ public class Carcassonne {
                 }
             }
         }
+        ArrayList<Integer> joueursGagnants = new ArrayList<>();
+        int maxPartisan = -1;
         for (int i = 0; i < tabNbPartisans.length; i++) {
-            System.out.println(tabNbPartisans[i]);
+            if (tabNbPartisans[i] > maxPartisan) {
+                joueursGagnants.clear();
+                joueursGagnants.add(i);
+                maxPartisan = tabNbPartisans[i];
+            } else if (tabNbPartisans[i] == maxPartisan) {
+                joueursGagnants.add(i);
+            }
         }
-        int joueurGagnant = -1;
-        int maxPartisan=-1;
-        for (int i = 0; i < tabNbPartisans.length; i++) {
-            if (tabNbPartisans[i]>maxPartisan) joueurGagnant = i;
+        if (maxPartisan > 0) {
+            for (Integer idJoueur : joueursGagnants) {
+                tabJoueur[idJoueur].addPointsChemin(etendueDuChemin.size());
+            }
         }
-        if (maxPartisan>0){
-            tabJoueur[joueurGagnant].addPointsChemin(etendueDuChemin.size());
+        for (Partisan partisan : tabPartisansSurLeChemin) {
+            partisan.retirerPartisan();
         }
-        for (int i = 0; i < tabPartisansSurLeChemin.size(); i++) {
-            tabPartisansSurLeChemin.get(i).retirerPartisan();
+        for (int i = 0; i < nbJoueur; i++) {
+            System.out.println(tabJoueur[i].getPointsTotal());
         }
-
     }
 
     /*
