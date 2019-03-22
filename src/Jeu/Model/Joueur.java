@@ -93,4 +93,9 @@ public class Joueur {
     public Partisan[] getTabPartisans() {
         return tabPartisans;
     }
+
+    public void addPointsChemin(int nbPoints) {
+        pointsChemin+=nbPoints;
+        pointsTotal+=nbPoints;
+    }
 }
