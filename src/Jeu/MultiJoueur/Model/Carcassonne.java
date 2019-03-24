@@ -218,6 +218,40 @@ public class Carcassonne {
         }
     }
 
+    public void envoieCartePlacer(){
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectInputStream oi = listSocket.get(i).getOi();
+                ObjectOutputStream oo = listSocket.get(i).getOo();
+
+                oo.writeObject("actualise");
+                oo.writeObject("poserCarte");
+
+                int tailleMap = pointCarteMap.size();
+                oo.writeInt(tailleMap);
+                for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
+                {
+                    oo.writeObject(entry.getKey());
+                    oo.writeObject(entry.getValue());
+                }
+
+                int tailleListDispo = listPointDispo.size();
+                oo.writeInt(tailleListDispo);
+                for (int j = 0; j < tailleListDispo; j++) {
+                    oo.writeObject(listPointDispo.get(j));
+                }
+
+                int tailleListOccuper = listPointOccupe.size();
+                oo.writeInt(tailleListOccuper);
+                for (int j = 0; j < tailleListOccuper; j++) {
+                    oo.writeObject(listPointOccupe.get(j));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void testLDispo(Point p){
         if ( !listPointDispo.contains(p) && !listPointOccupe.contains(p)) {
             listPointDispo.add(new Point(p.getX(), p.getY()));
@@ -229,10 +263,7 @@ public class Carcassonne {
      */
     public void joueurSuivant(){
         numJoueurCourant++;
-        numJoueurCourant = numJoueurCourant %(nbJoueur+1);
-        if(numJoueurCourant == 0){
-            numJoueurCourant++;
-        }
+        numJoueurCourant = numJoueurCourant %nbJoueur;
         System.out.println("numJoueur: " + numJoueurCourant );
         envoieClientsTourSuivant();
     }
@@ -301,7 +332,7 @@ public class Carcassonne {
     public boolean isPlacable(int x, int y) {
         boolean isPlacable = true;
         // creer un point temporaire pour faire les verifications
-       /* Point point = new Point(x-1, y);
+        Point point = new Point(x-1, y);
         if(listPointOccupe.contains(point)){
             CartePosee c = pointCarteMap.get(point);
             if (c.getEst() != carteCourante.getOuest()){
@@ -331,9 +362,8 @@ public class Carcassonne {
             if (c.getNord() != carteCourante.getSud()){
                 isPlacable=false;
             }
-        }*/
-        return false;
-        //return isPlacable;
+        }
+        return isPlacable;
     }
 
     /*
