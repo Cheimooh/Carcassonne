@@ -519,6 +519,7 @@ public class MenuReseau extends Parent {
             for (int i = 0; i < tailleDefausse; i++) {
                 defausse.add((Carte)oi.readObject());
             }
+            carteCourante = (Carte) oi.readObject();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

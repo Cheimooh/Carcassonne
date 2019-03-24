@@ -268,12 +268,16 @@ public class Carcassonne {
         envoieClientsTourSuivant();
     }
 
-    private void envoieClientsTourSuivant() {
+    public void piocher() {
         try {
-            carteCourante = pioche.piocher();
+            carteCourante =  pioche.piocher();
         } catch (PiocheVideException e) {
             e.printStackTrace();
         }
+    }
+
+    private void envoieClientsTourSuivant(){
+        piocher();
         String nomJoueurCourant = listJoueur.get(numJoueurCourant).getNom();
         try {
             for (int i = 0; i < listSocket.size(); i++) {
@@ -323,6 +327,34 @@ public class Carcassonne {
             if (isDefau) return false;
         }
         return true;
+    }
+
+    public void defausser(){
+        defausse.add(carteCourante);
+        piocher();
+        envoieDefausse();
+    }
+
+    public void envoieDefausse() {
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectInputStream oi = listSocket.get(i).getOi();
+                ObjectOutputStream oo = listSocket.get(i).getOo();
+
+                oo.writeObject("actualise");
+                oo.writeObject("defausse");
+
+                int tailleDefausse = defausse.size();
+                oo.writeInt(tailleDefausse);
+                for (int j = 0; j < tailleDefausse; j++) {
+                    oo.writeObject(defausse.get(j));
+                }
+
+                oo.writeObject(carteCourante);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*

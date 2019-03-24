@@ -44,7 +44,8 @@ public class ThreadReceptionClient {
                             carcassonne.miseAJourJoueur();
                         }
                         else if(string.equals("defausse")){
-                            carcassonne.isDefaussable();
+                            //carcassonne.isDefaussable();
+                            carcassonne.defausser();
                         }
                         else if(string.equals("poserCarte")){
                             Point position = (Point) oi.readObject();
