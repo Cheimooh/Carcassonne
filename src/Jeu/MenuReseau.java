@@ -397,7 +397,18 @@ public class MenuReseau extends Parent {
 
     private void initialiser() {
         actualiserPoserCarte();
-        actualiserDefausse();
+        ObjectInputStream oi = socketJoueur.getOi();
+        try {
+            /*On récupère la defausse*/
+            int tailleDefausse = oi.readInt();
+            for (int i = 0; i < tailleDefausse; i++) {
+                defausse.add((Carte)oi.readObject());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         afficherFenetreJeu();
     }
 
