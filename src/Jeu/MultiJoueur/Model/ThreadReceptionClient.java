@@ -48,6 +48,7 @@ public class ThreadReceptionClient {
                         }
                         else if(string.equals("poserCarte")){
                             Point position = (Point) oi.readObject();
+                            carcassonne.setCarteCourante((Carte) oi.readObject());
                             System.out.println("x: " + position.getX() + ", y: " + position.getY());
                             if (carcassonne.getListPointOccupe().contains(position)) {
                                 envoieErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");

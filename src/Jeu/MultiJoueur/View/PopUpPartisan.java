@@ -44,10 +44,6 @@ public class PopUpPartisan {
         popup.show();
     }
 
-    public void lierControl(FenetreJeu fenetreJeu){
-        //controlMousePartisan = new ControlMousePartisan(fenetreJeu);
-        //pane.setOnMouseClicked(controlMousePartisan);
-    }
 
     public void quitter() {
         popup.close();

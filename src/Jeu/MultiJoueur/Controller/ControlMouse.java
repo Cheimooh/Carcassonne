@@ -1,6 +1,6 @@
 package Jeu.MultiJoueur.Controller;
 
-import Jeu.MenuReseau;
+import Jeu.MultiJoueur.View.MenuReseau;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.Point;
 import javafx.event.EventHandler;
@@ -13,7 +13,6 @@ import java.io.ObjectOutputStream;
 public class ControlMouse implements EventHandler<MouseEvent> {
 
     private MenuReseau menuReseau;
-    private Carte carteEnMain;
     private int mode; // 0 placement de carte
 
     public ControlMouse(MenuReseau menuReseau1){
@@ -45,6 +44,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
             oo.writeObject("j'envoie");
             oo.writeObject("poserCarte");
             oo.writeObject(point);
+            oo.writeObject(menuReseau.getCarteCourante());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -95,5 +95,22 @@ public class Carte implements Serializable, Cloneable {
 
     public String getType() { return type; }
 
-    public String getPath() {return path;}
+    public String getPath() {
+        String pathTmp="";
+        switch (nbRotation){
+            case 0:
+                pathTmp=draw.getPath();
+                break;
+            case 1:
+                pathTmp=draw.getPath90();
+                break;
+            case 2:
+                pathTmp=draw.getPath180();
+                break;
+            case 3:
+                pathTmp=draw.getPath270();
+                break;
+        }
+        return pathTmp;
+    }
 }

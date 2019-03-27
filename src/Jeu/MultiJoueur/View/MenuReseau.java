@@ -1,10 +1,9 @@
-package Jeu;
+package Jeu.MultiJoueur.View;
 
+import Jeu.Menu;
 import Jeu.MultiJoueur.Controller.ControlMouseInfos;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Model.*;
-import Jeu.MultiJoueur.View.PlaceDispo;
-import Jeu.MultiJoueur.View.PopUpPartisan;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -83,10 +82,12 @@ public class MenuReseau extends Parent {
     private GraphicsContext graphicsContextInfos;
     private Canvas canvasInfos;
     private PlaceDispo placeDispo;
-    int width = 1000;
-    int height = 700;
+    private final int width = 1000;
+    private final int height = 700;
     private ControlMouse controlMouse;
     private ControlMouseInfos controlMouseInfos;
+
+    private  FenetreDefausse fenetreDefausse;
 
     public MenuReseau(Stage primaryStage) {
         placeDispo = new PlaceDispo();
@@ -96,6 +97,7 @@ public class MenuReseau extends Parent {
         listHBoxElement = new ArrayList<>();
         nomJoueursCorrect = true;
         this.primaryStage = primaryStage;
+        fenetreDefausse = new FenetreDefausse(this);
         jeuInternet();
     }
 
@@ -440,7 +442,7 @@ public class MenuReseau extends Parent {
     private void barreInfos() {
         tabDefausseCarte = new int[]{750, 35, 180, 30};
         canvasInfos = new Canvas(1000, 100);
-        controlMouseInfos = new ControlMouseInfos(controlMouse, tabDefausseCarte);
+        controlMouseInfos = new ControlMouseInfos(controlMouse, tabDefausseCarte, this);
         canvasInfos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = canvasInfos.getGraphicsContext2D();
         graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
@@ -457,6 +459,10 @@ public class MenuReseau extends Parent {
             alert.setContentText(erreur);
             alert.showAndWait();
         });
+    }
+
+    public void afficherDefausse(){
+        fenetreDefausse.afficherDefausse();
     }
 
     private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {
@@ -536,18 +542,20 @@ public class MenuReseau extends Parent {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        actualiserBarreInfo();
     }
 
     /*
      * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
      */
-    public void actualiserTourSuivant(){
+    public void actualiserBarreInfo(){
+        String s;
+
         controlMouseInfos.setMode(0);
         graphicsContextInfos.clearRect(0,0,width,100);
         graphicsContextInfos.setFill(Color.BLACK);
-        drawLigneSeparatrice();
 
-        String s;
+        drawLigneSeparatrice();
 
         graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width/2.), 30, 50, 50);
 
@@ -587,4 +595,10 @@ public class MenuReseau extends Parent {
     public void setNomJoueurCourant(String nomJoueurCourant) { this.nomJoueurCourant = nomJoueurCourant; }
 
     public String getNomJoueur() { return nomJoueur; }
+
+    public List<Carte> getDefausse() { return defausse; }
+
+    public int getWidth() {return width; }
+
+    public int getHeight() { return height; }
 }

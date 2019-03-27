@@ -1,6 +1,6 @@
 package Jeu.MultiJoueur.View;
 
-import Jeu.Model.Carte;
+import Jeu.MultiJoueur.Model.Carte;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,15 +9,18 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FenetreDefausse {
     private final int TAILLE_CARTE=75;
+    private MenuReseau menuReseau;
     private Stage popup;
     private Canvas canvas;
     private Pane pane;
     private GraphicsContext graphicsContext;
 
-    public FenetreDefausse(){
+    public FenetreDefausse(MenuReseau menuReseau){
+        this.menuReseau = menuReseau;
         popup = new Stage();
         canvas = new Canvas(TAILLE_CARTE*5+60,TAILLE_CARTE*5+60);
         graphicsContext = canvas.getGraphicsContext2D();
@@ -26,8 +29,9 @@ public class FenetreDefausse {
         popup.setScene(scene);
     }
 
-    public void afficherDefausse(ArrayList<Carte> defausse) {
+    public void afficherDefausse() {
         pane.getChildren().clear();
+        List<Carte> defausse = menuReseau.getDefausse();
         for (int i = 0; i < defausse.size(); i++) {
             for (int j = 0; j < 5; j++) {
                 if (defausse.size()>i*5+j) {

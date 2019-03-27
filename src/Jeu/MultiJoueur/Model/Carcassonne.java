@@ -540,4 +540,6 @@ public class Carcassonne {
     public ArrayList<Carte> getDefausse() { return defausse; }
 
     public Carte getCarteCourante() { return carteCourante; }
+
+    public void setCarteCourante(Carte carteCourante) { this.carteCourante = carteCourante; }
 }

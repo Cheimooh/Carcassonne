@@ -1,4 +1,4 @@
-package Jeu;
+package Jeu.MultiJoueur.View;
 
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.Joueur;
@@ -51,7 +51,7 @@ public class ThreadSalonAttente {
                             Carte carteCourante = (Carte) oi.readObject();
                             menu.setCarteCourante(carteCourante);
                             menu.setNomJoueurCourant(nomJoueurCourant);
-                            menu.actualiserTourSuivant();
+                            menu.actualiserBarreInfo();
                         }
                         if (test.equals("poserCarte")){
                             menu.actualiserPoserCarte();
