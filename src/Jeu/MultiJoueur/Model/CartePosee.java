@@ -92,6 +92,11 @@ public class CartePosee implements Serializable, Cloneable {
         }
     }
 
+    @Override
+    public CartePosee clone() throws CloneNotSupportedException{
+        return (CartePosee)super.clone();
+    }
+
     public Point getPosition() { return position; }
 
     public CoteCarte getNord() { return nord; }

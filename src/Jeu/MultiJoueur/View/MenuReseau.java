@@ -71,7 +71,7 @@ public class MenuReseau extends Parent {
     private List<Carte> defausse;
 
     private Carte carteCourante;
-    private String nomJoueurCourant;
+    private Joueur joueurCourant;
 
     /*
     * Affichage fenetre Jeu après startPartie
@@ -86,8 +86,12 @@ public class MenuReseau extends Parent {
     private final int height = 700;
     private ControlMouse controlMouse;
     private ControlMouseInfos controlMouseInfos;
+    private int mode;   // 0 placement de carte
+                        // 1 placement de partisan
 
-    private  FenetreDefausse fenetreDefausse;
+    private PopUpPartisan popUpPartisan;
+
+    private FenetreDefausse fenetreDefausse;
 
     public MenuReseau(Stage primaryStage) {
         placeDispo = new PlaceDispo();
@@ -98,6 +102,8 @@ public class MenuReseau extends Parent {
         nomJoueursCorrect = true;
         this.primaryStage = primaryStage;
         fenetreDefausse = new FenetreDefausse(this);
+        popUpPartisan = new PopUpPartisan(this);
+        mode = 0;
         jeuInternet();
     }
 
@@ -375,7 +381,7 @@ public class MenuReseau extends Parent {
         if (couleur.equals("jaune")) return Color.GOLD;
         if (couleur.equals("bleuClair")) return Color.DEEPSKYBLUE;
         if (couleur.equals("rose")) return Color.HOTPINK;
-        else return null;
+        else return Color.GRAY;
     }
 
     private Color recupColorsToggle(Toggle toggle) {
@@ -416,19 +422,12 @@ public class MenuReseau extends Parent {
 
     private void afficherFenetreJeu() {
         Group root = new Group();
-        PopUpPartisan popUpPartisan = new PopUpPartisan(primaryStage);
         //voir barre infos pour affichage
 
         Canvas canvas = new Canvas(143*50, 143*50);
         controlMouse = new ControlMouse(this);
         canvas.setOnMouseClicked(controlMouse);
         graphicsContext = canvas.getGraphicsContext2D();
-
-        //Le fond
-        Image image = new Image("Jeu/fond2.jpg");
-        graphicsContext.drawImage(image,0,100,width,height);
-        image = new Image("Jeu/fond.jpg");
-        graphicsContext.drawImage(image,0,0,width,100);
 
         //barreInfos
         barreInfos();
@@ -515,11 +514,17 @@ public class MenuReseau extends Parent {
      * Permet de placer une carte sur la fenêtre de jeu
      */
     public void actualiserPlateau(){
+        graphicsContext.clearRect(0,0, 9999, 9999);
+        //Le fond
+        Image image = new Image("Jeu/fond2.jpg");
+        graphicsContext.drawImage(image,0,100,width,height);
+        image = new Image("Jeu/fond.jpg");
+        graphicsContext.drawImage(image,0,0,width,100);
         for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
         {
             Point point = entry.getKey();
             CartePosee carteAPosee = entry.getValue();
-            Image image = new Image(carteAPosee.getImageCarte());
+            image = new Image(carteAPosee.getImageCarte());
             graphicsContext.drawImage(image, point.getX()*50,point.getY()*50, 50, 50);
         }
 
@@ -549,33 +554,141 @@ public class MenuReseau extends Parent {
      * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
      */
     public void actualiserBarreInfo(){
+        if(mode == 0) {
+            drawInformationsCarte();
+        }
+        else if(mode == 1){
+            drawInformationsPartisans();
+        }
+    }
+
+    public void drawInformationsCarte(){
         String s;
 
-        controlMouseInfos.setMode(0);
-        graphicsContextInfos.clearRect(0,0,width,100);
+        graphicsContextInfos.clearRect(0, 0, width, 100);
         graphicsContextInfos.setFill(Color.BLACK);
 
         drawLigneSeparatrice();
 
-        graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width/2.), 30, 50, 50);
+        graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width / 2.), 30, 50, 50);
 
-        s = "Joueur: " + nomJoueurCourant;
+        s = "Joueur: " + joueurCourant.getNom();
 
         String defausse = "Defausser ma carte";
         String voirDefausse = "Défausse";
+
+        graphicsContextInfos.setFill(Color.color(0.98, 0.694, 0.627));
+
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width / 7., 35, 100, 30);
+        //Affichage du "bouton" pour défausser une carte
+        drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
+
+        if (nomJoueur.equals(joueurCourant.getNom())) graphicsContextInfos.setStroke(Color.RED);
+
+        graphicsContextInfos.strokeText(s, (width / 2.), 15);
+
+        graphicsContextInfos.setStroke(Color.BLACK);
+    }
+
+    /*
+     * Dessine la barre d'canvasInfos lorsque le joueur doit poser un partisan
+     */
+    public void drawInformationsPartisans(){
+        graphicsContextInfos.clearRect(0,0,width,100);
+        drawLigneSeparatrice();
+
+        String s;
+
+        s = "Joueur: " + joueurCourant.getNom();
+
+        int nbPartisans = joueurCourant.getNombrePartisansRestants();
+        Color color = tradStringToColors(joueurCourant.getCouleur());
+
+        String voirDefausse = "Défausse";
+        String poserPartisan = "Poser un partisan";
+        String passerTour = "Passer son tour";
 
         graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
 
         //Affichage du "bouton" pour voir la défausse
         drawBouton(voirDefausse, width/7., 35, 100, 30);
-        //Affichage du "bouton" pour défausser une carte
-        drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
+        //Affichage du "bouton" pour poser un partisan
+        drawBouton(poserPartisan, 750, 15, 180, 30);
+        //Affichage du "bouton" pour passer son tour
+        drawBouton(passerTour, 750, 55, 180, 30);
 
-        if(nomJoueur.equals(nomJoueurCourant)) graphicsContextInfos.setStroke(Color.RED);
+        if (nbPartisans>0){
+            graphicsContextInfos.setFill(color);
+            graphicsContextInfos.fillOval(width/2., 25, 50, 50);
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.strokeText("x "+nbPartisans, width/2.+50, 35);
+        }
+
+        if (nomJoueur.equals(joueurCourant.getNom())) graphicsContextInfos.setStroke(Color.RED);
 
         graphicsContextInfos.strokeText(s, (width/2.), 15);
 
         graphicsContextInfos.setStroke(Color.BLACK);
+    }
+
+    /*
+     * Permet de savoir si la carte courante peut etre posée où non en fonction de si elle coincide avec les cartes
+     * adjacentes ou non
+     */
+    public boolean isPlacable(int x, int y) {
+        boolean isPlacable = true;
+        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
+        {
+            Point pointCourant = entry.getKey();
+            // creer un point temporaire pour faire les verifications
+            Point point = new Point(x-1, y);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println("getOuest carteCourant: " + carteCourante.getOuest());
+                System.out.println("getEst c: " + c.getEst());
+                if (c.getEst() != carteCourante.getOuest()){
+                    isPlacable=false;
+                }
+            }
+
+            point = new Point(x+1, y);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println("getEst carteCourant: " + carteCourante.getEst());
+                System.out.println("getOuest c: " + c.getOuest());
+                if (c.getOuest() != carteCourante.getEst()){
+                    isPlacable=false;
+                }
+            }
+
+            point = new Point(x, y-1);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println(c);
+                System.out.println("getNord carteCourant: " + carteCourante.getNord());
+                System.out.println("getSud c: " + c.getSud());
+                if (c.getSud() != carteCourante.getNord()){
+                    isPlacable=false;
+                }
+            }
+
+            point = new Point(x, y+1);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println(c);
+                System.out.println("getSud carteCourant: " + carteCourante.getSud());
+                System.out.println("getNord c: " + c.getNord());
+                if (c.getNord() != carteCourante.getSud()){
+                    isPlacable=false;
+                }
+            }
+        }
+        return isPlacable;
+    }
+
+    public void afficherCartePourPoserUnPartisan() {
+        popUpPartisan.afficherCarte(carteCourante);
     }
 
     public SocketJoueur getSocketJoueur() { return socketJoueur; }
@@ -590,9 +703,9 @@ public class MenuReseau extends Parent {
 
     public void setCarteCourante(Carte carteCourante) { this.carteCourante = carteCourante; }
 
-    public String getNomJoueurCourant() { return nomJoueurCourant; }
+    public Joueur getJoueurCourant() { return joueurCourant; }
 
-    public void setNomJoueurCourant(String nomJoueurCourant) { this.nomJoueurCourant = nomJoueurCourant; }
+    public void setJoueurCourant(Joueur joueurCourant) { this.joueurCourant = joueurCourant; }
 
     public String getNomJoueur() { return nomJoueur; }
 
@@ -601,4 +714,10 @@ public class MenuReseau extends Parent {
     public int getWidth() {return width; }
 
     public int getHeight() { return height; }
+
+    public List<Point> getListPointOccupe() { return listPointOccupe; }
+
+    public int getMode() { return mode; }
+
+    public void setMode(int mode) { this.mode = mode; }
 }

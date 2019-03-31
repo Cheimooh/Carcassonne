@@ -43,24 +43,25 @@ public class ThreadReceptionClient {
                             carcassonne.miseAJourJoueur();
                         }
                         else if(string.equals("defausse")){
-                            //carcassonne.isDefaussable();
+                            carcassonne.isDefaussable();
                             carcassonne.defausser();
                         }
                         else if(string.equals("poserCarte")){
                             Point position = (Point) oi.readObject();
                             carcassonne.setCarteCourante((Carte) oi.readObject());
-                            System.out.println("x: " + position.getX() + ", y: " + position.getY());
+                            Carte c = carcassonne.getCarteCourante();
+                            System.out.println("Sud: " + c.getSud() + ", Ouest: " + c.getOuest() + ", Nord: " + c.getNord() + ", Est: " + c.getEst());
                             if (carcassonne.getListPointOccupe().contains(position)) {
                                 envoieErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
                             } else if (carcassonne.isCarteAdjacente(position.getX(), position.getY())) {
-                                //if (carcassonne.isPlacable(position.getX(), position.getY())) {
+                                if (carcassonne.isPlacable(position.getX(), position.getY())) {
                                     carcassonne.placerCarte(position);
                                     carcassonne.envoieCartePlacer();
-                                    carcassonne.joueurSuivant();
-                                /*}
+                                    //carcassonne.joueurSuivant();
+                                }
                                 else {
                                     envoieErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");
-                                }*/
+                                }
                             }
                             else {
                                 envoieErreur("La carte ne peut pas être placée à cet endroit", "Placement de carte impossible");

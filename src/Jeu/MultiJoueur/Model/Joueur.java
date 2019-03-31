@@ -64,4 +64,6 @@ public class Joueur implements Serializable, Cloneable {
     public boolean isPret() { return isPret; }
 
     public void setPret(boolean pret) { isPret = pret; }
+
+    public int getNombrePartisansRestants() { return nombrePartisansRestants; }
 }

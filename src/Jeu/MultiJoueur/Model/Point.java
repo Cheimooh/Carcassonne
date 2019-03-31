@@ -2,7 +2,7 @@ package Jeu.MultiJoueur.Model;
 
 import java.io.Serializable;
 
-public class Point implements Serializable{
+public class Point implements Serializable, Cloneable{
     private int x;
     private int y;
 
@@ -21,7 +21,12 @@ public class Point implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return x == point.x && y == point.y;
+        return x == point.getX() && y == point.getY();
+    }
+
+    @Override
+    public Point clone() throws CloneNotSupportedException{
+        return (Point)super.clone();
     }
 
     public void setLocation(int x, int y) {

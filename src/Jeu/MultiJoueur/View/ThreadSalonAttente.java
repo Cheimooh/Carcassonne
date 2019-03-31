@@ -36,7 +36,6 @@ public class ThreadSalonAttente {
 
                         for (int i = 0; i < nombreJoueur; i++) {
                             Joueur joueur = (Joueur) oi.readObject();
-                            System.out.println(joueur.isPret());
                             menu.getListJoueurs().add(joueur);
                         }
                         menu.actualiser();
@@ -47,15 +46,18 @@ public class ThreadSalonAttente {
                     else if (test.equals("actualise")) {
                         test = (String) oi.readObject();
                         if(test.equals("tourSuivant")){
-                            String nomJoueurCourant = (String) oi.readObject();
+                            Joueur joueurCourant = (Joueur) oi.readObject();
                             Carte carteCourante = (Carte) oi.readObject();
                             menu.setCarteCourante(carteCourante);
-                            menu.setNomJoueurCourant(nomJoueurCourant);
+                            menu.setJoueurCourant(joueurCourant);
+                            menu.setMode(0);
                             menu.actualiserBarreInfo();
                         }
                         if (test.equals("poserCarte")){
                             menu.actualiserPoserCarte();
                             menu.actualiserPlateau();
+                            menu.setMode(1);
+                            menu.actualiserBarreInfo();
                         }
                         if (test.equals("defausse")){
                             menu.actualiserDefausse();

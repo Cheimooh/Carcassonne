@@ -1,7 +1,6 @@
 package Jeu.MultiJoueur.Controller;
 
 import Jeu.MultiJoueur.View.MenuReseau;
-import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +24,7 @@ public class ControlMouse implements EventHandler<MouseEvent> {
      */
     @Override
     public void handle(MouseEvent event) {
-        if( menuReseau.getNomJoueurCourant().equals(menuReseau.getNomJoueur()) ) placerCarte(event);
+        if( menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur()) ) placerCarte(event);
         else menuReseau.afficheErreur("C'est pas votre tour de jouer", "Tour de jeu");
     }
 
@@ -40,12 +39,15 @@ public class ControlMouse implements EventHandler<MouseEvent> {
         // Position y du clique
         int yCartePlacee = (int) event.getY() / 50;
         Point point = new Point(xCartePlacee, yCartePlacee);
+        System.out.println("x: " + xCartePlacee + ", y: " + yCartePlacee);
         try {
             oo.writeObject("j'envoie");
             oo.writeObject("poserCarte");
             oo.writeObject(point);
-            oo.writeObject(menuReseau.getCarteCourante());
+            oo.writeObject(menuReseau.getCarteCourante().clone());
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
     }
