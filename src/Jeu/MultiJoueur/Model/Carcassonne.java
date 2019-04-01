@@ -23,6 +23,7 @@ public class Carcassonne {
     private int nbJoueur;
     private int numJoueurCourant;
     private Carte carteCourante;
+    private CartePosee carteCourantePosee;
 
     private List<SocketJoueur> listSocket;
     private ServerSocket serverSocket;
@@ -150,7 +151,7 @@ public class Carcassonne {
     }
 
     public void initJeu(){
-        numJoueurCourant = (int) (Math.random()*(nbJoueur-1));
+        numJoueurCourant = (int) (Math.random()*(nbJoueur-1))+1;
         carteCourante = carteDeBase;
         placerCarte(new Point(8,8));
         try {
@@ -169,22 +170,24 @@ public class Carcassonne {
                 int tailleListDispo = listPointDispo.size();
                 oo.writeInt(tailleListDispo);
                 for (int j = 0; j < tailleListDispo; j++) {
-                    oo.writeObject(listPointDispo.get(j));
+                    oo.writeObject(listPointDispo.get(j).clone());
                 }
 
                 int tailleListOccuper = listPointOccupe.size();
                 oo.writeInt(tailleListOccuper);
                 for (int j = 0; j < tailleListOccuper; j++) {
-                    oo.writeObject(listPointOccupe.get(j));
+                    oo.writeObject(listPointOccupe.get(j).clone());
                 }
 
                 int tailleDefausse = defausse.size();
                 oo.writeInt(tailleDefausse);
                 for (int j = 0; j < tailleDefausse; j++) {
-                    oo.writeObject(defausse.get(j));
+                    oo.writeObject(defausse.get(j).clone());
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
         envoieClientsTourSuivant();
@@ -192,9 +195,9 @@ public class Carcassonne {
 
     public void placerCarte(Point positionCarte){
         carteCourante.setPosition(positionCarte);
-        CartePosee cartePosee = new CartePosee(carteCourante);
+        carteCourantePosee = new CartePosee(carteCourante);
         listPointOccupe.add(positionCarte);
-        pointCarteMap.put(positionCarte, cartePosee);
+        pointCarteMap.put(positionCarte, carteCourantePosee);
 
         int x = positionCarte.getX();
         int y = positionCarte.getY();
@@ -212,8 +215,6 @@ public class Carcassonne {
         //Supression de l'emplacement de la carte dans la liste des emplacements disponibles
         listPointDispo.remove(positionCarte);
 
-        System.out.println("point: " + positionCarte.getX() + ", " + positionCarte.getY() + " dans pointCarte: " + pointCarteMap.containsKey(new Point(positionCarte.getX(), positionCarte.getY())));
-
         //Dessine l'image sur la fenêtre de jeu
         if(carteCourante!=carteDeBase) {
             //contaminationDeLaCarteAvecCouleur(cartePosee);
@@ -223,7 +224,6 @@ public class Carcassonne {
     public void envoieCartePlacer(){
         try {
             for (int i = 0; i < listSocket.size(); i++) {
-                ObjectInputStream oi = listSocket.get(i).getOi();
                 ObjectOutputStream oo = listSocket.get(i).getOo();
 
                 oo.writeObject("actualise");
@@ -268,7 +268,6 @@ public class Carcassonne {
     public void joueurSuivant(){
         numJoueurCourant++;
         numJoueurCourant = numJoueurCourant %nbJoueur;
-        System.out.println("numJoueur: " + numJoueurCourant );
         envoieClientsTourSuivant();
     }
 
@@ -280,16 +279,39 @@ public class Carcassonne {
         }
     }
 
+    private void testPartisant(){
+        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()) {
+            CartePosee carte = entry.getValue();
+            System.out.println(carte);
+            for (int i = 0; i < carte.getZonesControlleesParLesPartisans().length; i++) {
+                Partisan partisan = carte.getZonesControlleesParLesPartisans()[i];
+                System.out.println(partisan);
+                System.out.println("nbPartisan: " + i);
+                if(carte.getZonesControlleesParLesPartisans()[i] != null){
+                    System.out.println("Joueur: " + partisan.getJoueur().getNom());
+                    System.out.println("numZone" + partisan.getNumZone());
+                    System.out.println("testPartisan: " + partisan.isPlacer());
+                }
+            }
+        }
+    }
+
     private void envoieClientsTourSuivant(){
         piocher();
         Joueur joueurCourant = listJoueur.get(numJoueurCourant);
         try {
+            testPartisant();
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectOutputStream oo = listSocket.get(i).getOo();
                 oo.writeObject("actualise");
                 oo.writeObject("tourSuivant");
                 oo.writeObject(joueurCourant.clone());
                 oo.writeObject(carteCourante.clone());
+                oo.writeInt(listJoueur.size());
+                for (int j = 0; j < listJoueur.size(); j++) {
+                    oo.writeObject(listJoueur.get(j).clone());
+                    oo.flush();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -378,8 +400,6 @@ public class Carcassonne {
             Point point = new Point(x-1, y);
             if(pointCourant.equals(point)){
                 CartePosee c = entry.getValue();
-                System.out.println("getOuest carteCourant: " + carteCourante.getOuest());
-                System.out.println("getEst c: " + c.getEst());
                 if (c.getEst() != carteCourante.getOuest()){
                     isPlacable=false;
                 }
@@ -388,8 +408,6 @@ public class Carcassonne {
             point = new Point(x+1, y);
             if(pointCourant.equals(point)){
                 CartePosee c = entry.getValue();
-                System.out.println("getEst carteCourant: " + carteCourante.getEst());
-                System.out.println("getOuest c: " + c.getOuest());
                 if (c.getOuest() != carteCourante.getEst()){
                     isPlacable=false;
                 }
@@ -399,8 +417,6 @@ public class Carcassonne {
             if(pointCourant.equals(point)){
                 CartePosee c = entry.getValue();
                 System.out.println(c);
-                System.out.println("getNord carteCourant: " + carteCourante.getNord());
-                System.out.println("getSud c: " + c.getSud());
                 if (c.getSud() != carteCourante.getNord()){
                     isPlacable=false;
                 }
@@ -410,8 +426,6 @@ public class Carcassonne {
             if(pointCourant.equals(point)){
                 CartePosee c = entry.getValue();
                 System.out.println(c);
-                System.out.println("getSud carteCourant: " + carteCourante.getSud());
-                System.out.println("getNord c: " + c.getNord());
                 if (c.getNord() != carteCourante.getSud()){
                     isPlacable=false;
                 }
@@ -424,10 +438,57 @@ public class Carcassonne {
      * Permet de contaminer la carte donnée en paramètre avec les couleurs correspondantes
      */
     public void contaminationDeLaCarteAvecCouleur(CartePosee carte) {
-        int x = (int) carte.getPosition().getX();
-        int y = (int) carte.getPosition().getY();
+        int x = carte.getPosition().getX();
+        int y = carte.getPosition().getY();
 
-        Point point = new Point(x-1, y);
+        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()) {
+            Point pointTmp = entry.getKey();
+            Point point = new Point(x-1, y);
+            if(pointTmp.equals(point)){
+                CartePosee c = pointCarteMap.get(pointTmp);
+                if (c.getZonesCouleurPartisan().containsKey(4)) carte.getZonesCouleurPartisan().put(12, c.getZonesCouleurPartisan().get(4));
+                if (c.getZonesCouleurPartisan().containsKey(5)) carte.getZonesCouleurPartisan().put(11, c.getZonesCouleurPartisan().get(5));
+                if (c.getZonesCouleurPartisan().containsKey(6)) carte.getZonesCouleurPartisan().put(10, c.getZonesCouleurPartisan().get(6));
+                ajoutCouleurMap(c, 4, carte, 12);
+                ajoutCouleurMap(c, 5, carte, 11);
+                ajoutCouleurMap(c, 6, carte, 10);
+            }
+
+            point = new Point(x+1, y);
+            if(pointTmp.equals(point)){
+                CartePosee c = pointCarteMap.get(pointTmp);
+                if (c.getZonesCouleurPartisan().containsKey(12)) carte.getZonesCouleurPartisan().put(4, c.getZonesCouleurPartisan().get(12));
+                if (c.getZonesCouleurPartisan().containsKey(11)) carte.getZonesCouleurPartisan().put(5, c.getZonesCouleurPartisan().get(11));
+                if (c.getZonesCouleurPartisan().containsKey(10)) carte.getZonesCouleurPartisan().put(6, c.getZonesCouleurPartisan().get(10));
+                ajoutCouleurMap(c, 12, carte, 4);
+                ajoutCouleurMap(c, 11, carte, 5);
+                ajoutCouleurMap(c, 10, carte, 6);
+            }
+
+            point = new Point(x, y+1);
+            if(pointTmp.equals(point)){
+                CartePosee c = pointCarteMap.get(pointTmp);
+                if (c.getZonesCouleurPartisan().containsKey(1)) carte.getZonesCouleurPartisan().put(9, c.getZonesCouleurPartisan().get(1));
+                if (c.getZonesCouleurPartisan().containsKey(2)) carte.getZonesCouleurPartisan().put(8, c.getZonesCouleurPartisan().get(2));
+                if (c.getZonesCouleurPartisan().containsKey(3)) carte.getZonesCouleurPartisan().put(7, c.getZonesCouleurPartisan().get(3));
+                ajoutCouleurMap(c, 1, carte, 9);
+                ajoutCouleurMap(c, 2, carte, 8);
+                ajoutCouleurMap(c, 3, carte, 7);
+            }
+
+            point = new Point(x, y-1);
+            if(pointTmp.equals(point)){
+                CartePosee c = pointCarteMap.get(pointTmp);
+                if (c.getZonesCouleurPartisan().containsKey(9)) carte.getZonesCouleurPartisan().put(1, c.getZonesCouleurPartisan().get(9));
+                if (c.getZonesCouleurPartisan().containsKey(8)) carte.getZonesCouleurPartisan().put(2, c.getZonesCouleurPartisan().get(8));
+                if (c.getZonesCouleurPartisan().containsKey(7)) carte.getZonesCouleurPartisan().put(3, c.getZonesCouleurPartisan().get(7));
+                ajoutCouleurMap(c, 9, carte, 1);
+                ajoutCouleurMap(c, 8, carte, 2);
+                ajoutCouleurMap(c, 7, carte, 3);
+            }
+        }
+
+        /*Point point = new Point(x-1, y);
         if(listPointOccupe.contains(point)){
             CartePosee c = pointCarteMap.get(point);
             if (c.getZonesCouleurPartisan().containsKey(4)) carte.getZonesCouleurPartisan().put(12, c.getZonesCouleurPartisan().get(4));
@@ -469,7 +530,7 @@ public class Carcassonne {
             ajoutCouleurMap(c, 9, carte, 1);
             ajoutCouleurMap(c, 8, carte, 2);
             ajoutCouleurMap(c, 7, carte, 3);
-        }
+        }*/
     }
 
     /*
@@ -490,20 +551,55 @@ public class Carcassonne {
     /*
      * Permet de contaminer les cartes déjà posées grâce à la carte donnée en paramètre
      */
-    public void contaminationDesAutresCarteAvecCouleur(CartePosee carteBase){
+    public void contaminationDesAutresCarteAvecCouleur(){
         ArrayDeque<CartePosee> carteNonVerifiee = new ArrayDeque<>();
         ArrayList<CartePosee> cartesDejaVerifiees = new ArrayList<>();
-        carteNonVerifiee.offer(carteBase);
+        carteNonVerifiee.offer(new CartePosee(carteDeBase));
         int x;
         int y;
         while(!carteNonVerifiee.isEmpty()){
             CartePosee carteCourante = carteNonVerifiee.poll();
             cartesDejaVerifiees.add(carteCourante);
-            x = (int) carteCourante.getPosition().getX();
-            y = (int) carteCourante.getPosition().getY();
-            contaminationDeLaCarteAvecCouleur(carteCourante);
+            x = carteCourante.getPosition().getX();
+            y = carteCourante.getPosition().getY();
+            contaminationDeLaCarteAvecCouleur(carteCourantePosee);
 
-            Point point = new Point(x-1, y);
+            for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()){
+                Point pointTmp = entry.getKey();
+                Point point = new Point(x-1, y);
+                if(point.equals(pointTmp)){
+                    CartePosee c = pointCarteMap.get(pointTmp);
+                    if(!cartesDejaVerifiees.contains(c)){
+                        carteNonVerifiee.addFirst(c);
+                    }
+                }
+
+                point = new Point(x+1, y);
+                if(point.equals(pointTmp)){
+                    CartePosee c = pointCarteMap.get(pointTmp);
+                    if(!cartesDejaVerifiees.contains(c)) {
+                        carteNonVerifiee.addFirst(c);
+                    }
+                }
+
+                point = new Point(x, y+1);
+                if(point.equals(pointTmp)){
+                    CartePosee c = pointCarteMap.get(pointTmp);
+                    if(!cartesDejaVerifiees.contains(c)) {
+                        carteNonVerifiee.addFirst(c);
+                    }
+                }
+
+                point = new Point(x, y-1);
+                if(point.equals(pointTmp)){
+                    CartePosee c = pointCarteMap.get(pointTmp);
+                    if(!cartesDejaVerifiees.contains(c)) {
+                        carteNonVerifiee.addFirst(c);
+                    }
+                }
+            }
+
+            /*Point point = new Point(x-1, y);
             if(listPointOccupe.contains(point)){
                 CartePosee c = pointCarteMap.get(point);
                 if(!cartesDejaVerifiees.contains(c)){
@@ -533,7 +629,33 @@ public class Carcassonne {
                 if(!cartesDejaVerifiees.contains(c)) {
                     carteNonVerifiee.addFirst(c);
                 }
-            }
+            }*/
+        }
+    }
+
+    /*
+     * Permet d'ajouter un partisan sur la zone où l'on clique et de rajouter la couleur en fonction du joueur
+     */
+    public void placerPartisan(int numZone) {
+        if (getJoueurCourant().getNombrePartisansRestants()>0) {
+            carteCourantePosee.addZonesOccupees(numZone, getJoueurCourant().getCouleur());
+            Partisan p = getJoueurCourant().placerPartisan(carteCourantePosee ,numZone);
+            carteCourantePosee.attributionPartisan(p, numZone);
+            //contaminationDesAutresCarteAvecCouleur();
+            joueurSuivant();
+        } else {
+            envoieErreur(getJoueurCourant().getNom()+" n'a plus de partisans !","Placement de partisans");
+        }
+    }
+
+    private void envoieErreur(String erreur, String titre) {
+        ObjectOutputStream oo = listSocket.get(numJoueurCourant).getOo();
+        try{
+            oo.writeObject("erreur");
+            oo.writeObject(titre);
+            oo.writeObject(erreur);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -541,27 +663,19 @@ public class Carcassonne {
 
     }
 
-    public int getNB_CASES() {
-        return 143;
-    }
-
     public List<Joueur> getListJoueur() { return listJoueur; }
 
     public List<SocketJoueur> getTabSocket() { return listSocket; }
 
-    public void setTabSocket(ArrayList<SocketJoueur> listSocket) { this.listSocket = listSocket; }
-
     public List<ThreadReceptionClient> getListReceptionClient() { return listReceptionClient; }
 
-    public Map<Point, CartePosee> getPointCarteMap() { return pointCarteMap; }
-
-    public ArrayList<Point> getListPointDispo() { return listPointDispo; }
-
     public ArrayList<Point> getListPointOccupe() { return listPointOccupe; }
-
-    public ArrayList<Carte> getDefausse() { return defausse; }
 
     public Carte getCarteCourante() { return carteCourante; }
 
     public void setCarteCourante(Carte carteCourante) { this.carteCourante = carteCourante; }
+
+    public CartePosee getCarteCourantePosee() { return carteCourantePosee; }
+
+    public Joueur getJoueurCourant() { return listJoueur.get(numJoueurCourant); }
 }

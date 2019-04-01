@@ -3,8 +3,6 @@ package Jeu.MultiJoueur.Model;
 
 import Jeu.Exception.PiocheVideException;
 
-
-import java.awt.*;
 import java.io.Serializable;
 
 public class Joueur implements Serializable, Cloneable {
@@ -20,9 +18,9 @@ public class Joueur implements Serializable, Cloneable {
         this.nom = nom;
         this.couleur = couleur;
         isPret = false;
-    }
-
-    public void joue(){
+        for (int i = 0; i < nombrePartisansRestants; i++) {
+            tabPartisans[i] = new Partisan(this);
+        }
     }
 
     /*
@@ -36,11 +34,13 @@ public class Joueur implements Serializable, Cloneable {
     /*
      * Décrémente le nombre de partisans "non posés" du joueur
      */
-    public void placerPartisan(CartePosee cartePosee, int numZone) {
-        if(nombrePartisansRestants>0) {
+    public Partisan placerPartisan(CartePosee cartePosee, int numZone) {
+        if (nombrePartisansRestants > 0) {
+            System.out.println("i: " + (8-nombrePartisansRestants));
+            Partisan p = tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().getX(), cartePosee.getPosition().getY(), numZone);
             nombrePartisansRestants--;
-            tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().getX(), cartePosee.getPosition().getY(), numZone);
-        }
+            return p;
+        } else return null;
     }
 
     public void retirerPartisan(Point p){
@@ -66,4 +66,8 @@ public class Joueur implements Serializable, Cloneable {
     public void setPret(boolean pret) { isPret = pret; }
 
     public int getNombrePartisansRestants() { return nombrePartisansRestants; }
+
+    public Partisan[] getTabPartisans() {return tabPartisans;}
+
+    public void setTabPartisans(Partisan[] tabPartisans) {this.tabPartisans = tabPartisans; }
 }

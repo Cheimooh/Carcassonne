@@ -43,8 +43,8 @@ public class ThreadReceptionClient {
                             carcassonne.miseAJourJoueur();
                         }
                         else if(string.equals("defausse")){
-                            carcassonne.isDefaussable();
-                            carcassonne.defausser();
+                            if(carcassonne.isDefaussable()) carcassonne.defausser();
+                            else envoieErreur("La carte peut être possé", "Défausse interdit");
                         }
                         else if(string.equals("poserCarte")){
                             Point position = (Point) oi.readObject();
@@ -68,7 +68,18 @@ public class ThreadReceptionClient {
                             }
                         }
                         else if(string.equals("poserPartisant")){
-                            System.out.println("PoserPartisant");
+                            int numZone = oi.readInt();
+                            System.out.println("numZone: " + numZone);
+
+                            if (numZone==-1){
+                                envoieErreur("Votre partisan doit être placé sur une des positions affichées", "Placement de partisan impossible");
+                            } else {
+                                if (zonePasEncoreOccupee(numZone)) {
+                                    carcassonne.placerPartisan(numZone);
+                                } else {
+                                    envoieErreur("Il y a un partisan dans la même zone que celle que vous avez choisie", "Placement de partisan impossible");
+                                }
+                            }
                         }
                         else if(string.equals("tourSuivant")){
                             carcassonne.joueurSuivant();
@@ -82,6 +93,24 @@ public class ThreadReceptionClient {
             } while(!isArreter);
         }
     }
+
+    private boolean zonePasEncoreOccupee(int numZone) {
+        CartePosee c = carcassonne.getCarteCourantePosee();
+        for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
+            if (i==numZone){
+                for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
+                    if (c.getZonesCouleurPartisan().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
+                        if(c.getZonesCouleurPartisan().get(c.getZonesControlleesParLesPoints()[i][j]) != carcassonne.getJoueurCourant().getCouleur()) {
+                            return false;
+                        }
+                        else return true;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public void envoieErreur(String erreur, String titre){
         ObjectOutputStream oo = socketJoueur.getOo();
         try{

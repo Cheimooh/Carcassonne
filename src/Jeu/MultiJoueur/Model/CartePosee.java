@@ -1,6 +1,5 @@
 package Jeu.MultiJoueur.Model;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +19,9 @@ public class CartePosee implements Serializable, Cloneable {
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
     private String type;
+    private Partisan[] zonesControlleesParLesPartisans;
 
-    public CartePosee(Carte carte){
+    public CartePosee(Carte carte) {
         type = carte.getType();
         nord = carte.getNord();
         sud = carte.getSud();
@@ -32,8 +32,9 @@ public class CartePosee implements Serializable, Cloneable {
         position = carte.getPosition();
         listeZones = new ArrayList<>();
         zonesCouleurPartisan = new HashMap<>();
-        positionsCoordonnees=carte.getPositionsCoordonnees();
+        positionsCoordonnees = carte.getPositionsCoordonnees();
         zonesControlleesParLesPoints = carte.getZonesControlleesParLesPoints();
+        zonesControlleesParLesPartisans = carte.getZonesControlleesParLesPartisans();
         addZones();
     }
 
@@ -49,8 +50,8 @@ public class CartePosee implements Serializable, Cloneable {
 
     private void addZone(CoteCarte cote) {
         // Si le centre du côté est une ville
-        if (cote.equals(CoteCarte.ville)){
-            for (int i = 0; i < 3 ; i++) {
+        if (cote.equals(CoteCarte.ville)) {
+            for (int i = 0; i < 3; i++) {
                 listeZones.add(CoteCarte.ville);
             }
         } else {
@@ -60,9 +61,9 @@ public class CartePosee implements Serializable, Cloneable {
         }
     }
 
-    private String setImageCarte(Carte carte){
+    private String setImageCarte(Carte carte) {
         String image;
-        switch (carte.getNbRotation()){
+        switch (carte.getNbRotation()) {
             case 0:
                 image = carte.getDraw().getPath();
                 break;
@@ -76,15 +77,14 @@ public class CartePosee implements Serializable, Cloneable {
                 image = carte.getDraw().getPath270();
                 break;
             default:
-                image=null;
+                image = null;
         }
         return image;
     }
 
     public void addZonesOccupees(int numZone, String couleurJoueur) {
-
-        for (int i = 0; i < zonesControlleesParLesPoints.length ; i++) {
-            if (i==numZone) {
+        for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
+            if (i == numZone) {
                 for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
                     zonesCouleurPartisan.put(zonesControlleesParLesPoints[i][j], couleurJoueur);
                 }
@@ -92,32 +92,64 @@ public class CartePosee implements Serializable, Cloneable {
         }
     }
 
+    public void attributionPartisan(Partisan p, int numZone) {
+        if (p != null) {
+            zonesControlleesParLesPartisans[numZone] = p;
+        }
+    }
+
     @Override
-    public CartePosee clone() throws CloneNotSupportedException{
+    public CartePosee clone() throws CloneNotSupportedException {
         return (CartePosee)super.clone();
     }
 
-    public Point getPosition() { return position; }
+    public Point getPosition() {
+        return position;
+    }
 
-    public CoteCarte getNord() { return nord; }
+    public CoteCarte getNord() {
+        return nord;
+    }
 
-    public CoteCarte getSud() { return sud; }
+    public CoteCarte getSud() {
+        return sud;
+    }
 
-    public CoteCarte getEst() { return est; }
+    public CoteCarte getEst() {
+        return est;
+    }
 
-    public CoteCarte getOuest() { return ouest; }
+    public CoteCarte getOuest() {
+        return ouest;
+    }
 
-    public String getImageCarte() { return imageCarte; }
+    public String getImageCarte() {
+        return imageCarte;
+    }
 
-    public Map<Integer, String> getZonesCouleurPartisan() { return zonesCouleurPartisan; }
+    public Map<Integer, String> getZonesCouleurPartisan() {
+        return zonesCouleurPartisan;
+    }
 
-    public void setZonesCouleurPartisan(Map<Integer, String> zonesCouleurPartisan) { this.zonesCouleurPartisan = zonesCouleurPartisan; }
+    public void setZonesCouleurPartisan(Map<Integer, String> zonesCouleurPartisan) {
+        this.zonesCouleurPartisan = zonesCouleurPartisan;
+    }
 
-    public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
+    public int[][] getZonesControlleesParLesPoints() {
+        return zonesControlleesParLesPoints;
+    }
 
-    public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
+    public ArrayList<Point> getPositionsCoordonnees() {
+        return positionsCoordonnees;
+    }
 
-    public ArrayList<CoteCarte> getListeZones() { return listeZones; }
+    public ArrayList<CoteCarte> getListeZones() {
+        return listeZones;
+    }
 
-    public String getType() { return type; }
+    public String getType() {
+        return type;
+    }
+
+    public Partisan[] getZonesControlleesParLesPartisans() { return zonesControlleesParLesPartisans; }
 }

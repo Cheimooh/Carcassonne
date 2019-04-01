@@ -24,7 +24,10 @@ public class ControlMouse implements EventHandler<MouseEvent> {
      */
     @Override
     public void handle(MouseEvent event) {
-        if( menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur()) ) placerCarte(event);
+        if( menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur()) ){
+            if (menuReseau.getMode() == 0) placerCarte(event);
+            else menuReseau.afficheErreur("Jouer un partisant ou passer votre tour", "Deja poser une carte");
+        }
         else menuReseau.afficheErreur("C'est pas votre tour de jouer", "Tour de jeu");
     }
 

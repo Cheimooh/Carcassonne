@@ -3,6 +3,7 @@ package Jeu.MultiJoueur.View;
 import Jeu.MultiJoueur.Controller.ControlMousePartisan;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.CartePosee;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -17,11 +18,13 @@ public class PopUpPartisan {
     private ControlMousePartisan controlMousePartisan;
 
     public PopUpPartisan(MenuReseau menuReseau){
+        controlMousePartisan = new ControlMousePartisan(menuReseau);
         popup = new Stage();
         this.menuReseau = menuReseau;
         pane = new Pane();
         Scene scene = new Scene(pane);
         popup.setScene(scene);
+        pane.setOnMouseClicked(controlMousePartisan);
     }
 
     public void afficherCarte(Carte carte){
@@ -40,6 +43,6 @@ public class PopUpPartisan {
     }
 
     public void quitter() {
-        popup.close();
+        Platform.runLater(()->popup.close());
     }
 }

@@ -52,6 +52,8 @@ public class ThreadSalonAttente {
                             menu.setJoueurCourant(joueurCourant);
                             menu.setMode(0);
                             menu.actualiserBarreInfo();
+                            menu.getPopUpPartisan().quitter();
+                            menu.actualiserJoueur();
                         }
                         if (test.equals("poserCarte")){
                             menu.actualiserPoserCarte();
@@ -61,9 +63,6 @@ public class ThreadSalonAttente {
                         }
                         if (test.equals("defausse")){
                             menu.actualiserDefausse();
-                        }
-                        if (test.equals("poserPartisant")){
-                            //menu.actualiserPoserPartisant();
                         }
                     }
                     else if (test.equals("erreur")) {

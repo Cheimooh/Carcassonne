@@ -119,39 +119,52 @@ public class  Carcassonne {
      */
     public boolean isPlacable(int x, int y, Carte carteEnMain) {
         boolean isPlacable = true;
-        // creer un point temporaire pour faire les verifications
-        Point point = new Point(x-1, y);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getEst() != carteEnMain.getOuest()){
-                isPlacable=false;
+        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
+        {
+            Point pointCourant = entry.getKey();
+            // creer un point temporaire pour faire les verifications
+            Point point = new Point(x-1, y);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println("getOuest carteCourant: " + carteEnMain.getOuest());
+                System.out.println("getEst c: " + c.getEst());
+                if (c.getEst() != carteEnMain.getOuest()){
+                    isPlacable=false;
+                }
+            }
+
+            point = new Point(x+1, y);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println("getEst carteCourant: " + carteEnMain.getEst());
+                System.out.println("getOuest c: " + c.getOuest());
+                if (c.getOuest() != carteEnMain.getEst()){
+                    isPlacable=false;
+                }
+            }
+
+            point = new Point(x, y-1);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println(c);
+                System.out.println("getNord carteCourant: " + carteEnMain.getNord());
+                System.out.println("getSud c: " + c.getSud());
+                if (c.getSud() != carteEnMain.getNord()){
+                    isPlacable=false;
+                }
+            }
+
+            point = new Point(x, y+1);
+            if(pointCourant.equals(point)){
+                CartePosee c = entry.getValue();
+                System.out.println(c);
+                System.out.println("getSud carteCourant: " + carteEnMain.getSud());
+                System.out.println("getNord c: " + c.getNord());
+                if (c.getNord() != carteEnMain.getSud()){
+                    isPlacable=false;
+                }
             }
         }
-
-        point = new Point(x+1, y);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getOuest() != carteEnMain.getEst()){
-                isPlacable=false;
-            }
-        }
-
-        point = new Point(x, y-1);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getSud() != carteEnMain.getNord()){
-                isPlacable=false;
-            }
-        }
-
-        point = new Point(x, y+1);
-        if(listPointOccupe.contains(point)){
-            CartePosee c = pointCarteMap.get(point);
-            if (c.getNord() != carteEnMain.getSud()){
-                isPlacable=false;
-            }
-        }
-
         return isPlacable;
     }
 

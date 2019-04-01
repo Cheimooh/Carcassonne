@@ -3,7 +3,7 @@ package Jeu.MultiJoueur.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Carte implements Serializable, Cloneable {
+public class Carte implements Serializable, Cloneable{
     private Point position; // Position de la carte
     private CoteCarte nord, sud, est, ouest;
     private boolean isAbbaye;
@@ -12,10 +12,9 @@ public class Carte implements Serializable, Cloneable {
     private ArrayList<Point> positionsCoordonnees;
     private int[][] zonesControlleesParLesPoints;
     private String type;
-    private String path;
+    private Partisan[] zonesControlleesParLesPartisans;
 
-    public Carte(TypeCarte typeCarte){
-        this.path = typeCarte.getPath();
+    public Carte(TypeCarte typeCarte) {
         this.type = typeCarte.getTypeCarte();
         this.nord = typeCarte.getNord();
         this.sud = typeCarte.getSud();
@@ -23,9 +22,10 @@ public class Carte implements Serializable, Cloneable {
         this.ouest = typeCarte.getOuest();
         this.draw = new DrawCard(typeCarte.getPath(), typeCarte.getPath90(), typeCarte.getPath180(), typeCarte.getPath270());
         this.position = new Point();
-        this.nbRotation=0;
-        this.positionsCoordonnees=typeCarte.getCoordonneesPartisans();
-        this.zonesControlleesParLesPoints=typeCarte.getZonesControlleesParLesPoints();
+        this.nbRotation = 0;
+        this.positionsCoordonnees = typeCarte.getCoordonneesPartisans();
+        this.zonesControlleesParLesPoints = typeCarte.getZonesControlleesParLesPoints();
+        this.zonesControlleesParLesPartisans = typeCarte.getZonesControlleesParLesPartisans();
     }
 
     /*
@@ -37,15 +37,20 @@ public class Carte implements Serializable, Cloneable {
         CoteCarte lastEst = est;
         CoteCarte lastSud = sud;
 
-        this.nord=ouest;
-        this.est=lastNord;
-        this.sud=lastEst;
-        this.ouest=lastSud;
+        this.nord = ouest;
+        this.est = lastNord;
+        this.sud = lastEst;
+        this.ouest = lastSud;
         ArrayList<Point> newCoordonnees = new ArrayList<>();
+        double x;
+        double y;
         for (Point positionsCoordonnee : positionsCoordonnees) {
-            newCoordonnees.add(positionsCoordonnee);
+            x = 50 - positionsCoordonnee.getY();
+            y = positionsCoordonnee.getX();
+            Point point = new Point((int) x, (int) y);
+            newCoordonnees.add(point);
         }
-        positionsCoordonnees=newCoordonnees;
+        positionsCoordonnees = newCoordonnees;
 
         int[][] newZonesControlleesParLesPoints = new int[zonesControlleesParLesPoints.length][];
 
@@ -55,62 +60,94 @@ public class Carte implements Serializable, Cloneable {
 
         for (int i = 0; i < zonesControlleesParLesPoints.length; i++) {
             for (int j = 0; j < zonesControlleesParLesPoints[i].length; j++) {
-                newZonesControlleesParLesPoints[i][j] = (zonesControlleesParLesPoints[i][j]+3)%12;
-                if (newZonesControlleesParLesPoints[i][j]==0) newZonesControlleesParLesPoints[i][j]=12;
+                newZonesControlleesParLesPoints[i][j] = (zonesControlleesParLesPoints[i][j] + 3) % 12;
+                if (newZonesControlleesParLesPoints[i][j] == 0) newZonesControlleesParLesPoints[i][j] = 12;
             }
         }
-        zonesControlleesParLesPoints=newZonesControlleesParLesPoints;
+        zonesControlleesParLesPoints = newZonesControlleesParLesPoints;
     }
 
     @Override
     public Carte clone() throws CloneNotSupportedException {
-        return (Carte)super.clone();
+        return (Carte) super.clone();
     }
 
-    public Point getPosition() { return position; }
+    public Point getPosition() {
+        return position;
+    }
 
-    public void setPosition(Point nbPosition) { this.position = nbPosition; }
+    public void setPosition(Point nbPosition) {
+        this.position = nbPosition;
+    }
 
-    public DrawCard getDraw() { return draw; }
+    public DrawCard getDraw() {
+        return draw;
+    }
 
-    public CoteCarte getNord() { return nord; }
+    public CoteCarte getNord() {
+        return nord;
+    }
 
-    public CoteCarte getSud() { return sud; }
+    public CoteCarte getSud() {
+        return sud;
+    }
 
-    public CoteCarte getEst() { return est; }
+    public CoteCarte getEst() {
+        return est;
+    }
 
-    public CoteCarte getOuest() { return ouest; }
+    public CoteCarte getOuest() {
+        return ouest;
+    }
 
-    public int getNbRotation() { return nbRotation; }
+    public int getNbRotation() {
+        return nbRotation;
+    }
 
-    public void setNbRotation(int nbRotation) { this.nbRotation = nbRotation; }
+    public void setNbRotation(int nbRotation) {
+        this.nbRotation = nbRotation;
+    }
 
-    public boolean isAbbaye() { return isAbbaye; }
+    public boolean isAbbaye() {
+        return isAbbaye;
+    }
 
-    public ArrayList<Point> getPositionsCoordonnees() { return positionsCoordonnees; }
+    public ArrayList<Point> getPositionsCoordonnees() {
+        return positionsCoordonnees;
+    }
 
-    public void setPositionsCoordonnees(ArrayList<Point> positionsCoordonnees) { this.positionsCoordonnees = positionsCoordonnees; }
+    public void setPositionsCoordonnees(ArrayList<Point> positionsCoordonnees) {
+        this.positionsCoordonnees = positionsCoordonnees;
+    }
 
-    public int[][] getZonesControlleesParLesPoints() { return zonesControlleesParLesPoints; }
+    public int[][] getZonesControlleesParLesPoints() {
+        return zonesControlleesParLesPoints;
+    }
 
-    public String getType() { return type; }
+    public String getType() {
+        return type;
+    }
 
-    public String getPath() {
-        String pathTmp="";
-        switch (nbRotation){
+    public Partisan[] getZonesControlleesParLesPartisans() {
+        return zonesControlleesParLesPartisans;
+    }
+
+    public String getPath(){
+        String image = null;
+        switch(nbRotation){
             case 0:
-                pathTmp=draw.getPath();
+                image = draw.getPath();
                 break;
             case 1:
-                pathTmp=draw.getPath90();
+                image = draw.getPath90();
                 break;
             case 2:
-                pathTmp=draw.getPath180();
+                image = draw.getPath180();
                 break;
             case 3:
-                pathTmp=draw.getPath270();
+                image = draw.getPath270();
                 break;
         }
-        return pathTmp;
+        return image;
     }
 }

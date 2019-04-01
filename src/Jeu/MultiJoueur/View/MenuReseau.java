@@ -429,6 +429,12 @@ public class MenuReseau extends Parent {
         canvas.setOnMouseClicked(controlMouse);
         graphicsContext = canvas.getGraphicsContext2D();
 
+        //Le fond
+        Image image = new Image("Jeu/fond2.jpg");
+        graphicsContext.drawImage(image,0,100,width,height);
+        image = new Image("Jeu/fond.jpg");
+        graphicsContext.drawImage(image,0,0,width,100);
+
         //barreInfos
         barreInfos();
 
@@ -445,6 +451,7 @@ public class MenuReseau extends Parent {
         canvasInfos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = canvasInfos.getGraphicsContext2D();
         graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
+        System.out.println("test");
     }
 
     /*
@@ -478,8 +485,46 @@ public class MenuReseau extends Parent {
         graphicsContextInfos.stroke();
     }
 
+    public void actualiserJoueur() {
+        try {
+            listJoueurs.clear();
+            ObjectInputStream oi = socketJoueur.getOi();
+            nombreJoueur = oi.readInt();
+            for (int j = 0; j < nombreJoueur; j++) {
+                Joueur tmp = (Joueur) oi.readObject();
+                System.out.println(tmp.getNom());
+                listJoueurs.add(tmp);
+            }
+            testPartisant();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testPartisant(){
+        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()) {
+            CartePosee carte = entry.getValue();
+            System.out.println(carte);
+            for (int i = 0; i < carte.getZonesControlleesParLesPartisans().length; i++) {
+                Partisan partisan = carte.getZonesControlleesParLesPartisans()[i];
+                System.out.println(partisan);
+                System.out.println("nbPartisan: " + i);
+                if(carte.getZonesControlleesParLesPartisans()[i] != null){
+                    System.out.println("Joueur: " + partisan.getJoueur().getNom());
+                    System.out.println("numZone" + partisan.getNumZone());
+                    System.out.println("testPartisan: " + partisan.isPlacer());
+                }
+            }
+        }
+    }
+
     public void actualiserPoserCarte(){
         ObjectInputStream oi = socketJoueur.getOi();
+        listPointOccupe.clear();
+        listPointDispo.clear();
+        pointCarteMap.clear();
         try {
             /*On récupère la map point carte*/
             int tailleMap = oi.readInt();
@@ -491,7 +536,6 @@ public class MenuReseau extends Parent {
 
             /*On récupère la liste des points disponible*/
             int tailleListePointDispo = oi.readInt();
-            System.out.println("taille: " + tailleListePointDispo);
             for (int i = 0; i < tailleListePointDispo; i++) {
                 Point point = (Point) oi.readObject();
                 listPointDispo.add(point);
@@ -501,7 +545,7 @@ public class MenuReseau extends Parent {
             int tailleListePointOccupe = oi.readInt();
             for (int i = 0; i < tailleListePointOccupe; i++) {
                 Point point = (Point) oi.readObject();
-                listPointDispo.add(point);
+                listPointOccupe.add(point);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -514,26 +558,35 @@ public class MenuReseau extends Parent {
      * Permet de placer une carte sur la fenêtre de jeu
      */
     public void actualiserPlateau(){
-        graphicsContext.clearRect(0,0, 9999, 9999);
-        //Le fond
-        Image image = new Image("Jeu/fond2.jpg");
-        graphicsContext.drawImage(image,0,100,width,height);
-        image = new Image("Jeu/fond.jpg");
-        graphicsContext.drawImage(image,0,0,width,100);
         for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
         {
             Point point = entry.getKey();
             CartePosee carteAPosee = entry.getValue();
-            image = new Image(carteAPosee.getImageCarte());
+            Image image = new Image(carteAPosee.getImageCarte());
             graphicsContext.drawImage(image, point.getX()*50,point.getY()*50, 50, 50);
         }
 
         for (int i = 0; i < listPointDispo.size(); i++) {
             graphicsContext.drawImage(placeDispo.getImagePlus(),listPointDispo.get(i).getX()*50, listPointDispo.get(i).getY()*50, 50, 50);
         }
+        //afficherPartisans();
+    }
+
+    private void afficherPartisans(){
+        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()) {
+            CartePosee carte = entry.getValue();
+            Point pointCarte = carte.getPosition();
+            for (int i = 0; i < carte.getZonesControlleesParLesPartisans().length; i++) {
+                if(carte.getZonesControlleesParLesPartisans()[i] != null){
+                    Point pointPartisan = carte.getPositionsCoordonnees().get(i);
+                    graphicsContext.fillOval( pointCarte.getX()+(pointPartisan.getX()*50)-4, pointCarte.getY()+(pointPartisan.getY()*50)-4,8,8);
+                }
+            }
+        }
     }
 
     public void actualiserDefausse() {
+        defausse.clear();
         ObjectInputStream oi = socketJoueur.getOi();
         try {
             /*On récupère la defausse*/
@@ -554,6 +607,7 @@ public class MenuReseau extends Parent {
      * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
      */
     public void actualiserBarreInfo(){
+        System.out.println("barreInfo");
         if(mode == 0) {
             drawInformationsCarte();
         }
@@ -687,9 +741,7 @@ public class MenuReseau extends Parent {
         return isPlacable;
     }
 
-    public void afficherCartePourPoserUnPartisan() {
-        popUpPartisan.afficherCarte(carteCourante);
-    }
+    public void afficherCartePourPoserUnPartisan() { popUpPartisan.afficherCarte(carteCourante); }
 
     public SocketJoueur getSocketJoueur() { return socketJoueur; }
 
@@ -720,4 +772,6 @@ public class MenuReseau extends Parent {
     public int getMode() { return mode; }
 
     public void setMode(int mode) { this.mode = mode; }
+
+    public PopUpPartisan getPopUpPartisan() { return popUpPartisan; }
 }

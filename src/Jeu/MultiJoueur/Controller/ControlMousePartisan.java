@@ -1,19 +1,17 @@
 package Jeu.MultiJoueur.Controller;
 
-import Jeu.Model.Carcassonne;
-import Jeu.Model.CartePosee;
-import Jeu.View.FenetreJeu;
+import Jeu.MultiJoueur.View.MenuReseau;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-public class ControlMousePartisan implements EventHandler<MouseEvent> {
-    private FenetreJeu fenetreJeu;
-    private CartePosee carteEnMain;
-    private Carcassonne carcassonne;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
-    public ControlMousePartisan(FenetreJeu fenetreJeu){
-        this.fenetreJeu = fenetreJeu;
-        carcassonne = fenetreJeu.getCarcassonne();
+public class ControlMousePartisan implements EventHandler<MouseEvent> {
+    private MenuReseau menuReseau;
+
+    public ControlMousePartisan(MenuReseau menuReseau){
+        this.menuReseau = menuReseau;
     }
 
     /*
@@ -31,47 +29,17 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
         int x = (int) event.getX();
         int y = (int) event.getY();
         // Si l'on clique pas sur une zone indiquée
-        int numZone = getZonePlacementPartisan(x,y);
-        if (numZone==-1){
-            fenetreJeu.afficheErreur("Votre partisan doit être placé sur une des positions affichées",
-                    "Placement de partisan impossible");
-        } else {
-            if (zonePasEncoreOccupee(numZone)) {
-                fenetreJeu.placerPartisan(numZone);
-                fenetreJeu.getPopUpPartisan().quitter();
-                if (carcassonne.getPioche().getTaille()>0) {
-                    carcassonne.verificationZoneFermee(carteEnMain);
-                    carcassonne.joueurSuivant();
-                    fenetreJeu.getBarreInfos().afficherCarteSuivante();
-                    carcassonne.jouer();
-                    //fenetreJeu.actualiserDebuggageContamination();
-                } else {
-                    fenetreJeu.getBarreInfos().afficherFinDuJeu();
-                    //fenetreJeu.actualiserDebuggageContamination();
-                }
-            } else {
-                fenetreJeu.afficheErreur("Il y a un partisan dans la même zone que celle que vous avez choisie",
-                        "Placement de partisan impossible");
-                }
-            }
-
-    }
-
-    private boolean zonePasEncoreOccupee(int numZone) {
-        CartePosee c = fenetreJeu.getDerniereCartePosee();
-        for (int i = 0; i < c.getZonesControlleesParLesPoints().length ; i++) {
-            if (i==numZone){
-                for (int j = 0; j < c.getZonesControlleesParLesPoints()[i].length ; j++) {
-                    if (c.getZonesCouleurPartisan().containsKey(c.getZonesControlleesParLesPoints()[i][j])){
-                        if(c.getZonesCouleurPartisan().get(c.getZonesControlleesParLesPoints()[i][j]) != carcassonne.getTabJoueur()[carcassonne.getNumJoueur()-1].getColor()) {
-                            return false;
-                        }
-                        else return true;
-                    }
-                }
-            }
+        int numZone = getZonePlacementPartisan(x, y);
+        System.out.println("numZone: " + numZone);
+        ObjectOutputStream oo = menuReseau.getSocketJoueur().getOo();
+        try {
+            oo.writeObject("j'envoie");
+            oo.writeObject("poserPartisant");
+            oo.writeInt(numZone);
+            oo.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return true;
     }
 
     /*
@@ -79,9 +47,9 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
      */
     private int getZonePlacementPartisan(int x, int y) {
         int numZone=-1;
-        for (int i = 0; i < carteEnMain.getPositionsCoordonnees().size() ; i++) {
-            double xPartisan = carteEnMain.getPositionsCoordonnees().get(i).getX()*10;
-            double yPartisan = carteEnMain.getPositionsCoordonnees().get(i).getY()*10;
+        for (int i = 0; i < menuReseau.getCarteCourante().getPositionsCoordonnees().size() ; i++) {
+            double xPartisan = menuReseau.getCarteCourante().getPositionsCoordonnees().get(i).getX()*10;
+            double yPartisan = menuReseau.getCarteCourante().getPositionsCoordonnees().get(i).getY()*10;
             // Si l'on clique dans les cercles
             if(x>xPartisan-10 && x<xPartisan+10 && y>yPartisan-10 && y<yPartisan+10){
                 numZone=i;
@@ -89,6 +57,4 @@ public class ControlMousePartisan implements EventHandler<MouseEvent> {
         }
         return numZone;
     }
-
-    public void setCarteEnMain(CartePosee carteEnMain) { this.carteEnMain = carteEnMain; }
 }
