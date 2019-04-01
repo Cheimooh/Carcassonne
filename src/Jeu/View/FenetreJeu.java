@@ -47,6 +47,7 @@ public class FenetreJeu extends Parent {
      */
     public FenetreJeu(Carcassonne newCarcassonne, int width, int height, PopUpPartisan popUpPartisan) {
         carcassonne = newCarcassonne;
+        carcassonne.setFenetre(this);
         this.popUpPartisan = popUpPartisan;
         popUpPartisan.lierControl(this);
         Canvas canvas = new Canvas(carcassonne.getNB_CASES() * 50, carcassonne.getNB_CASES() * 50);
@@ -223,6 +224,10 @@ public class FenetreJeu extends Parent {
     public void afficherCartePourPoserUnPartisan() {
         popUpPartisan.lierCarteEnMain(derniereCartePosee);
         popUpPartisan.afficherCarte(derniereCartePosee);
+    }
+
+    public void redrawCarte(CartePosee cartePosee, Point position) {
+        graphicsContext.drawImage(cartePosee.getImageCarte(), position.getX() * 50, position.getY() * 50, 50, 50);
     }
 
     ControlMouse getControlMouse() {

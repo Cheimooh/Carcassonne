@@ -101,6 +101,11 @@ public class CartePosee {
         }
     }
 
+    public void retirerPartisan(int numZone) {
+        zonesControlleesParLesPartisans[numZone]=null;
+
+    }
+
     public Point getPosition() {
         return position;
     }

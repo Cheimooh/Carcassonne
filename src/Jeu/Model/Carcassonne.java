@@ -1,5 +1,6 @@
 package Jeu.Model;
 
+import Jeu.View.FenetreJeu;
 import javafx.scene.paint.Color;
 
 import java.awt.Point;
@@ -23,6 +24,7 @@ public class Carcassonne {
     private List<Point> etendueDuChemin;
     private List<Integer> passageChemin;
     private int[] nbPartisansSurLeChemin;
+    private FenetreJeu fenetre;
 
     public Carcassonne() {
         // Initialisation des listes et maps
@@ -404,6 +406,8 @@ public class Carcassonne {
                 }
             }
         }
+        etendueDuChemin.clear();
+        passageChemin.clear();
     }
 
     private void attributionPointsChemin() {
@@ -412,30 +416,28 @@ public class Carcassonne {
         for (int i = 0; i < etendueDuChemin.size(); i++) {
             CartePosee carte = pointCarteMap.get(etendueDuChemin.get(i));
             Partisan p = null;
-            System.out.println(etendueDuChemin.get(i).getX() + " " + etendueDuChemin.get(i).getY());
             for (int j = 0; j < carte.getZonesControlleesParLesPartisans().length; j++) {
                 if (carte.getZonesControlleesParLesPartisans()[j] != null) {
                     p = carte.getZonesControlleesParLesPartisans()[j];
-                    System.out.println(p.getJoueur().getIdJoueur());
                 }
             }
             if (p != null) {
                 boolean cheminDejaPritEnCompte = false;
                 int[] tabZones = carte.getZonesControlleesParLesPoints()[p.getNumZone()];
                 if (carte.getNord() == CoteCarte.chemin) {
-                    for (int j = 0; j < tabZones.length; j++) {
-                        if (tabZones[j] == 2) {
+                    for (int zone : tabZones) {
+                        if (zone == 2) {
                             if (tabZones.length == 1) {
                                 Point point = new Point((int) carte.getPosition().getX(), (int) carte.getPosition().getY() - 1);
                                 if (pointCarteMap.containsKey(point)) {
                                     if (etendueDuChemin.contains(point)) {
-                                        tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                        tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                         tabPartisansSurLeChemin.add(p);
                                     }
                                 }
                             } else {
                                 cheminDejaPritEnCompte = true;
-                                tabNbPartisans[p.getJoueur().getIdJoueur()-1]++;
+                                tabNbPartisans[p.getJoueur().getIdJoueur() - 1]++;
                                 tabPartisansSurLeChemin.add(p);
                             }
                         }
@@ -506,19 +508,23 @@ public class Carcassonne {
                 }
             }
         }
-        for (int i = 0; i < tabNbPartisans.length; i++) {
-            System.out.println(tabNbPartisans[i]);
-        }
         int joueurGagnant = -1;
         int maxPartisan=-1;
         for (int i = 0; i < tabNbPartisans.length; i++) {
-            if (tabNbPartisans[i]>maxPartisan) joueurGagnant = i;
+            if (tabNbPartisans[i]>maxPartisan) {
+                joueurGagnant = i;
+                maxPartisan=tabNbPartisans[i];
+            }
         }
         if (maxPartisan>0){
             tabJoueur[joueurGagnant].addPointsChemin(etendueDuChemin.size());
         }
         for (int i = 0; i < tabPartisansSurLeChemin.size(); i++) {
-            tabPartisansSurLeChemin.get(i).retirerPartisan();
+            CartePosee cartePosee = pointCarteMap.get(tabPartisansSurLeChemin.get(i).getPointPlacementCarte());
+            Joueur j = tabPartisansSurLeChemin.get(i).getJoueur();
+            j.addPartisanRestant();
+            tabPartisansSurLeChemin.get(i).retirerPartisan(cartePosee);
+            fenetre.redrawCarte(cartePosee, cartePosee.getPosition());
         }
 
     }
@@ -573,5 +579,9 @@ public class Carcassonne {
 
     public ArrayList<Carte> getDefausse() {
         return defausse;
+    }
+
+    public void setFenetre(FenetreJeu fenetreJeu) {
+        this.fenetre=fenetreJeu;
     }
 }

@@ -23,7 +23,8 @@ public class Partisan {
         isPlacer = true;
     }
 
-    public void retirerPartisan() {
+    public void retirerPartisan(CartePosee cartePosee) {
+        cartePosee.retirerPartisan(numZone);
         numZone = -1;
         isPlacer = false;
         pointPlacementCarte = new Point();

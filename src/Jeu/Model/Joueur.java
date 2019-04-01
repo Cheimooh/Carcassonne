@@ -57,14 +57,14 @@ public class Joueur {
         } else return null;
     }
 
-    public void retirerPartisan(Point p) {
-        if (nombrePartisansRestants < 8) {
-            for (int i = 0; i < tabPartisans.length; i++) {
-                if (tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirerPartisan();
-                nombrePartisansRestants++;
-            }
-        }
-    }
+//    public void retirerPartisan(Point p) {
+//        if (nombrePartisansRestants < 8) {
+//            for (int i = 0; i < tabPartisans.length; i++) {
+//                if (tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirerPartisan();
+//                nombrePartisansRestants++;
+//            }
+//        }
+//    }
 
     public void setNom(String nom) {
         this.nom = nom;
@@ -93,6 +93,8 @@ public class Joueur {
     public Partisan[] getTabPartisans() {
         return tabPartisans;
     }
+
+    public void addPartisanRestant() { this.nombrePartisansRestants +=1; }
 
     public void addPointsChemin(int nbPoints) {
         pointsChemin+=nbPoints;
