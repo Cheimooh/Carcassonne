@@ -22,11 +22,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
+import java.util.List;
 
 public class MenuReseau extends Parent {
     private Stage primaryStage;
@@ -232,7 +235,7 @@ public class MenuReseau extends Parent {
             inscriptionJoueurReseau();
         }
         else{
-            listJoueurs.add(new Joueur(nomJoueur, tradColorsToString(couleurJoueurTmp)));
+            listJoueurs.add(new Joueur(nombreJoueur, nomJoueur, tradColorsToString(couleurJoueurTmp)));
             nombreJoueur++;
             transmitInfoServeur();
         }

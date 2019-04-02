@@ -1,10 +1,10 @@
 package Jeu.MultiJoueur.Controller;
 
 import Jeu.MultiJoueur.View.MenuReseau;
-import Jeu.MultiJoueur.Model.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

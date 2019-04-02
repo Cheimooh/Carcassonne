@@ -8,12 +8,24 @@ public class Joueur implements Serializable, Cloneable {
     private String couleur;
     private int nombrePartisansRestants;
     private boolean isPret;
+    private int idJoueur;
+    private int pointsTotal;
+    private int pointsPrairie;
+    private int pointsChemin;
+    private int pointsVille;
+    private int pointsAbbaye;
 
-    public Joueur(String nom, String couleur){
+    public Joueur(int idJoueur, String nom, String couleur){
         nombrePartisansRestants=8;
+        this.idJoueur = idJoueur;
         this.nom = nom;
         this.couleur = couleur;
         isPret = false;
+        pointsTotal = 0;
+        pointsPrairie = 0;
+        pointsChemin = 0;
+        pointsVille = 0;
+        pointsAbbaye = 0;
     }
 
     /*
@@ -23,7 +35,7 @@ public class Joueur implements Serializable, Cloneable {
         if (nombrePartisansRestants > 0) {
             System.out.println("i: " + (8-nombrePartisansRestants));
             Partisan p = new Partisan(this);
-            p.placerPartisan(cartePosee.getPosition().getX(), cartePosee.getPosition().getY(), numZone);
+            p.placerPartisan((int) cartePosee.getPosition().getX(), (int) cartePosee.getPosition().getY(), numZone);
             nombrePartisansRestants--;
             return p;
         } else return null;
@@ -37,6 +49,11 @@ public class Joueur implements Serializable, Cloneable {
             }
         }
     }*/
+
+    public void addPointsChemin(int nbPoints) {
+        pointsChemin += nbPoints;
+        pointsTotal += nbPoints;
+    }
 
     @Override
     public Joueur clone() throws CloneNotSupportedException{
@@ -52,4 +69,8 @@ public class Joueur implements Serializable, Cloneable {
     public void setPret(boolean pret) { isPret = pret; }
 
     public int getNombrePartisansRestants() { return nombrePartisansRestants; }
+
+    public int getIdJoueur(){ return idJoueur; }
+
+    public int getPointsTotal() { return pointsTotal; }
 }
