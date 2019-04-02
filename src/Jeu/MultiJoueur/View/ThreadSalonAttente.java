@@ -53,15 +53,16 @@ public class ThreadSalonAttente {
                             menu.setMode(0);
                             menu.actualiserBarreInfo();
                             menu.getPopUpPartisan().quitter();
-                            menu.actualiserJoueur();
                         }
-                        if (test.equals("poserCarte")){
+                        else if (test.equals("partisan")){
+                            menu.actualiserPartisan();
+                        }
+                        else if (test.equals("poserCarte")){
                             menu.actualiserPoserCarte();
-                            menu.actualiserPlateau();
                             menu.setMode(1);
                             menu.actualiserBarreInfo();
                         }
-                        if (test.equals("defausse")){
+                        else if (test.equals("defausse")){
                             menu.actualiserDefausse();
                         }
                     }

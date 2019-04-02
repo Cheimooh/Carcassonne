@@ -156,28 +156,7 @@ public class Carcassonne {
         placerCarte(new Point(8,8));
         try {
             for (int i = 0; i < listSocket.size(); i++) {
-                ObjectInputStream oi = listSocket.get(i).getOi();
                 ObjectOutputStream oo = listSocket.get(i).getOo();
-
-                int tailleMap = pointCarteMap.size();
-                oo.writeInt(tailleMap);
-                for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
-                {
-                    oo.writeObject(entry.getKey());
-                    oo.writeObject(entry.getValue());
-                }
-
-                int tailleListDispo = listPointDispo.size();
-                oo.writeInt(tailleListDispo);
-                for (int j = 0; j < tailleListDispo; j++) {
-                    oo.writeObject(listPointDispo.get(j).clone());
-                }
-
-                int tailleListOccuper = listPointOccupe.size();
-                oo.writeInt(tailleListOccuper);
-                for (int j = 0; j < tailleListOccuper; j++) {
-                    oo.writeObject(listPointOccupe.get(j).clone());
-                }
 
                 int tailleDefausse = defausse.size();
                 oo.writeInt(tailleDefausse);
@@ -217,11 +196,12 @@ public class Carcassonne {
 
         //Dessine l'image sur la fenêtre de jeu
         if(carteCourante!=carteDeBase) {
-            //contaminationDeLaCarteAvecCouleur(cartePosee);
+            contaminationDeLaCarteAvecCouleur(carteCourantePosee);
         }
+        envoieCartePlacer(positionCarte, carteCourantePosee.getImageCarte());
     }
 
-    public void envoieCartePlacer(){
+    public void envoieCartePlacer(Point pointCarte, String image){
         try {
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectOutputStream oo = listSocket.get(i).getOo();
@@ -229,24 +209,13 @@ public class Carcassonne {
                 oo.writeObject("actualise");
                 oo.writeObject("poserCarte");
 
-                int tailleMap = pointCarteMap.size();
-                oo.writeInt(tailleMap);
-                for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
-                {
-                    oo.writeObject(entry.getKey().clone());
-                    oo.writeObject(entry.getValue().clone());
-                }
+                oo.writeObject(image);
+                oo.writeObject(pointCarte);
 
                 int tailleListDispo = listPointDispo.size();
                 oo.writeInt(tailleListDispo);
                 for (int j = 0; j < tailleListDispo; j++) {
                     oo.writeObject(listPointDispo.get(j).clone());
-                }
-
-                int tailleListOccuper = listPointOccupe.size();
-                oo.writeInt(tailleListOccuper);
-                for (int j = 0; j < tailleListOccuper; j++) {
-                    oo.writeObject(listPointOccupe.get(j).clone());
                 }
             }
         } catch (IOException e) {
@@ -279,20 +248,20 @@ public class Carcassonne {
         }
     }
 
-    private void testPartisant(){
-        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()) {
-            CartePosee carte = entry.getValue();
-            System.out.println(carte);
-            for (int i = 0; i < carte.getZonesControlleesParLesPartisans().length; i++) {
-                Partisan partisan = carte.getZonesControlleesParLesPartisans()[i];
-                System.out.println(partisan);
-                System.out.println("nbPartisan: " + i);
-                if(carte.getZonesControlleesParLesPartisans()[i] != null){
-                    System.out.println("Joueur: " + partisan.getJoueur().getNom());
-                    System.out.println("numZone" + partisan.getNumZone());
-                    System.out.println("testPartisan: " + partisan.isPlacer());
-                }
+    public void envoiePartisantAjouter(String couleur, Point pointCarte, Point pointPartisant){
+        try {
+            for (int i = 0; i < listSocket.size(); i++) {
+                ObjectOutputStream oo = listSocket.get(i).getOo();
+                oo.writeObject("actualise");
+                oo.writeObject("partisan");
+                oo.writeObject(couleur);
+                oo.writeObject(pointCarte.clone());
+                oo.writeObject(pointPartisant.clone());
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -300,18 +269,12 @@ public class Carcassonne {
         piocher();
         Joueur joueurCourant = listJoueur.get(numJoueurCourant);
         try {
-            testPartisant();
             for (int i = 0; i < listSocket.size(); i++) {
                 ObjectOutputStream oo = listSocket.get(i).getOo();
                 oo.writeObject("actualise");
                 oo.writeObject("tourSuivant");
                 oo.writeObject(joueurCourant.clone());
                 oo.writeObject(carteCourante.clone());
-                oo.writeInt(listJoueur.size());
-                for (int j = 0; j < listJoueur.size(); j++) {
-                    oo.writeObject(listJoueur.get(j).clone());
-                    oo.flush();
-                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -641,7 +604,10 @@ public class Carcassonne {
             carteCourantePosee.addZonesOccupees(numZone, getJoueurCourant().getCouleur());
             Partisan p = getJoueurCourant().placerPartisan(carteCourantePosee ,numZone);
             carteCourantePosee.attributionPartisan(p, numZone);
-            //contaminationDesAutresCarteAvecCouleur();
+            contaminationDesAutresCarteAvecCouleur();
+            Point pointCarte = carteCourantePosee.getPosition();
+            Point pointPartisan = carteCourantePosee.getPositionsCoordonnees().get(numZone);
+            envoiePartisantAjouter(p.getJoueur().getCouleur(), pointCarte, pointPartisan);
             joueurSuivant();
         } else {
             envoieErreur(getJoueurCourant().getNom()+" n'a plus de partisans !","Placement de partisans");

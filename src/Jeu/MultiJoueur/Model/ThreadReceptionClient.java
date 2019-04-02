@@ -56,8 +56,6 @@ public class ThreadReceptionClient {
                             } else if (carcassonne.isCarteAdjacente(position.getX(), position.getY())) {
                                 if (carcassonne.isPlacable(position.getX(), position.getY())) {
                                     carcassonne.placerCarte(position);
-                                    carcassonne.envoieCartePlacer();
-                                    //carcassonne.joueurSuivant();
                                 }
                                 else {
                                     envoieErreur("La carte ne coïncide pas avec la carte adjacente", "Placement de carte impossible");

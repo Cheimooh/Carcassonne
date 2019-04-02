@@ -65,9 +65,6 @@ public class MenuReseau extends Parent {
     // variable pour le jeu
 
     private ThreadSalonAttente salonAttente;
-    private Map<Point, CartePosee> pointCarteMap;
-    private List<Point> listPointDispo;
-    private List<Point> listPointOccupe;
     private List<Carte> defausse;
 
     private Carte carteCourante;
@@ -93,6 +90,8 @@ public class MenuReseau extends Parent {
 
     private FenetreDefausse fenetreDefausse;
 
+    private Canvas canvas;
+
     public MenuReseau(Stage primaryStage) {
         placeDispo = new PlaceDispo();
         nombreJoueur = 0;
@@ -109,7 +108,6 @@ public class MenuReseau extends Parent {
 
     public void jeuInternet() {
         try {
-            System.out.println("test");
             //Socket sock = new Socket("86.77.97.239", 3333);
             Socket sock = new Socket("localhost", 3333);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
@@ -396,17 +394,17 @@ public class MenuReseau extends Parent {
     }
 
     public void startPartie(){
-        pointCarteMap = new HashMap<>();
-        listPointDispo = new ArrayList<>();
-        listPointOccupe = new ArrayList<>();
         defausse = new ArrayList<>();
         initialiser();
     }
 
     private void initialiser() {
-        actualiserPoserCarte();
+        initialiserFenetre();
         ObjectInputStream oi = socketJoueur.getOi();
         try {
+            oi.readObject();
+            oi.readObject();
+            actualiserPoserCarte();
             /*On récupère la defausse*/
             int tailleDefausse = oi.readInt();
             for (int i = 0; i < tailleDefausse; i++) {
@@ -420,11 +418,8 @@ public class MenuReseau extends Parent {
         afficherFenetreJeu();
     }
 
-    private void afficherFenetreJeu() {
-        Group root = new Group();
-        //voir barre infos pour affichage
-
-        Canvas canvas = new Canvas(143*50, 143*50);
+    private void initialiserFenetre() {
+        canvas = new Canvas(143*50, 143*50);
         controlMouse = new ControlMouse(this);
         canvas.setOnMouseClicked(controlMouse);
         graphicsContext = canvas.getGraphicsContext2D();
@@ -437,8 +432,10 @@ public class MenuReseau extends Parent {
 
         //barreInfos
         barreInfos();
+    }
 
-        actualiserPlateau();
+    private void afficherFenetreJeu() {
+        Group root = new Group();
 
         root.getChildren().addAll(canvas, canvasInfos);
         Platform.runLater(() -> primaryStage.setScene(new Scene(root, width, height, Color.LIGHTGREY) ));
@@ -451,7 +448,6 @@ public class MenuReseau extends Parent {
         canvasInfos.setOnMouseClicked(controlMouseInfos);
         graphicsContextInfos = canvasInfos.getGraphicsContext2D();
         graphicsContextInfos.setStroke(Color.color(0.2,0.2,0.2));
-        System.out.println("test");
     }
 
     /*
@@ -485,103 +481,25 @@ public class MenuReseau extends Parent {
         graphicsContextInfos.stroke();
     }
 
-    public void actualiserJoueur() {
-        try {
-            listJoueurs.clear();
-            ObjectInputStream oi = socketJoueur.getOi();
-            nombreJoueur = oi.readInt();
-            for (int j = 0; j < nombreJoueur; j++) {
-                Joueur tmp = (Joueur) oi.readObject();
-                System.out.println(tmp.getNom());
-                listJoueurs.add(tmp);
-            }
-            testPartisant();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void testPartisant(){
-        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()) {
-            CartePosee carte = entry.getValue();
-            System.out.println(carte);
-            for (int i = 0; i < carte.getZonesControlleesParLesPartisans().length; i++) {
-                Partisan partisan = carte.getZonesControlleesParLesPartisans()[i];
-                System.out.println(partisan);
-                System.out.println("nbPartisan: " + i);
-                if(carte.getZonesControlleesParLesPartisans()[i] != null){
-                    System.out.println("Joueur: " + partisan.getJoueur().getNom());
-                    System.out.println("numZone" + partisan.getNumZone());
-                    System.out.println("testPartisan: " + partisan.isPlacer());
-                }
-            }
-        }
-    }
-
     public void actualiserPoserCarte(){
         ObjectInputStream oi = socketJoueur.getOi();
-        listPointOccupe.clear();
-        listPointDispo.clear();
-        pointCarteMap.clear();
         try {
-            /*On récupère la map point carte*/
-            int tailleMap = oi.readInt();
-            for (int i = 0; i < tailleMap; i++) {
-                Point point = (Point) oi.readObject();
-                CartePosee cartePosee = (CartePosee) oi.readObject();
-                pointCarteMap.put(point,cartePosee);
-            }
+            String imageString = (String) oi.readObject();
+            System.out.println(imageString);
+            Image image = new Image(imageString);
+            Point point = (Point) oi.readObject();
+            graphicsContext.drawImage(image, point.getX()*50,point.getY()*50, 50, 50);
 
             /*On récupère la liste des points disponible*/
             int tailleListePointDispo = oi.readInt();
             for (int i = 0; i < tailleListePointDispo; i++) {
-                Point point = (Point) oi.readObject();
-                listPointDispo.add(point);
-            }
-
-            /*On récupère la liste des points occuper*/
-            int tailleListePointOccupe = oi.readInt();
-            for (int i = 0; i < tailleListePointOccupe; i++) {
-                Point point = (Point) oi.readObject();
-                listPointOccupe.add(point);
+                point = (Point) oi.readObject();
+                graphicsContext.drawImage(placeDispo.getImagePlus(),point.getX()*50, point.getY()*50, 50, 50);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    /*
-     * Permet de placer une carte sur la fenêtre de jeu
-     */
-    public void actualiserPlateau(){
-        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
-        {
-            Point point = entry.getKey();
-            CartePosee carteAPosee = entry.getValue();
-            Image image = new Image(carteAPosee.getImageCarte());
-            graphicsContext.drawImage(image, point.getX()*50,point.getY()*50, 50, 50);
-        }
-
-        for (int i = 0; i < listPointDispo.size(); i++) {
-            graphicsContext.drawImage(placeDispo.getImagePlus(),listPointDispo.get(i).getX()*50, listPointDispo.get(i).getY()*50, 50, 50);
-        }
-        //afficherPartisans();
-    }
-
-    private void afficherPartisans(){
-        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet()) {
-            CartePosee carte = entry.getValue();
-            Point pointCarte = carte.getPosition();
-            for (int i = 0; i < carte.getZonesControlleesParLesPartisans().length; i++) {
-                if(carte.getZonesControlleesParLesPartisans()[i] != null){
-                    Point pointPartisan = carte.getPositionsCoordonnees().get(i);
-                    graphicsContext.fillOval( pointCarte.getX()+(pointPartisan.getX()*50)-4, pointCarte.getY()+(pointPartisan.getY()*50)-4,8,8);
-                }
-            }
         }
     }
 
@@ -603,11 +521,25 @@ public class MenuReseau extends Parent {
         actualiserBarreInfo();
     }
 
+    public void actualiserPartisan() {
+        ObjectInputStream oi = socketJoueur.getOi();
+        try {
+            String couleur = (String) oi.readObject();
+            Point pointCarte = (Point) oi.readObject();
+            Point pointPartisan = (Point) oi.readObject();
+            graphicsContext.setFill(tradStringToColors(couleur));
+            graphicsContext.fillOval( pointPartisan.getX() +(pointCarte.getX()*50)-4, pointPartisan.getY()+(pointCarte.getY()*50)-4,8,8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     /*
      * Dessine la barre d'canvasInfos lorsque le joueur doit poser une carte
      */
     public void actualiserBarreInfo(){
-        System.out.println("barreInfo");
         if(mode == 0) {
             drawInformationsCarte();
         }
@@ -686,61 +618,6 @@ public class MenuReseau extends Parent {
         graphicsContextInfos.setStroke(Color.BLACK);
     }
 
-    /*
-     * Permet de savoir si la carte courante peut etre posée où non en fonction de si elle coincide avec les cartes
-     * adjacentes ou non
-     */
-    public boolean isPlacable(int x, int y) {
-        boolean isPlacable = true;
-        for (HashMap.Entry<Point, CartePosee> entry : pointCarteMap.entrySet())
-        {
-            Point pointCourant = entry.getKey();
-            // creer un point temporaire pour faire les verifications
-            Point point = new Point(x-1, y);
-            if(pointCourant.equals(point)){
-                CartePosee c = entry.getValue();
-                System.out.println("getOuest carteCourant: " + carteCourante.getOuest());
-                System.out.println("getEst c: " + c.getEst());
-                if (c.getEst() != carteCourante.getOuest()){
-                    isPlacable=false;
-                }
-            }
-
-            point = new Point(x+1, y);
-            if(pointCourant.equals(point)){
-                CartePosee c = entry.getValue();
-                System.out.println("getEst carteCourant: " + carteCourante.getEst());
-                System.out.println("getOuest c: " + c.getOuest());
-                if (c.getOuest() != carteCourante.getEst()){
-                    isPlacable=false;
-                }
-            }
-
-            point = new Point(x, y-1);
-            if(pointCourant.equals(point)){
-                CartePosee c = entry.getValue();
-                System.out.println(c);
-                System.out.println("getNord carteCourant: " + carteCourante.getNord());
-                System.out.println("getSud c: " + c.getSud());
-                if (c.getSud() != carteCourante.getNord()){
-                    isPlacable=false;
-                }
-            }
-
-            point = new Point(x, y+1);
-            if(pointCourant.equals(point)){
-                CartePosee c = entry.getValue();
-                System.out.println(c);
-                System.out.println("getSud carteCourant: " + carteCourante.getSud());
-                System.out.println("getNord c: " + c.getNord());
-                if (c.getNord() != carteCourante.getSud()){
-                    isPlacable=false;
-                }
-            }
-        }
-        return isPlacable;
-    }
-
     public void afficherCartePourPoserUnPartisan() { popUpPartisan.afficherCarte(carteCourante); }
 
     public SocketJoueur getSocketJoueur() { return socketJoueur; }
@@ -766,8 +643,6 @@ public class MenuReseau extends Parent {
     public int getWidth() {return width; }
 
     public int getHeight() { return height; }
-
-    public List<Point> getListPointOccupe() { return listPointOccupe; }
 
     public int getMode() { return mode; }
 

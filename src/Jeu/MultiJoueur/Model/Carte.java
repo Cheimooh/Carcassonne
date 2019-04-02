@@ -116,10 +116,6 @@ public class Carte implements Serializable, Cloneable{
         return positionsCoordonnees;
     }
 
-    public void setPositionsCoordonnees(ArrayList<Point> positionsCoordonnees) {
-        this.positionsCoordonnees = positionsCoordonnees;
-    }
-
     public int[][] getZonesControlleesParLesPoints() {
         return zonesControlleesParLesPoints;
     }
