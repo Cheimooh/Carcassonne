@@ -36,25 +36,25 @@ public class Pioche {
             lCarte.add(new Carte(TypeCarte.carteCPCP));
         }
         for (int i = 0; i < 5; i++) {
-            //lCarte.add(new Carte(TypeCarte.carteVPPP));
+            lCarte.add(new Carte(TypeCarte.carteVPPP));
         }
         for (int i = 0; i < 2; i++) {
-            //lCarte.add(new Carte(TypeCarte.carteVVPP));
+            lCarte.add(new Carte(TypeCarte.carteVVPP));
         }
         for (int i = 0; i < 3; i++) {
-            //lCarte.add(new Carte(TypeCarte.carteVVPV));
+            lCarte.add(new Carte(TypeCarte.carteVVPV));
         }
         for (int i = 0; i < 4; i++) {
-            //lCarte.add(new Carte(TypeCarte.cartePPPP));
+            lCarte.add(new Carte(TypeCarte.cartePPPP));
         }
         for (int i = 0; i < 2; i++) {
             lCarte.add(new Carte(TypeCarte.cartePPCP));
         }
         for (int i = 0; i < 3; i++) {
-            //lCarte.add(new Carte(TypeCarte.carteVPPV));
+            lCarte.add(new Carte(TypeCarte.carteVPPV));
         }
         for (int i = 0; i < 2; i++) {
-            //lCarte.add(new Carte(TypeCarte.cartePVPVRelieesBlason));
+            lCarte.add(new Carte(TypeCarte.cartePVPVRelieesBlason));
         }
         for (int i = 0; i < 4; i++) {
             lCarte.add(new Carte(TypeCarte.carteVCPC));
@@ -62,18 +62,18 @@ public class Pioche {
         for (int i = 0; i < 3; i++) {
             lCarte.add(new Carte(TypeCarte.carteVPCC));
         }
-        //lCarte.add(new Carte(TypeCarte.cartePVPVReliees));
+        lCarte.add(new Carte(TypeCarte.cartePVPVReliees));
         for (int i = 0; i < 2; i++) {
             lCarte.add(new Carte(TypeCarte.carteVVCVBlason));
         }
-        //lCarte.add(new Carte(TypeCarte.carteVVVVBlason));
+        lCarte.add(new Carte(TypeCarte.carteVVVVBlason));
         lCarte.add(new Carte(TypeCarte.carteCCCC));
         for (int i = 0; i < 2; i++) {
-          //  lCarte.add(new Carte(TypeCarte.carteVPPVBlason));
+            lCarte.add(new Carte(TypeCarte.carteVPPVBlason));
         }
         for (int i = 0; i < 3; i++) {
-            //lCarte.add(new Carte(TypeCarte.cartePVPVNonReliees));
-        }//Je t'aime ma fille <3 Maman
+            lCarte.add(new Carte(TypeCarte.cartePVPVNonReliees));
+        }
 
         taille = lCarte.size();
 

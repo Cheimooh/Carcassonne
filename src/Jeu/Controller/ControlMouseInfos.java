@@ -39,7 +39,7 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
             int y = (int) event.getY();
             //si on clique sur l'endroit sur la barre d'info où il y a la carte
             if (mode == 0) {
-                if (x > 500 && x < 550 && y > 30 && y < 80) {
+                if (x > 450 && x < 500 && y > 30 && y < 80) {
                     int nbRotation = controlMouse.getCarteEnMain().getNbRotation();
                     nbRotation++;
                     nbRotation = nbRotation % 4;

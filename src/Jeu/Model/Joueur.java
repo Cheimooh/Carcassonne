@@ -53,7 +53,7 @@ public class Joueur {
         if (nombrePartisansRestants > 0) {
             nombrePartisansRestants--;
             tabPartisans[8 - nombrePartisansRestants].placerPartisan(cartePosee.getPosition().x, cartePosee.getPosition().y, numZone);
-            return tabPartisans[8-nombrePartisansRestants];
+            return tabPartisans[8 - nombrePartisansRestants];
         } else return null;
     }
 
@@ -94,10 +94,16 @@ public class Joueur {
         return tabPartisans;
     }
 
-    public void addPartisanRestant() { this.nombrePartisansRestants +=1; }
+    public void addPartisanRestant() {
+        this.nombrePartisansRestants += 1;
+    }
 
     public void addPointsChemin(int nbPoints) {
-        pointsChemin+=nbPoints;
-        pointsTotal+=nbPoints;
+        pointsChemin += nbPoints;
+        pointsTotal += nbPoints;
+    }
+
+    public int getPointsTotal() {
+        return pointsTotal;
     }
 }

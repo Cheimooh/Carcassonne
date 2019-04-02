@@ -44,8 +44,7 @@ public class BarreInfos {
 
         String s;
 
-
-        graphicsContextInfos.drawImage(prochaineCarte, (width / 2.), 30, 50, 50);
+        graphicsContextInfos.drawImage(prochaineCarte, (width / 2.) - 50, 30, 50, 50);
 
         int numJoueur = carcassonne.getNumJoueur();
         s = "Joueur " + numJoueur;
@@ -61,7 +60,23 @@ public class BarreInfos {
         //Affichage du "bouton" pour défausser une carte
         drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
 
-        graphicsContextInfos.strokeText(s, (width / 2.), 15);
+        graphicsContextInfos.strokeText(s, (width / 2.) - 60, 15);
+
+        int nbPartisans = carcassonne.getTabJoueur()[numJoueur - 1].getNombrePartisansRestants();
+        Color color = carcassonne.getTabJoueur()[numJoueur - 1].getColor();
+        int nbPoints = carcassonne.getTabJoueur()[numJoueur - 1].getPointsTotal();
+        String stringPts = nbPoints+" points";
+
+        if (nbPartisans > 0) {
+            graphicsContextInfos.setFill(color);
+            graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.strokeText("x " + nbPartisans, width / 2. + 100, 75);
+        } else {
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
+        }
+        graphicsContextInfos.strokeText(stringPts, width/2.+50, 15);
     }
 
     public void afficherFinDuJeu() {
@@ -100,6 +115,8 @@ public class BarreInfos {
 
         int nbPartisans = carcassonne.getTabJoueur()[numJoueur - 1].getNombrePartisansRestants();
         Color color = carcassonne.getTabJoueur()[numJoueur - 1].getColor();
+        int nbPoints = carcassonne.getTabJoueur()[numJoueur - 1].getPointsTotal();
+        String stringPts = nbPoints+" points";
 
         String voirDefausse = "Défausse";
         String poserPartisan = "Poser un partisan";
@@ -116,12 +133,16 @@ public class BarreInfos {
 
         if (nbPartisans > 0) {
             graphicsContextInfos.setFill(color);
-            graphicsContextInfos.fillOval(width / 2., 25, 50, 50);
+            graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
             graphicsContextInfos.setFill(Color.BLACK);
-            graphicsContextInfos.strokeText("x " + nbPartisans, width / 2. + 50, 35);
+            graphicsContextInfos.strokeText("x " + nbPartisans, width / 2. + 100, 75);
+        } else {
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.fillOval(width / 2., 25, 50, 50);
         }
 
-        graphicsContextInfos.strokeText(s, (width / 2.), 15);
+        graphicsContextInfos.strokeText(s, (width / 2.) - 65, 35);
+        graphicsContextInfos.strokeText(stringPts, (width/2.)-65, 65);
     }
 
     /*
