@@ -10,10 +10,6 @@ public class Joueur {
     private String nom;
     private int idJoueur;
     private int pointsTotal;
-    private int pointsPrairie;
-    private int pointsChemin;
-    private int pointsVille;
-    private int pointsAbbaye;
     private Carte carteEnMain; // Dernière carte qui a été dans la "main" du joueur
     private static Pioche p;
     private Color color;
@@ -29,6 +25,7 @@ public class Joueur {
         for (int i = 0; i < nombrePartisansRestants; i++) {
             tabPartisans[i] = new Partisan(this);
         }
+        this.pointsTotal = 0;
     }
 
     public void joue() {
@@ -99,7 +96,6 @@ public class Joueur {
     }
 
     public void addPointsChemin(int nbPoints) {
-        pointsChemin += nbPoints;
         pointsTotal += nbPoints;
     }
 

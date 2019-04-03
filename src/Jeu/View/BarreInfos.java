@@ -4,8 +4,10 @@ import Jeu.Controller.ControlMouseInfos;
 import Jeu.Exception.PiocheVideException;
 import Jeu.Model.Carcassonne;
 import Jeu.Model.Carte;
+import Jeu.Model.Joueur;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -92,6 +94,45 @@ public class BarreInfos {
 
         graphicsContextInfos.strokeText(s, (width / 2.), 15);
         controlMouseInfos.setMode(2);
+
+        fenetreFinDuJeu();
+    }
+
+    private void fenetreFinDuJeu() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Résultats");
+        alert.setHeight(300);
+        alert.setWidth(300);
+        String[] affichageFinal = new String[carcassonne.getTabJoueur().length];
+
+        Joueur[] tabJoueursTriés = new Joueur[carcassonne.getTabJoueur().length];
+
+        for (int i = 0; i < carcassonne.getTabJoueur().length; i++) {
+            Joueur tempJ = carcassonne.getTabJoueur()[0];
+            for (int j = 0; j < carcassonne.getTabJoueur().length; j++) {
+                Joueur joueur = carcassonne.getTabJoueur()[i];
+                if (joueur.getPointsTotal() > tempJ.getPointsTotal() && isJoueurNonTrie(joueur, tabJoueursTriés)){
+                    tempJ = joueur;
+                }
+            }
+            tabJoueursTriés[i]=tempJ;
+        }
+
+        for (int i = 0; i < (tabJoueursTriés.length); i++) {
+            Joueur j = tabJoueursTriés[i];
+                affichageFinal[i] = i+1 + " : " + j.getNom() + " avec -> " + j.getPointsTotal() + " Points" + "\n";
+        }
+    }
+
+    //fonction qui regarde si un joueur est déja dans le tableau qui trie les joueur en fonction de leur points
+    //return true si le joueur n'est pas encore trié
+    private boolean isJoueurNonTrie(Joueur joueur, Joueur[] tabJoueurTrie) {
+        for (int i = 0; i < tabJoueurTrie.length ; i++) {
+            if (joueur == tabJoueurTrie[i]){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {

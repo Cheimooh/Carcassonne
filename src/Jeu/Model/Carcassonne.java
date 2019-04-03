@@ -519,11 +519,21 @@ public class Carcassonne {
         if (maxPartisan>0){
             tabJoueur[joueurGagnant].addPointsChemin(etendueDuChemin.size());
         }
+        List<Partisan> partisans = new ArrayList<>();
         for (int i = 0; i < tabPartisansSurLeChemin.size(); i++) {
-            CartePosee cartePosee = pointCarteMap.get(tabPartisansSurLeChemin.get(i).getPointPlacementCarte());
-            Joueur j = tabPartisansSurLeChemin.get(i).getJoueur();
+            if (!partisans.contains(tabPartisansSurLeChemin.get(i))){
+                partisans.add(tabPartisansSurLeChemin.get(i));
+            }
+        }
+
+        for (int i = 0; i < partisans.size(); i++) {
+            CartePosee cartePosee = pointCarteMap.get(partisans.get(i).getPointPlacementCarte());
+            Joueur j = partisans.get(i).getJoueur();
             j.addPartisanRestant();
-            tabPartisansSurLeChemin.get(i).retirerPartisan(cartePosee);
+            System.out.println(partisans.get(i).getPointPlacementCarte().getX());
+            System.out.println(partisans.get(i).getPointPlacementCarte().getY());
+            System.out.println(partisans.get(i).getJoueur().getNom());
+            partisans.get(i).retirerPartisan(cartePosee);
             fenetre.redrawCarte(cartePosee, cartePosee.getPosition());
         }
 
