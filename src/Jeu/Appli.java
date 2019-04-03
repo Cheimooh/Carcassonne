@@ -20,7 +20,7 @@ public class Appli extends Application {
         menuDepart();
     }
 
-    private void menuDepart() {
+    public void menuDepart() {
         VBox boutonsMenu = new VBox(10);
         boutonsMenu.setAlignment(Pos.CENTER);
         Button jouer = new Button("Jouer");
@@ -50,7 +50,7 @@ public class Appli extends Application {
     }
 
     private void jeuInternet() {
-        new MenuReseau(primaryStage);
+        new MenuReseau(primaryStage, this);
     }
 
     public static void main(String[] args) {

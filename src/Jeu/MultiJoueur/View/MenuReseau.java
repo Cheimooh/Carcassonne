@@ -1,10 +1,10 @@
 package Jeu.MultiJoueur.View;
 
+import Jeu.Appli;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Controller.ControlMouseInfos;
 import Jeu.MultiJoueur.Model.Carte;
 import Jeu.MultiJoueur.Model.Joueur;
-import Jeu.MultiJoueur.Model.Point;
 import Jeu.MultiJoueur.Model.SocketJoueur;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -14,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -22,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -93,7 +97,7 @@ public class MenuReseau extends Parent {
 
     private Canvas canvas;
 
-    public MenuReseau(Stage primaryStage) {
+    public MenuReseau(Stage primaryStage, Appli menu) {
         placeDispo = new PlaceDispo();
         nombreJoueur = 0;
         listJoueurs = new ArrayList<>();
@@ -104,10 +108,10 @@ public class MenuReseau extends Parent {
         fenetreDefausse = new FenetreDefausse(this);
         popUpPartisan = new PopUpPartisan(this);
         mode = 0;
-        jeuInternet();
+        jeuInternet(menu);
     }
 
-    public void jeuInternet() {
+    public void jeuInternet(Appli menu) {
         try {
             //Socket sock = new Socket("86.77.97.239", 3333);
             Socket sock = new Socket("localhost", 3333);
@@ -130,14 +134,16 @@ public class MenuReseau extends Parent {
 
             alert.setContentText("Connexion au serveur échoué");
             alert.showAndWait();
-            System.exit(0);
+            //System.exit(0);
+            menu.menuDepart();
         } catch (ClassNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Version Jeu");
 
             alert.setContentText("Vous n'avez pas la bonne version du jeu");
             alert.showAndWait();
-            System.exit(0);
+            //System.exit(0);
+            menu.menuDepart();
         }
     }
 
@@ -582,7 +588,7 @@ public class MenuReseau extends Parent {
      * Dessine la barre d'canvasInfos lorsque le joueur doit poser un partisan
      */
     public void drawInformationsPartisans(){
-        graphicsContextInfos.clearRect(0,0,width,100);
+        /*graphicsContextInfos.clearRect(0,0,width,100);
         drawLigneSeparatrice();
 
         String s;
@@ -616,7 +622,48 @@ public class MenuReseau extends Parent {
 
         graphicsContextInfos.strokeText(s, (width/2.), 15);
 
+        graphicsContextInfos.setStroke(Color.BLACK);*/
+
+        graphicsContextInfos.clearRect(0, 0, width, 100);
+        drawLigneSeparatrice();
+
+        String s;
+
+        s = "Joueur: " + nomJoueur;
+
+        int nbPartisans = joueurCourant.getNombrePartisansRestants();
+        Color color = tradStringToColors(joueurCourant.getCouleur());
+        int nbPoints = joueurCourant.getPointsTotal();
+        String stringPts = nbPoints+" points";
+
+        String voirDefausse = "Défausse";
+        String poserPartisan = "Poser un partisan";
+        String passerTour = "Passer son tour";
+
+        graphicsContextInfos.setFill(Color.color(0.98, 0.694, 0.627));
+
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width / 7., 35, 100, 30);
+        //Affichage du "bouton" pour poser un partisan
+        drawBouton(poserPartisan, 750, 15, 180, 30);
+        //Affichage du "bouton" pour passer son tour
+        drawBouton(passerTour, 750, 55, 180, 30);
+
+        if (nbPartisans > 0) {
+            graphicsContextInfos.setFill(color);
+            graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.strokeText("x " + nbPartisans, width / 2. + 100, 75);
+        } else {
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.fillOval(width / 2., 25, 50, 50);
+        }
+
+        if (nomJoueur.equals(joueurCourant.getNom())) graphicsContextInfos.setStroke(Color.RED);
+        graphicsContextInfos.strokeText(s, (width / 2.) - 65, 35);
         graphicsContextInfos.setStroke(Color.BLACK);
+        graphicsContextInfos.strokeText(stringPts, (width/2.)-65, 65);
+
     }
 
     public void afficherCartePourPoserUnPartisan() { popUpPartisan.afficherCarte(carteCourante); }
