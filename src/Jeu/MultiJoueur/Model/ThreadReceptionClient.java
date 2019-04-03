@@ -1,5 +1,6 @@
 package Jeu.MultiJoueur.Model;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -53,8 +54,8 @@ public class ThreadReceptionClient {
                             System.out.println("Sud: " + c.getSud() + ", Ouest: " + c.getOuest() + ", Nord: " + c.getNord() + ", Est: " + c.getEst());
                             if (carcassonne.getListPointOccupe().contains(position)) {
                                 envoieErreur("Une carte est déjà placée à cet endroit", "Placement de carte impossible");
-                            } else if (carcassonne.isCarteAdjacente(position.getX(), position.getY())) {
-                                if (carcassonne.isPlacable(position.getX(), position.getY())) {
+                            } else if (carcassonne.isCarteAdjacente((int) position.getX(), (int) position.getY())) {
+                                if (carcassonne.isPlacable((int) position.getX(), (int) position.getY())) {
                                     carcassonne.placerCarte(position);
                                 }
                                 else {

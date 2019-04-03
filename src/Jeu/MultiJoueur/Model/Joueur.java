@@ -35,7 +35,7 @@ public class Joueur implements Serializable, Cloneable {
         if (nombrePartisansRestants > 0) {
             System.out.println("i: " + (8-nombrePartisansRestants));
             Partisan p = new Partisan(this);
-            p.placerPartisan(cartePosee.getPosition().getX(), cartePosee.getPosition().getY(), numZone);
+            p.placerPartisan((int) cartePosee.getPosition().getX(), (int) cartePosee.getPosition().getY(), numZone);
             nombrePartisansRestants--;
             return p;
         } else return null;

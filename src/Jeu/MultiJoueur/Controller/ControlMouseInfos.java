@@ -24,12 +24,13 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
      */
     @Override
     public void handle(MouseEvent event) {
-            Carte carteCourante = menuReseau.getCarteCourante();
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-            //si on clique sur l'endroit sur la barre d'info où il y a la carte
-            if (menuReseau.getMode() == 0) {
-                if (x > 500 && x < 550 && y > 30 && y < 80) {
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        Carte carteCourante = menuReseau.getCarteCourante();
+        if (menuReseau.getMode() == 0) {
+
+            if (x > 500 && x < 550 && y > 30 && y < 80) {
+                if( menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur())){
                     int nbRotation = carteCourante.getNbRotation();
                     nbRotation++;
                     nbRotation = nbRotation % 4;
@@ -37,22 +38,30 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                     carteCourante.pivoter();
                     menuReseau.actualiserBarreInfo();
                 }
-               //si on clique sur le "bouton" defausser carte
-                if( menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur()) ) {
-                    if (x > tabDefausseCarte[0] && x < tabDefausseCarte[0] + tabDefausseCarte[2] && y > tabDefausseCarte[1] && y < tabDefausseCarte[1] + tabDefausseCarte[3]) {
-                        try {
-                            ObjectOutputStream oo = menuReseau.getSocketJoueur().getOo();
-                            oo.writeObject("j'envoie");
-                            oo.writeObject("defausse");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+            }
+
+            //si on clique sur le "bouton" defausser carte
+
+            if (x > tabDefausseCarte[0] && x < tabDefausseCarte[0] + tabDefausseCarte[2] && y > tabDefausseCarte[1] && y < tabDefausseCarte[1] + tabDefausseCarte[3]) {
+                if( menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur())) {
+                    try {
+                        ObjectOutputStream oo = menuReseau.getSocketJoueur().getOo();
+                        oo.writeObject("j'envoie");
+                        oo.writeObject("defausse");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }
-            } else if (menuReseau.getMode()==1){
-                if (x > 750 && x < 930 && y > 15 && y < 45) {
-                    menuReseau.afficherCartePourPoserUnPartisan();
-                } else if (x>750 && x<930 && y>55 && y<85){
+                } else menuReseau.afficheErreur("C'est pas votre tour de jouer", "Tour de jeu");
+            }
+
+        } else if (menuReseau.getMode() == 1) {
+            if (x > 750 && x < 930 && y > 15 && y < 45){
+                if (menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur())) menuReseau.afficherCartePourPoserUnPartisan();
+                else menuReseau.afficheErreur("C'est pas votre tour de jouer", "Tour de jeu");
+            }
+
+            if (x > 750 && x < 930 && y > 55 && y < 85) {
+                if (menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur())) {
                     try {
                         ObjectOutputStream oo = menuReseau.getSocketJoueur().getOo();
                         oo.writeObject("j'envoie");
@@ -60,12 +69,10 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                } else menuReseau.afficheErreur("C'est pas votre tour de jouer", "Tour de jeu");
             }
-            //si on clique sur lebouton defausse
-            if (x>menuReseau.getWidth()/7 && x<menuReseau.getWidth()/7 +100 && y>35 && y<65){
-                menuReseau.afficherDefausse();
-            }
-
+        }if (x > menuReseau.getWidth() / 7 && x < menuReseau.getWidth() / 7 + 100 && y > 35 && y < 65) {
+            menuReseau.afficherDefausse();
+        }
     }
 }

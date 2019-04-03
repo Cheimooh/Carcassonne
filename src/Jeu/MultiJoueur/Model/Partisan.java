@@ -1,5 +1,6 @@
 package Jeu.MultiJoueur.Model;
 
+import java.awt.*;
 import java.io.Serializable;
 
 public class Partisan implements Serializable, Cloneable {
@@ -25,6 +26,7 @@ public class Partisan implements Serializable, Cloneable {
     public void retirerPartisan(){
         numZone = -1;
         isPlacer = false;
+        pointPlacementCarte = new Point();
     }
 
     @Override
