@@ -530,9 +530,6 @@ public class Carcassonne {
             CartePosee cartePosee = pointCarteMap.get(partisans.get(i).getPointPlacementCarte());
             Joueur j = partisans.get(i).getJoueur();
             j.addPartisanRestant();
-            System.out.println(partisans.get(i).getPointPlacementCarte().getX());
-            System.out.println(partisans.get(i).getPointPlacementCarte().getY());
-            System.out.println(partisans.get(i).getJoueur().getNom());
             partisans.get(i).retirerPartisan(cartePosee);
             fenetre.redrawCarte(cartePosee, cartePosee.getPosition());
         }

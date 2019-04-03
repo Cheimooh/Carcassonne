@@ -11,6 +11,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import javax.naming.NamingEnumeration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class BarreInfos {
     private Carcassonne carcassonne;
     private GraphicsContext graphicsContextInfos;
@@ -103,36 +108,32 @@ public class BarreInfos {
         alert.setTitle("Résultats");
         alert.setHeight(300);
         alert.setWidth(300);
-        String[] affichageFinal = new String[carcassonne.getTabJoueur().length];
-
-        Joueur[] tabJoueursTriés = new Joueur[carcassonne.getTabJoueur().length];
-
+        StringBuilder affichageFinal = new StringBuilder();
+        List<Integer> tabPoints = new ArrayList<>();
         for (int i = 0; i < carcassonne.getTabJoueur().length; i++) {
-            Joueur tempJ = carcassonne.getTabJoueur()[0];
-            for (int j = 0; j < carcassonne.getTabJoueur().length; j++) {
-                Joueur joueur = carcassonne.getTabJoueur()[i];
-                if (joueur.getPointsTotal() > tempJ.getPointsTotal() && isJoueurNonTrie(joueur, tabJoueursTriés)){
-                    tempJ = joueur;
+            tabPoints.add(carcassonne.getTabJoueur()[i].getPointsTotal());
+        }
+
+        Collections.sort(tabPoints);
+        Collections.reverse(tabPoints);
+
+        Joueur[] joueurs = carcassonne.getTabJoueur();
+        List<Joueur> tabJoueursTries = new ArrayList<>();
+        for (Integer point : tabPoints) {
+            for (Joueur joueur : joueurs) {
+                if (joueur.getPointsTotal() == point && !tabJoueursTries.contains(joueur)) {
+                    tabJoueursTries.add(joueur);
                 }
             }
-            tabJoueursTriés[i]=tempJ;
         }
 
-        for (int i = 0; i < (tabJoueursTriés.length); i++) {
-            Joueur j = tabJoueursTriés[i];
-                affichageFinal[i] = i+1 + " : " + j.getNom() + " avec -> " + j.getPointsTotal() + " Points" + "\n";
+        for (int i = 0; i < (tabJoueursTries.size()); i++) {
+            Joueur j = tabJoueursTries.get(i);
+                affichageFinal.append(i+1).append(" : ").append(j.getNom()).append(" avec -> ").append(j.getPointsTotal()).append(" Points").append("\n");
         }
-    }
 
-    //fonction qui regarde si un joueur est déja dans le tableau qui trie les joueur en fonction de leur points
-    //return true si le joueur n'est pas encore trié
-    private boolean isJoueurNonTrie(Joueur joueur, Joueur[] tabJoueurTrie) {
-        for (int i = 0; i < tabJoueurTrie.length ; i++) {
-            if (joueur == tabJoueurTrie[i]){
-                return false;
-            }
-        }
-        return true;
+        alert.setContentText(affichageFinal.toString());
+        alert.show();
     }
 
     private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {
@@ -223,10 +224,11 @@ public class BarreInfos {
      * Permet d'afficher la carte suivante
      */
     public void afficherCarteSuivante() {
-        try {
-            drawInformationsCarte(getImage(carcassonne.getPioche().getProchaineCarte()));
-        } catch (PiocheVideException e) {
-            System.out.println(e.getMessage());
+        Carte prochaineCarte = carcassonne.getPioche().getProchaineCarte();
+        if (prochaineCarte!=null) {
+            drawInformationsCarte(getImage(prochaineCarte));
+        } else {
+            afficherFinDuJeu();
         }
     }
 

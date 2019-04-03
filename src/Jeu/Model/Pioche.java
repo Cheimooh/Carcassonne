@@ -108,20 +108,22 @@ public class Pioche {
     /*
      * Retire une carte de la pioche et la renvoie
      */
-    public Carte piocher() throws PiocheVideException {
+    public Carte piocher(){
         if (taille > 0) {
             taille--;
             return lCarte.poll();
-        } else throw new PiocheVideException();
+        } else {
+            return null;
+        }
     }
 
     /*
      * Retourne la prochaine carte sans la supprimer de la pioche
      */
-    public Carte getProchaineCarte() throws PiocheVideException {
+    public Carte getProchaineCarte() {
         if (taille > 0) {
             return lCarte.peek();
-        } else throw new PiocheVideException();
+        } else return null;
     }
 
     public int getTaille() {

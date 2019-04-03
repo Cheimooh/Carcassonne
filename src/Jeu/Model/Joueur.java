@@ -29,17 +29,13 @@ public class Joueur {
     }
 
     public void joue() {
-        try {
-            carteEnMain = piocherCarte();
-        } catch (PiocheVideException e) {
-            System.out.println(e.getMessage());
-        }
+        carteEnMain = piocherCarte();
     }
 
     /*
      * Permet de piocher une carte dans la pioche
      */
-    private Carte piocherCarte() throws PiocheVideException {
+    private Carte piocherCarte() {
         return p.piocher();
     }
 
