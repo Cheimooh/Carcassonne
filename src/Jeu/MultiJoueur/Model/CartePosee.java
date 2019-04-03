@@ -99,6 +99,11 @@ public class CartePosee implements Serializable, Cloneable {
         }
     }
 
+    public void retirerPartisan(int numZone) {
+        zonesControlleesParLesPartisans[numZone]=null;
+
+    }
+
     @Override
     public CartePosee clone() throws CloneNotSupportedException {
         return (CartePosee)super.clone();

@@ -41,15 +41,6 @@ public class Joueur implements Serializable, Cloneable {
         } else return null;
     }
 
-    /*public void retirerPartisan(Point p){
-        if (nombrePartisansRestants<8) {
-            for (int i = 0; i < tabPartisans.length; i++) {
-                if (tabPartisans[i].getPointPlacementCarte().equals(p)) tabPartisans[i].retirerPartisan();
-                nombrePartisansRestants++;
-            }
-        }
-    }*/
-
     public void addPointsChemin(int nbPoints) {
         pointsChemin += nbPoints;
         pointsTotal += nbPoints;
@@ -59,6 +50,10 @@ public class Joueur implements Serializable, Cloneable {
     public Joueur clone() throws CloneNotSupportedException{
         return (Joueur)super.clone();
     }
+
+    public void addPartisanRestant() { this.nombrePartisansRestants += 1; }
+
+    public void supprimerPartisanRestant() { this.nombrePartisansRestants -= 1; }
 
     public String getNom() { return nom; }
 
@@ -73,4 +68,6 @@ public class Joueur implements Serializable, Cloneable {
     public int getIdJoueur(){ return idJoueur; }
 
     public int getPointsTotal() { return pointsTotal; }
+
+    public void setPoint(int score){ pointsTotal += score; }
 }

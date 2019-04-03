@@ -29,7 +29,7 @@ public class ControlMouseInfos implements EventHandler<MouseEvent> {
         Carte carteCourante = menuReseau.getCarteCourante();
         if (menuReseau.getMode() == 0) {
 
-            if (x > 500 && x < 550 && y > 30 && y < 80) {
+            if (x > 450 && x < 500 && y > 30 && y < 80) {
                 if( menuReseau.getJoueurCourant().getNom().equals(menuReseau.getNomJoueur())){
                     int nbRotation = carteCourante.getNbRotation();
                     nbRotation++;

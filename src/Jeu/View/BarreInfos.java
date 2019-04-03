@@ -104,7 +104,7 @@ public class BarreInfos {
     }
 
     private void fenetreFinDuJeu() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Résultats");
         alert.setHeight(300);
         alert.setWidth(300);

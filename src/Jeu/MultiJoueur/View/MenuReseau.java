@@ -4,6 +4,7 @@ import Jeu.Appli;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Controller.ControlMouseInfos;
 import Jeu.MultiJoueur.Model.Carte;
+import Jeu.MultiJoueur.Model.CartePosee;
 import Jeu.MultiJoueur.Model.Joueur;
 import Jeu.MultiJoueur.Model.SocketJoueur;
 import javafx.application.Platform;
@@ -31,6 +32,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MenuReseau extends Parent {
@@ -40,7 +42,6 @@ public class MenuReseau extends Parent {
     private List<Joueur> listJoueurs;
     private List<Color> listColorJoueursReseau;
     private String nomJoueur;
-
     /*
     * Elements affichage fenetre instanciation du jeu (connexion au serveur + choix couleur+nom + salonAttente
     * */
@@ -96,6 +97,8 @@ public class MenuReseau extends Parent {
     private FenetreDefausse fenetreDefausse;
 
     private Canvas canvas;
+    private Joueur joueur;
+    private boolean isPassser;
 
     public MenuReseau(Stage primaryStage, Appli menu) {
         placeDispo = new PlaceDispo();
@@ -239,7 +242,8 @@ public class MenuReseau extends Parent {
             inscriptionJoueurReseau();
         }
         else{
-            listJoueurs.add(new Joueur(nombreJoueur, nomJoueur, tradColorsToString(couleurJoueurTmp)));
+            joueur = new Joueur(nombreJoueur, nomJoueur, tradColorsToString(couleurJoueurTmp));
+            listJoueurs.add(joueur);
             nombreJoueur++;
             transmitInfoServeur();
         }
@@ -406,6 +410,7 @@ public class MenuReseau extends Parent {
     }
 
     private void initialiser() {
+        isPassser = false;
         initialiserFenetre();
         ObjectInputStream oi = socketJoueur.getOi();
         try {
@@ -489,6 +494,7 @@ public class MenuReseau extends Parent {
     }
 
     public void actualiserPoserCarte(){
+        isPassser = false;
         ObjectInputStream oi = socketJoueur.getOi();
         try {
             String imageString = (String) oi.readObject();
@@ -510,6 +516,11 @@ public class MenuReseau extends Parent {
         }
     }
 
+    public void redrawCarte(CartePosee cartePosee, Point position) {
+        graphicsContext.drawImage(new Image(cartePosee.getImageCarte()), position.getX() * 50, position.getY() * 50, 50, 50);
+    }
+
+
     public void actualiserDefausse() {
         defausse.clear();
         ObjectInputStream oi = socketJoueur.getOi();
@@ -529,6 +540,7 @@ public class MenuReseau extends Parent {
     }
 
     public void actualiserPartisan() {
+        isPassser = false;
         ObjectInputStream oi = socketJoueur.getOi();
         try {
             String couleur = (String) oi.readObject();
@@ -556,16 +568,15 @@ public class MenuReseau extends Parent {
     }
 
     public void drawInformationsCarte(){
-        String s;
-
         graphicsContextInfos.clearRect(0, 0, width, 100);
         graphicsContextInfos.setFill(Color.BLACK);
-
         drawLigneSeparatrice();
 
-        graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width / 2.), 30, 50, 50);
+        String s;
 
-        s = "Joueur: " + joueurCourant.getNom();
+        graphicsContextInfos.drawImage(new Image(carteCourante.getPath()), (width / 2.) - 50, 30, 50, 50);
+
+        s = "Joueur : " + joueur.getNom();
 
         String defausse = "Defausser ma carte";
         String voirDefausse = "Défausse";
@@ -574,56 +585,37 @@ public class MenuReseau extends Parent {
 
         //Affichage du "bouton" pour voir la défausse
         drawBouton(voirDefausse, width / 7., 35, 100, 30);
-        //Affichage du "bouton" pour défausser une carte
-        drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
-
+        if (joueurCourant.getNom().equals(nomJoueur)) {
+            //Affichage du "bouton" pour défausser une carte
+            drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
+        }else{
+            graphicsContextInfos.strokeText("En attente \n de votre tour", 750,25);
+        }
         if (nomJoueur.equals(joueurCourant.getNom())) graphicsContextInfos.setStroke(Color.RED);
-
-        graphicsContextInfos.strokeText(s, (width / 2.), 15);
-
+        graphicsContextInfos.strokeText(s, (width / 2.) - 60, 15);
         graphicsContextInfos.setStroke(Color.BLACK);
+
+        int nbPartisans = joueur.getNombrePartisansRestants();
+        Color color = tradStringToColors(joueur.getCouleur());
+        int nbPoints = joueur.getPointsTotal();
+        String stringPts = nbPoints+" points";
+
+        if (nbPartisans > 0) {
+            graphicsContextInfos.setFill(color);
+            graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.strokeText("x" + nbPartisans, width / 2. + 100, 75);
+        } else {
+            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
+        }
+        graphicsContextInfos.strokeText(stringPts, width/2.+50, 15);
     }
 
     /*
      * Dessine la barre d'canvasInfos lorsque le joueur doit poser un partisan
      */
     public void drawInformationsPartisans(){
-        /*graphicsContextInfos.clearRect(0,0,width,100);
-        drawLigneSeparatrice();
-
-        String s;
-
-        s = "Joueur: " + joueurCourant.getNom();
-
-        int nbPartisans = joueurCourant.getNombrePartisansRestants();
-        Color color = tradStringToColors(joueurCourant.getCouleur());
-
-        String voirDefausse = "Défausse";
-        String poserPartisan = "Poser un partisan";
-        String passerTour = "Passer son tour";
-
-        graphicsContextInfos.setFill(Color.color(0.98,0.694, 0.627));
-
-        //Affichage du "bouton" pour voir la défausse
-        drawBouton(voirDefausse, width/7., 35, 100, 30);
-        //Affichage du "bouton" pour poser un partisan
-        drawBouton(poserPartisan, 750, 15, 180, 30);
-        //Affichage du "bouton" pour passer son tour
-        drawBouton(passerTour, 750, 55, 180, 30);
-
-        if (nbPartisans>0){
-            graphicsContextInfos.setFill(color);
-            graphicsContextInfos.fillOval(width/2., 25, 50, 50);
-            graphicsContextInfos.setFill(Color.BLACK);
-            graphicsContextInfos.strokeText("x "+nbPartisans, width/2.+50, 35);
-        }
-
-        if (nomJoueur.equals(joueurCourant.getNom())) graphicsContextInfos.setStroke(Color.RED);
-
-        graphicsContextInfos.strokeText(s, (width/2.), 15);
-
-        graphicsContextInfos.setStroke(Color.BLACK);*/
-
         graphicsContextInfos.clearRect(0, 0, width, 100);
         drawLigneSeparatrice();
 
@@ -631,9 +623,9 @@ public class MenuReseau extends Parent {
 
         s = "Joueur: " + nomJoueur;
 
-        int nbPartisans = joueurCourant.getNombrePartisansRestants();
-        Color color = tradStringToColors(joueurCourant.getCouleur());
-        int nbPoints = joueurCourant.getPointsTotal();
+        int nbPartisans = joueur.getNombrePartisansRestants();
+        Color color = tradStringToColors(joueur.getCouleur());
+        int nbPoints = joueur.getPointsTotal();
         String stringPts = nbPoints+" points";
 
         String voirDefausse = "Défausse";
@@ -644,10 +636,14 @@ public class MenuReseau extends Parent {
 
         //Affichage du "bouton" pour voir la défausse
         drawBouton(voirDefausse, width / 7., 35, 100, 30);
-        //Affichage du "bouton" pour poser un partisan
-        drawBouton(poserPartisan, 750, 15, 180, 30);
-        //Affichage du "bouton" pour passer son tour
-        drawBouton(passerTour, 750, 55, 180, 30);
+        if (joueurCourant.getNom().equals(nomJoueur)){
+            //Affichage du "bouton" pour poser un partisan
+            drawBouton(poserPartisan, 750, 15, 180, 30);
+            //Affichage du "bouton" pour passer son tour
+            drawBouton(passerTour, 750, 55, 180, 30);
+        }else{
+            graphicsContextInfos.strokeText("En attente \n de votre tour", 750,25);
+        }
 
         if (nbPartisans > 0) {
             graphicsContextInfos.setFill(color);
@@ -663,7 +659,66 @@ public class MenuReseau extends Parent {
         graphicsContextInfos.strokeText(s, (width / 2.) - 65, 35);
         graphicsContextInfos.setStroke(Color.BLACK);
         graphicsContextInfos.strokeText(stringPts, (width/2.)-65, 65);
+    }
 
+    public void placerPartisan() {
+        if (joueurCourant.getNom().equals(nomJoueur)) joueur.supprimerPartisanRestant();
+    }
+
+    public void retirerPartisan(String color, int score) {
+        if (joueur.getCouleur().equals(color)) {
+            joueur.addPartisanRestant();
+            if(!isPassser){
+                isPassser = true;
+                joueur.setPoint(score);
+            }
+        }
+    }
+
+    public void afficherFinDuJeu() {
+        graphicsContextInfos.clearRect(0, 0, width, 100);
+        graphicsContextInfos.setFill(Color.BLACK);
+        drawLigneSeparatrice();
+        String s = "Fin de partie";
+
+        String voirDefausse = "Défausse";
+        graphicsContextInfos.setFill(Color.color(0.98, 0.694, 0.627));
+        //Affichage du "bouton" pour voir la défausse
+        drawBouton(voirDefausse, width / 7., 35, 100, 30);
+
+        graphicsContextInfos.strokeText(s, (width / 2.), 15);
+    }
+
+    public void fenetreFinDuJeu() {
+        List<Joueur> listJoueur = new ArrayList<>();
+        ObjectInputStream oi = socketJoueur.getOi();
+        try {
+            int tailleScore = oi.readInt();
+            for (int i = 0; i < tailleScore; i++) {
+                Joueur joueur = (Joueur) oi.readObject();
+                listJoueur.add(joueur);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(() -> {
+           Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Résultats");
+            alert.setHeight(300);
+            alert.setWidth(300);
+
+            StringBuilder affichageFinal = new StringBuilder();
+
+            for (int i = 0; i < listJoueur.size(); i++) {
+                Joueur j = listJoueur.get(i);
+                affichageFinal.append(i+1).append(" : ").append(j.getNom()).append(" avec -> ").append(j.getPointsTotal()).append(" Points").append("\n");
+            }
+
+            alert.setContentText(affichageFinal.toString());
+            alert.show();
+        });
     }
 
     public void afficherCartePourPoserUnPartisan() { popUpPartisan.afficherCarte(carteCourante); }

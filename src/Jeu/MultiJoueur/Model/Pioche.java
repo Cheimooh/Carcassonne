@@ -12,6 +12,24 @@ public class Pioche {
      * Ajout de toutes les cartes dans la pioche
      */
     public Pioche(){
+        //pioche();
+        createDemo();
+
+        taille = lCarte.size();
+    }
+
+    private void createDemo() {
+        lCarte.add(new Carte(TypeCarte.carteVPPP));
+        lCarte.add(new Carte(TypeCarte.carteVVVVBlason));
+        lCarte.add(new Carte(TypeCarte.cartePCCC));
+        lCarte.add(new Carte(TypeCarte.cartePPCC));
+        lCarte.add(new Carte(TypeCarte.cartePPCC));
+        lCarte.add(new Carte(TypeCarte.cartePCCC));
+        lCarte.add(new Carte(TypeCarte.carteCPCP));
+        lCarte.add(new Carte(TypeCarte.carteVPPP));
+    }
+
+    private void pioche(){
         for (int i = 0; i < 9 ; i++) { lCarte.add(new Carte(TypeCarte.cartePPCC)); }
         for (int i = 0; i < 4; i++) { lCarte.add(new Carte(TypeCarte.cartePCCC)); }
         for (int i = 0; i < 3; i++) { lCarte.add(new Carte(TypeCarte.carteVCCP)); }

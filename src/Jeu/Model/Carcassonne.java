@@ -533,7 +533,6 @@ public class Carcassonne {
             partisans.get(i).retirerPartisan(cartePosee);
             fenetre.redrawCarte(cartePosee, cartePosee.getPosition());
         }
-
     }
 
     /*

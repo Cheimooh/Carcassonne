@@ -1,9 +1,11 @@
 package Jeu.MultiJoueur.View;
 
 import Jeu.MultiJoueur.Model.Carte;
+import Jeu.MultiJoueur.Model.CartePosee;
 import Jeu.MultiJoueur.Model.Joueur;
 import Jeu.MultiJoueur.Model.SocketJoueur;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -56,6 +58,15 @@ public class ThreadSalonAttente {
                         }
                         else if (test.equals("partisan")){
                             menu.actualiserPartisan();
+                            menu.placerPartisan();
+                        }
+                        else if (test.equals("reDraw")){
+                            CartePosee cartePosee = (CartePosee) oi.readObject();
+                            Point position = (Point) oi.readObject();
+                            menu.redrawCarte(cartePosee, position);
+                            String color = (String) oi.readObject();
+                            int score = oi.readInt();
+                            menu.retirerPartisan(color, score);
                         }
                         else if (test.equals("poserCarte")){
                             menu.actualiserPoserCarte();
@@ -70,6 +81,10 @@ public class ThreadSalonAttente {
                         String titre = (String) oi.readObject();
                         String contenue = (String) oi.readObject();
                         menu.afficheErreur(contenue, titre);
+                    }
+                    else if (test.equals("finPartie")) {
+                        menu.afficherFinDuJeu();
+                        menu.fenetreFinDuJeu();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
