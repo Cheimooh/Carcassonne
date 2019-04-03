@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class Appli {
+    private static ServerSocket conn;
 
     public static void main(String[] args) {
         try {
-            ServerSocket conn = new ServerSocket(3333);
+            conn = new ServerSocket(3333);
             System.out.println("Le serveur tourne !!!!");
             Carcassonne carcassonne = new Carcassonne(conn);
         }
@@ -15,5 +16,9 @@ public class Appli {
             System.out.println("problème création socket serveur : "+e.getMessage());
             System.exit(1);
         }
+    }
+
+    public static void lancer(){
+        new Carcassonne(conn);
     }
 }

@@ -2,6 +2,7 @@ package Jeu;
 
 import Jeu.MultiJoueur.View.MenuReseau;
 import javafx.application.Application;
+import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 
 
 public class Appli extends Application {
-    private Stage primaryStage;
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage){
@@ -20,7 +21,7 @@ public class Appli extends Application {
         menuDepart();
     }
 
-    public void menuDepart() {
+    public static void menuDepart() {
         VBox boutonsMenu = new VBox(10);
         boutonsMenu.setAlignment(Pos.CENTER);
         Button jouer = new Button("Jouer");
@@ -33,7 +34,7 @@ public class Appli extends Application {
         primaryStage.setScene(scene);
     }
 
-    private void choixTypeJeu() {
+    public static void choixTypeJeu() {
         VBox boutonsMenu = new VBox(10);
         boutonsMenu.setAlignment(Pos.CENTER);
         Button internet = new Button("Jeu en ligne");
@@ -45,12 +46,12 @@ public class Appli extends Application {
         primaryStage.setScene(scene);
     }
 
-    private void jeuLocal() {
+    private static void jeuLocal() {
         new Menu(primaryStage).askNbJoueurs();
     }
 
-    private void jeuInternet() {
-        new MenuReseau(primaryStage, this);
+    private static void jeuInternet() {
+        new MenuReseau(primaryStage);
     }
 
     public static void main(String[] args) {

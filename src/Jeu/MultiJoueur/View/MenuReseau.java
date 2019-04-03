@@ -100,7 +100,7 @@ public class MenuReseau extends Parent {
     private Joueur joueur;
     private boolean isPassser;
 
-    public MenuReseau(Stage primaryStage, Appli menu) {
+    public MenuReseau(Stage primaryStage) {
         placeDispo = new PlaceDispo();
         nombreJoueur = 0;
         listJoueurs = new ArrayList<>();
@@ -111,10 +111,10 @@ public class MenuReseau extends Parent {
         fenetreDefausse = new FenetreDefausse(this);
         popUpPartisan = new PopUpPartisan(this);
         mode = 0;
-        jeuInternet(menu);
+        jeuInternet();
     }
 
-    public void jeuInternet(Appli menu) {
+    public void jeuInternet() {
         try {
             //Socket sock = new Socket("86.77.97.239", 3333);
             Socket sock = new Socket("localhost", 3333);
@@ -137,16 +137,14 @@ public class MenuReseau extends Parent {
 
             alert.setContentText("Connexion au serveur échoué");
             alert.showAndWait();
-            //System.exit(0);
-            menu.menuDepart();
+            Appli.choixTypeJeu();
         } catch (ClassNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Version Jeu");
 
             alert.setContentText("Vous n'avez pas la bonne version du jeu");
             alert.showAndWait();
-            //System.exit(0);
-            menu.menuDepart();
+            Appli.choixTypeJeu();
         }
     }
 
@@ -310,7 +308,7 @@ public class MenuReseau extends Parent {
                 e.printStackTrace();
             }
             salonAttente.arreter();
-            System.exit(0);
+            Appli.menuDepart();
         });
 
         hBoxButtons.getChildren().addAll(b_quitter, b_pret);
@@ -717,7 +715,9 @@ public class MenuReseau extends Parent {
             }
 
             alert.setContentText(affichageFinal.toString());
-            alert.show();
+            alert.showAndWait();
+            socketJoueur.quitter();
+            System.exit(0);
         });
     }
 

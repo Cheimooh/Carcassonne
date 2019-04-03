@@ -326,6 +326,12 @@ public class Carcassonne {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+
+        for (int i = 0; i < listSocket.size(); i++) {
+            listSocket.get(i).quitter();
+            listReceptionClient.get(i).arreter();
+        }
+        Appli.lancer();
     }
 
     /*
