@@ -1,6 +1,5 @@
 package Jeu.MultiJoueur.Model;
 
-
 import java.io.Serializable;
 
 public class Joueur implements Serializable, Cloneable {

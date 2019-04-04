@@ -3,10 +3,7 @@ package Jeu.MultiJoueur.View;
 import Jeu.Appli;
 import Jeu.MultiJoueur.Controller.ControlMouse;
 import Jeu.MultiJoueur.Controller.ControlMouseInfos;
-import Jeu.MultiJoueur.Model.Carte;
-import Jeu.MultiJoueur.Model.CartePosee;
-import Jeu.MultiJoueur.Model.Joueur;
-import Jeu.MultiJoueur.Model.SocketJoueur;
+import Jeu.MultiJoueur.Model.*;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -32,7 +29,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MenuReseau extends Parent {
@@ -117,7 +113,7 @@ public class MenuReseau extends Parent {
     public void jeuInternet() {
         try {
             //Socket sock = new Socket("86.77.97.239", 3333);
-            Socket sock = new Socket("localhost", 3333);
+            Socket sock = new Socket("demoarena.iut-bm.univ-fcomte.fr", 5050);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
 

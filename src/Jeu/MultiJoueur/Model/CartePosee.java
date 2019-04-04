@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
- * Carte qui a déjà été placée
+ * Jeu.MultiJoueur.Model.Carte qui a déjà été placée
  */
 public class CartePosee implements Serializable, Cloneable {
 

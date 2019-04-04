@@ -11,7 +11,7 @@ public class PartisanUnitTest {
 
 //    @Test
 //    public void testPlacerPartisan() {
-//        Partisan p = new Partisan(Color.BLUE);
+//        Jeu.MultiJoueur.Model.Partisan p = new Jeu.MultiJoueur.Model.Partisan(Color.BLUE);
 //        p.placerPartisan(2, 3, 5);
 //
 //        Point point = new Point(2, 3);
@@ -22,7 +22,7 @@ public class PartisanUnitTest {
 //
 //    @Test
 //    public void testRetirerPatrisan() {
-//        Partisan p = new Partisan(Color.BLUE);
+//        Jeu.MultiJoueur.Model.Partisan p = new Jeu.MultiJoueur.Model.Partisan(Color.BLUE);
 //        p.placerPartisan(2, 3, 5);
 //        p.retirerPartisan();
 //
