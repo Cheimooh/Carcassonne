@@ -135,7 +135,7 @@ public class MenuReseau extends Parent {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Connexion Serveur");
 
-            alert.setContentText("Connexion au serveur échoué");
+            alert.setContentText("Connexion au serveur échouée");
             alert.showAndWait();
             Appli.choixTypeJeu();
         } catch (ClassNotFoundException e) {
@@ -149,7 +149,7 @@ public class MenuReseau extends Parent {
     }
 
     private void inscriptionJoueurReseau() {
-        Label erreurNom = new Label("Ce nom est ou déja pris, ou null");
+        Label erreurNom = new Label("Veuillez entrer un nom qui n'est pas déja utilisé");
         erreurNom.setStyle("-fx-text-fill: RED");
 
         VBox generalBox = new VBox(10);

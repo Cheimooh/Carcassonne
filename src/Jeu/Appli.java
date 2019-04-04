@@ -15,7 +15,7 @@ public class Appli extends Application {
 
     @Override
     public void start(Stage primaryStage){
-        primaryStage.setTitle("Carcassonne");
+        primaryStage.setTitle("Carcass'ON");
         this.primaryStage = primaryStage;
         primaryStage.show();
         menuDepart();
