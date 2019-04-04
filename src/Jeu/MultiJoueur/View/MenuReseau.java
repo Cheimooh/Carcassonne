@@ -113,7 +113,7 @@ public class MenuReseau extends Parent {
     public void jeuInternet() {
         try {
             //Socket sock = new Socket("86.77.97.239", 3333);
-            Socket sock = new Socket("demoarena.iut-bm.univ-fcomte.fr", 5050);
+            Socket sock = new Socket("localhost", 3333);
             ObjectOutputStream oo = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream oi = new ObjectInputStream(sock.getInputStream());
 
@@ -579,15 +579,18 @@ public class MenuReseau extends Parent {
 
         //Affichage du "bouton" pour voir la défausse
         drawBouton(voirDefausse, width / 7., 35, 100, 30);
+
         if (joueurCourant.getNom().equals(nomJoueur)) {
             //Affichage du "bouton" pour défausser une carte
             drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
         }else{
+            graphicsContextInfos.setStroke(Color.WHITESMOKE);
             graphicsContextInfos.strokeText("En attente \n de votre tour", 750,25);
         }
+        graphicsContextInfos.setStroke(Color.WHITESMOKE);
         if (nomJoueur.equals(joueurCourant.getNom())) graphicsContextInfos.setStroke(Color.RED);
         graphicsContextInfos.strokeText(s, (width / 2.) - 60, 15);
-        graphicsContextInfos.setStroke(Color.BLACK);
+        graphicsContextInfos.setStroke(Color.WHITESMOKE);
 
         int nbPartisans = joueur.getNombrePartisansRestants();
         Color color = tradStringToColors(joueur.getCouleur());
@@ -597,13 +600,14 @@ public class MenuReseau extends Parent {
         if (nbPartisans > 0) {
             graphicsContextInfos.setFill(color);
             graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
-            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.setStroke(Color.WHITESMOKE);
             graphicsContextInfos.strokeText("x" + nbPartisans, width / 2. + 100, 75);
         } else {
             graphicsContextInfos.setFill(Color.BLACK);
             graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
         }
         graphicsContextInfos.strokeText(stringPts, width/2.+50, 15);
+        graphicsContextInfos.setStroke(Color.BLACK);
     }
 
     /*
@@ -636,23 +640,26 @@ public class MenuReseau extends Parent {
             //Affichage du "bouton" pour passer son tour
             drawBouton(passerTour, 750, 55, 180, 30);
         }else{
+            graphicsContextInfos.setStroke(Color.WHITESMOKE);
             graphicsContextInfos.strokeText("En attente \n de votre tour", 750,25);
         }
 
         if (nbPartisans > 0) {
             graphicsContextInfos.setFill(color);
             graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
-            graphicsContextInfos.setFill(Color.BLACK);
+            graphicsContextInfos.setStroke(Color.WHITESMOKE);
             graphicsContextInfos.strokeText("x " + nbPartisans, width / 2. + 100, 75);
         } else {
             graphicsContextInfos.setFill(Color.BLACK);
             graphicsContextInfos.fillOval(width / 2., 25, 50, 50);
         }
+        graphicsContextInfos.setStroke(Color.WHITESMOKE);
 
         if (nomJoueur.equals(joueurCourant.getNom())) graphicsContextInfos.setStroke(Color.RED);
         graphicsContextInfos.strokeText(s, (width / 2.) - 65, 35);
-        graphicsContextInfos.setStroke(Color.BLACK);
+        graphicsContextInfos.setStroke(Color.WHITESMOKE);
         graphicsContextInfos.strokeText(stringPts, (width/2.)-65, 65);
+        graphicsContextInfos.setStroke(Color.BLACK);
     }
 
     public void placerPartisan() {
