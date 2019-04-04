@@ -67,6 +67,7 @@ public class BarreInfos {
         //Affichage du "bouton" pour défausser une carte
         drawBouton(defausse, tabDefausseCarte[0], tabDefausseCarte[1], tabDefausseCarte[2], tabDefausseCarte[3]);
 
+        graphicsContextInfos.setStroke(Color.WHITESMOKE);
         graphicsContextInfos.strokeText(s, (width / 2.) - 60, 15);
 
         int nbPartisans = carcassonne.getTabJoueur()[numJoueur - 1].getNombrePartisansRestants();
@@ -77,7 +78,6 @@ public class BarreInfos {
         if (nbPartisans > 0) {
             graphicsContextInfos.setFill(color);
             graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
-            graphicsContextInfos.setFill(Color.BLACK);
             graphicsContextInfos.strokeText("x " + nbPartisans, width / 2. + 100, 75);
         } else {
             graphicsContextInfos.setFill(Color.BLACK);
@@ -97,6 +97,7 @@ public class BarreInfos {
         //Affichage du "bouton" pour voir la défausse
         drawBouton(voirDefausse, width / 7., 35, 100, 30);
 
+        graphicsContextInfos.setStroke(Color.WHITESMOKE);
         graphicsContextInfos.strokeText(s, (width / 2.), 15);
         controlMouseInfos.setMode(2);
 
@@ -138,6 +139,7 @@ public class BarreInfos {
 
     private void drawBouton(String texte, double x, int y, int largeur, int hauteur) {
         graphicsContextInfos.fillRoundRect(x, y, largeur, hauteur, 20, 20);
+        graphicsContextInfos.setStroke(Color.BLACK);
         graphicsContextInfos.strokeText(texte, x + 20, y + 17);
     }
 
@@ -173,6 +175,7 @@ public class BarreInfos {
         //Affichage du "bouton" pour passer son tour
         drawBouton(passerTour, 750, 55, 180, 30);
 
+        graphicsContextInfos.setStroke(Color.WHITESMOKE);
         if (nbPartisans > 0) {
             graphicsContextInfos.setFill(color);
             graphicsContextInfos.fillOval(width / 2. + 50, 25, 50, 50);
